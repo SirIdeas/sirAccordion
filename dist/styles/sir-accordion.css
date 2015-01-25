@@ -1,0 +1,73 @@
+.sir-accordion-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.sir-accordion-wrapper > .sir-accordion-header {
+  background-color: #2A6BC0;
+}
+
+.sir-accordion-wrapper .sir-accordion-header *{
+  color: white;
+}
+
+.sir-accordion-group{
+  overflow: hidden;
+}
+
+.sir-accordion-group > .sir-accordion-header {
+  background-color: #F1F1F1; 
+}
+
+.sir-accordion-group > .sir-accordion-header.active-header{
+  background-color: #B2B2B2; 
+}
+
+.sir-accordion-group .sir-accordion-header *{
+  color: black;
+}
+
+.sir-accordion-header{
+  height: 40px;
+  cursor: pointer;
+  overflow: hidden;
+  margin-bottom: 2px;
+  padding: 0px 15px;
+  position: relative;
+  z-index: 1;
+  -webkit-transition:all cubic-bezier(0.25, 0.15, 0.45, 0.9) 0.3s;
+  transition:all cubic-bezier(0.25, 0.15, 0.45, 0.9) 0.3s;
+}
+
+.sir-accordion-header.active-header{
+  background-color: #0D3B79; 
+}
+
+.sir-accordion-content{
+  overflow: hidden;
+  height: 0px;
+  padding-left: 15px;
+  transition: all 0.5s;
+}
+
+.sir-accordion-content.expanded{
+  height: auto;
+}
+
+.sir-accordion-vertical-align {
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+
+.sir-accordion-vertical-align > * {
+  display: table-cell;
+  vertical-align: middle;
+  height: 100%;
+}
+
+@-webkit-keyframes Color {
+  0% { background-color: #ff8b00}
+  50% { background-color: #005a7f}
+  100% { background-color: #ff8b00}
+}
