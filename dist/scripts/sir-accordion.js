@@ -51,8 +51,10 @@ angular.module('sir-accordion', [])
         currentExpanded = '0';
         activeHeaders = [];
         accordionHTML = itemRegen(scope.collection, 0, 0, 0);
+
         $compile(accordionHTML)(scope, function(compiled, scope)   {
-          element.html(compiled); 
+          element.html('');
+          element.append(compiled);
         });
         setObjectTree();
       });
@@ -60,9 +62,6 @@ angular.module('sir-accordion', [])
       var setObjectTree = function(){
         for (var i = domObjectTree.length - 1; i >= 0; i--) {
           domObjectTree[i] = document.getElementById('sac' + domObjectTree[i]);
-          domObjectTree[i].visibleHeight = domObjectTree[i].clientHeight;
-          /*console.log(domObjectTree[i].clientHeight);
-          domObjectTree[i].style.height = '0px';*/
         };
       };
 
@@ -86,7 +85,7 @@ angular.module('sir-accordion', [])
           item = '<div class="sir-accordion-header ' + scope.config.headerClass + '" ng-click="expandCollapse($event,\'' + uniqueIndex + '\')" class="' + scope.config.headerClass + '">' + header + '</div>' + '<div id="sac' + uniqueIndex + '" class="sir-accordion-content ' + scope.config.topContentClass + '">' + topContent;
         }
 
-        if (angular.isArray(collection[currentIndex].subCollection)){
+        if (angular.isArray(collection[currentIndex].subCollection) && collection[currentIndex].subCollection.length){
           item = item + itemRegen(collection[currentIndex].subCollection, uniqueIndex, 0, level + 1);
           bottomContent = setContent(scope.config.preBottomContent, collection[currentIndex].bottomContent, scope.config.postBottomContent);
           item = item + bottomContent + '</div></div>';
@@ -176,12 +175,10 @@ angular.module('sir-accordion', [])
         }
         while(getLevel(childId) > getLevel(parentId));
         return result;
-      }
+      };
 
       var setHeight = function(objeto){
-         /*console.log(objeto.visibleHeight);
-         objeto.style.height = objeto.visibleHeight + 'px';*/
-      }
+      };
 
       scope.expandCollapse = function(event,id){
         if(scope.config.autoCollapse){
@@ -190,7 +187,6 @@ angular.module('sir-accordion', [])
             for (var i = domObjectTree.length - 1; i >= 0; i--) {
               if (domObjectTree[i].id == ('sac' + id)) {
                 toggleClass(domObjectTree[i],'expanded');
-                setHeight(domObjectTree[i]);
                 currentExpanded = id;
                 break;
               };
@@ -210,13 +206,11 @@ angular.module('sir-accordion', [])
                   currentExpanded = getParentId(id);
                   activeHeaders.pop();
                   toggleClass(event.currentTarget,'active-header');
-                  setHeight(domObjectTree[i]);
                 }
                 else{
                   currentExpanded = '0';
                   activeHeaders = [];
                   toggleClass(event.currentTarget,'active-header');
-                  setHeight(domObjectTree[i]);
                 } 
               };
             }
