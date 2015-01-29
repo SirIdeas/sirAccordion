@@ -25,7 +25,6 @@ angular.module('sir-accordion', [])
       var topContent = '';
       var bottomContent = '';
       var item = '';
-      var parentId = 0;
       var uniqueIndex = '';
       var accordionHTML = '';
       var domObjectTree = [];
@@ -44,7 +43,6 @@ angular.module('sir-accordion', [])
         topContent = '';
         bottomContent = '';
         item = '';
-        parentId = 0;
         uniqueIndex = '';
         accordionHTML = '';
         domObjectTree = [];
@@ -77,22 +75,22 @@ angular.module('sir-accordion', [])
 
         if (currentIndex == 0){
           if (level == 0)
-            item = '<div class="sir-accordion-wrapper"> <div class="sir-accordion-header ' + scope.config.headerClass + '" ng-click="expandCollapse($event,\'' + uniqueIndex + '\')" class="' + scope.config.headerClass + '">' + header + '</div>' + '<div id="sac' + uniqueIndex + '" class="sir-accordion-content ' + scope.config.topContentClass + '">' + topContent;  
+            item = '<div class="sir-accordion-wrapper"> <div class="sir-accordion-header ' + scope.config.headerClass + '" ng-click="expandCollapse($event,\'' + uniqueIndex + '\')" class="' + scope.config.headerClass + '">' + header + '</div>' + '<div id="sac' + uniqueIndex + '" class="sir-accordion-content ' + scope.config.topContentClass + '"> <div>' + topContent;  
           else 
-            item = '<div class="sir-accordion-group"> <div class="sir-accordion-header ' + scope.config.headerClass + '" ng-click="expandCollapse($event,\'' + uniqueIndex + '\')" class="' + scope.config.headerClass + '">' + header + '</div>' + '<div id="sac' + uniqueIndex + '" class="sir-accordion-content ' + scope.config.topContentClass + '">' + topContent;  
+            item = '<div class="sir-accordion-group"> <div class="sir-accordion-header ' + scope.config.headerClass + '" ng-click="expandCollapse($event,\'' + uniqueIndex + '\')" class="' + scope.config.headerClass + '">' + header + '</div>' + '<div id="sac' + uniqueIndex + '" class="sir-accordion-content ' + scope.config.topContentClass + '"> <div>' + topContent;  
         }
         else{
-          item = '<div class="sir-accordion-header ' + scope.config.headerClass + '" ng-click="expandCollapse($event,\'' + uniqueIndex + '\')" class="' + scope.config.headerClass + '">' + header + '</div>' + '<div id="sac' + uniqueIndex + '" class="sir-accordion-content ' + scope.config.topContentClass + '">' + topContent;
+          item = '<div class="sir-accordion-header ' + scope.config.headerClass + '" ng-click="expandCollapse($event,\'' + uniqueIndex + '\')" class="' + scope.config.headerClass + '">' + header + '</div>' + '<div id="sac' + uniqueIndex + '" class="sir-accordion-content ' + scope.config.topContentClass + '"> <div>' + topContent;
         }
 
         if (angular.isArray(collection[currentIndex].subCollection) && collection[currentIndex].subCollection.length){
           item = item + itemRegen(collection[currentIndex].subCollection, uniqueIndex, 0, level + 1);
           bottomContent = setContent(scope.config.preBottomContent, collection[currentIndex].bottomContent, scope.config.postBottomContent);
-          item = item + bottomContent + '</div></div>';
+          item = item + bottomContent + '</div></div></div>';
         }
         else{
           bottomContent = setContent(scope.config.preBottomContent, collection[currentIndex].bottomContent, scope.config.postBottomContent);
-          item = item + bottomContent + '</div>';
+          item = item + bottomContent + '<div class="sir-accordion-content-margin"></div></div></div>';
         }
 
         return item + itemRegen(collection, parentIndex, currentIndex + 1, level);
@@ -141,28 +139,38 @@ angular.module('sir-accordion', [])
         return string;
       };
 
+      var chainSetHeight = function(auxObject,parent,height){
+        while (getLevel(auxObject.id) >= 2){
+          setContentHeight(parent,height);
+          auxObject = parent;
+          parent = domObjectTree[getDomObjectTreeIndex(getParentId(auxObject.id))];
+        }
+      };
+
       var toggleClass = function (domObject,toggleClass){
         var classes = domObject.className;
         classes = classes.split(' ');
-        if(classes.length == 1){
-          if(classes[0] == toggleClass){
-            if (scope.config.debug) console.log('removing class ' + domObject.id);
-            domObject.className = ''; 
-            return;  
-          }
-          if (scope.config.debug) console.log('adding class ' + domObject.id);
-          domObject.className = domObject.className + ' ' + toggleClass; 
-          return;
-        }
         for (var i = classes.length - 1; i >= 0; i--) {
           if (classes[i] == toggleClass){
             domObject.className = domObject.className.replace(toggleClass,'');
             if (scope.config.debug) console.log('removing class ' + domObject.id);
+            if (toggleClass == "expanded"){
+              var height = domObject.firstElementChild.offsetHeight || domObject.firstChild.offsetHeight;
+              setContentHeight(domObject,0);
+              var auxObject = domObject;
+              var parent = domObjectTree[getDomObjectTreeIndex(getParentId(auxObject.id))];
+            }
             return;
           }
         };
         domObject.className = domObject.className.trim() + ' ' + toggleClass;
         if (scope.config.debug) console.log('adding class ' + domObject.id);
+        if (toggleClass == "expanded"){
+          var height = domObject.firstElementChild.offsetHeight || domObject.firstChild.offsetHeight;
+          setContentHeight(domObject,height);
+          var auxObject = domObject;
+          var parent = domObjectTree[getDomObjectTreeIndex(getParentId(auxObject.id))];
+        }
         return;
       };
 
@@ -177,21 +185,33 @@ angular.module('sir-accordion', [])
         return result;
       };
 
-      var setHeight = function(objeto){
+      var setContentHeight = function(domObject,height){
+        //console.log(domObject.id);
+        //console.log(height);
+        //domObject.setAttribute('style','height:' + height + 'px');
+        domObject.style.height= height + 'px';
+      };
+
+      var getDomObjectTreeIndex = function(id){
+        for (var i = domObjectTree.length - 1; i >= 0; i--) {
+          if (domObjectTree[i].id == ('sac' + id) || domObjectTree[i].id == (id))
+            return i;
+        }
+        return -1;
       };
 
       scope.expandCollapse = function(event,id){
+        var idIndex = getDomObjectTreeIndex(id);
+        var currentExpandedIndex = getDomObjectTreeIndex(currentExpanded);
+        var domObject = domObjectTree[idIndex];
+        var height = domObject.firstElementChild.offsetHeight || domObject.firstChild.offsetHeight;
+        var auxObject = domObject;
+        var parent = domObjectTree[getDomObjectTreeIndex(getParentId(auxObject.id))];
         if(scope.config.autoCollapse){
           var parentIndex = '-1'; 
           if (currentExpanded == '0'){
-            for (var i = domObjectTree.length - 1; i >= 0; i--) {
-              if (domObjectTree[i].id == ('sac' + id)) {
-                toggleClass(domObjectTree[i],'expanded');
-                currentExpanded = id;
-                break;
-              };
-            };
-            parentId = 0;
+            toggleClass(domObjectTree[idIndex],'expanded');
+            currentExpanded = id;
             toggleClass(event.currentTarget, 'active-header');
             activeHeaders.push(event.currentTarget);
             if (scope.config.debug) console.log('%c Opening First',consoleHighLight);
@@ -199,76 +219,96 @@ angular.module('sir-accordion', [])
             return;
           }
           if (currentExpanded == id){
-            for (var i = domObjectTree.length - 1; i >= 0; i--) {
-              if (domObjectTree[i].id == ('sac' + id)) {
-                toggleClass(domObjectTree[i],'expanded');
-                if (getLevel(currentExpanded) > 1){
-                  currentExpanded = getParentId(id);
-                  activeHeaders.pop();
-                  toggleClass(event.currentTarget,'active-header');
-                }
-                else{
-                  currentExpanded = '0';
-                  activeHeaders = [];
-                  toggleClass(event.currentTarget,'active-header');
-                } 
-              };
+            toggleClass(domObjectTree[idIndex],'expanded');
+            if (getLevel(currentExpanded) > 1){
+              currentExpanded = getParentId(id);
+              activeHeaders.pop();
+              toggleClass(event.currentTarget,'active-header');
+            }
+            else{
+              currentExpanded = '0';
+              activeHeaders = [];
+              toggleClass(event.currentTarget,'active-header');
+            }
+            while (getLevel(auxObject.id) >= 2){
+              setContentHeight(parent,parent.offsetHeight - height);
+              auxObject = parent;
+              parent = domObjectTree[getDomObjectTreeIndex(getParentId(auxObject.id))];
             }
             if (scope.config.debug) console.log('%c Closing same',consoleHighLight);
             if (scope.config.debug) console.log('From current element to ' + currentExpanded);
             return;
           }
           if (currentExpanded != id){
-            for (var i = domObjectTree.length - 1; i >= 0; i--) {
-              if (domObjectTree[i].id == ('sac' + currentExpanded)) {
-                if(getParentId(id) == currentExpanded) {
-                  if (scope.config.debug) console.log('%c Opening Child',consoleHighLight);
-                  currentExpanded = id;
-                  activeHeaders.push(event.currentTarget);
-                  toggleClass(event.currentTarget,'active-header');
-                  break;  
+            var type = '';
+            var currentExpandedHeight = domObjectTree[currentExpandedIndex].style.height;
+            currentExpandedHeight = currentExpandedHeight.substr(0,currentExpandedHeight.length - 2);
+            if(getParentId(id) == currentExpanded) {
+              if (scope.config.debug) console.log('%c Opening Child',consoleHighLight);
+              activeHeaders.push(event.currentTarget);
+              toggleClass(event.currentTarget,'active-header');
+              currentExpanded = id;
+              type = 'child';
+            }
+            else if(isParent(id,currentExpanded)){
+              if (scope.config.debug) console.log('%c Closing Parent',consoleHighLight);
+              chainCollapse(currentExpanded,id);
+              toggleClass(event.currentTarget,'active-header');
+              activeHeaders.pop();
+              currentExpanded = getParentId(id);
+              type = 'closing parent';
+            }
+            else if(getParentId(currentExpanded) == getParentId(id)) {
+              if (scope.config.debug) console.log('%c Opening sibling',consoleHighLight);
+              toggleClass(domObjectTree[currentExpandedIndex],'expanded');
+              toggleClass(activeHeaders[activeHeaders.length-1], 'active-header');
+              activeHeaders.pop();
+              activeHeaders.push(event.currentTarget);
+              toggleClass(event.currentTarget, 'active-header');
+              currentExpanded = id;
+              type = 'sibling';
+            }
+            else{
+              if (scope.config.debug) console.log('%c Opening other',consoleHighLight);
+              if (getLevel(id) >= 2){
+                var prueba = getParentId(currentExpanded);
+                prueba = getDomObjectTreeIndex(prueba);
+                prueba = domObjectTree[prueba];
+                while (getLevel(prueba.id) > getLevel(id)){
+                  prueba = domObjectTree[getDomObjectTreeIndex(getParentId(prueba.id))];
+                }                
+                prueba = height - prueba.offsetHeight;
+                var auxParent = parent;
+                while (auxParent && getLevel(auxParent.id) >= 1){
+                  setContentHeight(auxParent,auxParent.offsetHeight + prueba);  
+                  auxParent = domObjectTree[getDomObjectTreeIndex(getParentId(auxParent.id))];                  
                 }
-                else if(isParent(id,currentExpanded)){
-                  if (scope.config.debug) console.log('%c Closing Parent',consoleHighLight);
-                  chainCollapse(currentExpanded,id);
-                  toggleClass(event.currentTarget,'active-header');
-                  activeHeaders.pop();
-                  currentExpanded = getParentId(id);
-                  break;  
-                }
-                
-                if(getParentId(currentExpanded) == getParentId(id)) {
-                  if (scope.config.debug) console.log('%c Opening sibling',consoleHighLight);
-                  toggleClass(domObjectTree[i],'expanded');
-                  toggleClass(activeHeaders[activeHeaders.length-1], 'active-header');
-                  activeHeaders.pop();
-                  activeHeaders.push(event.currentTarget);
-                  toggleClass(event.currentTarget, 'active-header');
-                  currentExpanded = id;
-                  break;
-                }
-                if (scope.config.debug) console.log('%c Opening other',consoleHighLight);
-                chainCollapse(currentExpanded,getParentId(id));
-                toggleClass(event.currentTarget,'active-header');
-                activeHeaders.push(event.currentTarget);
-                currentExpanded = id;
-                break;
+              }
+              chainCollapse(currentExpanded,getParentId(id));
+              toggleClass(event.currentTarget,'active-header');
+              activeHeaders.push(event.currentTarget);
+              currentExpanded = id;
+            }
+            toggleClass(domObjectTree[idIndex],'expanded');            
+            if (type == "closing parent"){
+              while (getLevel(auxObject.id) >= 2){
+                setContentHeight(parent,parent.offsetHeight - height);
+                auxObject = parent;
+                parent = domObjectTree[getDomObjectTreeIndex(getParentId(auxObject.id))];
               }
             }
-            for (var i = domObjectTree.length - 1; i >= 0; i--) {
-              if (domObjectTree[i].id == ('sac' + id)){
-                if(currentExpanded != id){ 
-                  toggleClass(domObjectTree[i],'expanded');
-                }
-                else{
-                  toggleClass(domObjectTree[i],'expanded');
-                }
-                if (getLevel(id) == 1){
-                  parentId = getParentId(id);
-                }
-                else{
-                  parentId = 0;
-                }
+            if (type == "sibling"){
+              while (getLevel(auxObject.id) >= 2){
+                setContentHeight(parent,parent.offsetHeight + height - currentExpandedHeight);
+                auxObject = parent;
+                parent = domObjectTree[getDomObjectTreeIndex(getParentId(auxObject.id))];
+              }
+            }
+            if (type == "child"){
+              while (getLevel(auxObject.id) >= 2){
+                setContentHeight(parent,parent.offsetHeight + height);
+                auxObject = parent;
+                parent = domObjectTree[getDomObjectTreeIndex(getParentId(auxObject.id))];
               }
             }
             if (scope.config.debug) console.log('From diferent element to ' + currentExpanded);
@@ -277,11 +317,7 @@ angular.module('sir-accordion', [])
         }
         else{
           if (scope.config.debug) console.log('Auto collapse disabled');
-          for (var i = domObjectTree.length - 1; i >= 0; i--) {
-            if (domObjectTree[i].id == ('sac' + id)){
-              toggleClass(domObjectTree[i],'expanded');
-            }
-          };
+          toggleClass(domObjectTree[idIndex],'expanded');
         }
       };
     }

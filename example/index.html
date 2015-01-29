@@ -4,11 +4,40 @@
   <title>sirAccordion</title>
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
   <link rel="stylesheet" href="../dist/styles/sir-accordion.css"/>
+  <style type="text/css">
+    html{
+      height: 100%;
+    }
+    body{
+      height: 100%;
+    }
+    .container{
+      min-height: 100%;
+    }
+  </style>
 </head>
 <body ng-app="sirAccordion" ng-controller="Principal">
-  <div class="row">
-    <div class="col-sm-6">
-      <div sir-ng-accordion collection="accordionArray" config="accordionConfig"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>Sir Accordion</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div sir-ng-accordion collection="accordionArray" config="accordionConfig"></div>
+      </div>
+      <div class="col-sm-4">
+        <blockquote>
+          
+          <p>
+            Directiva de AngularJS que construye un menú en acordéon a partir de un objeto JSON, con un scope de configuración opcional.
+          </p>
+          <p>
+            No depende de jQuery
+          </p>
+        </blockquote>
+      </div>
     </div>
   </div>
   <script src="../bower_components/angular/angular.js"></script>
