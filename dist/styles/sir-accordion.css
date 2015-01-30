@@ -59,15 +59,17 @@
   padding: 0px 15px;
   position: relative;
   z-index: 1;
-  -webkit-transition:all cubic-bezier(0.25, 0.15, 0.45, 0.9) 0.3s;
-  transition:all cubic-bezier(0.25, 0.15, 0.45, 0.9) 0.3s;
+  -webkit-transition: transform cubic-bezier(0.25, 0.15, 0.45, 0.9) 0.4s, color 0.4s, background-color 0.4s;
+  -moz-transition: transform cubic-bezier(0.25, 0.15, 0.45, 0.9) 0.4s, color 0.4s, background-color 0.4s;
+  -o-transition: transform cubic-bezier(0.25, 0.15, 0.45, 0.9) 0.4s, color 0.4s, background-color 0.4s;
+  transition: transform cubic-bezier(0.25, 0.15, 0.45, 0.9) 0.4s, color 0.4s, background-color 0.4s;
 }
 
 .sir-accordion-content{
   overflow: hidden;
   height: 0px;
   padding-left: 15px;
-  transition: all 0.2s;
+  transition: height 0.3s;
 }
 
 .sir-accordion-content.expanded{

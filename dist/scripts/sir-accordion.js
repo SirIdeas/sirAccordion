@@ -1,6 +1,6 @@
 'use strict';
 angular.module('sir-accordion', [])
-.directive('sirNgAccordion',['$compile', function($compile){
+.directive('sirNgAccordion',['$compile','$timeout', function($compile,$timeout){
   var template='';
   return{
     restrict: 'A', 
@@ -155,7 +155,7 @@ angular.module('sir-accordion', [])
             domObject.className = domObject.className.replace(toggleClass,'');
             if (scope.config.debug) console.log('removing class ' + domObject.id);
             if (toggleClass == "expanded"){
-              var height = domObject.firstElementChild.offsetHeight || domObject.firstChild.offsetHeight;
+              var height = domObject.firstChild.offsetHeight || domObject.firstElementChild.offsetHeight;
               setContentHeight(domObject,0);
               var auxObject = domObject;
               var parent = domObjectTree[getDomObjectTreeIndex(getParentId(auxObject.id))];
@@ -163,10 +163,10 @@ angular.module('sir-accordion', [])
             return;
           }
         };
-        domObject.className = domObject.className.trim() + ' ' + toggleClass;
+        domObject.className = trim(domObject.className) + ' ' + toggleClass;
         if (scope.config.debug) console.log('adding class ' + domObject.id);
         if (toggleClass == "expanded"){
-          var height = domObject.firstElementChild.offsetHeight || domObject.firstChild.offsetHeight;
+          var height = domObject.firstChild.offsetHeight || domObject.firstElementChild.offsetHeight;
           setContentHeight(domObject,height);
           var auxObject = domObject;
           var parent = domObjectTree[getDomObjectTreeIndex(getParentId(auxObject.id))];
@@ -185,11 +185,21 @@ angular.module('sir-accordion', [])
         return result;
       };
 
+      var trim = function (str) {
+        var str = str.replace(/^\s\s*/, ''),
+        ws = /\s/,
+        i = str.length;
+        while (ws.test(str.charAt(--i)));
+        return str.slice(0, i + 1);
+      };
+
       var setContentHeight = function(domObject,height){
-        //console.log(domObject.id);
-        //console.log(height);
-        //domObject.setAttribute('style','height:' + height + 'px');
-        domObject.style.height= height + 'px';
+        var flag = true;
+          domObject.style.height = height + 'px';
+          flag = false;
+          $timeout(function(){
+            flag = true;
+          }, 400);
       };
 
       var getDomObjectTreeIndex = function(id){
@@ -201,10 +211,11 @@ angular.module('sir-accordion', [])
       };
 
       scope.expandCollapse = function(event,id){
+        var headerElement = (headerElement) ? headerElement : event.srcElement.parentElement.parentElement;
         var idIndex = getDomObjectTreeIndex(id);
         var currentExpandedIndex = getDomObjectTreeIndex(currentExpanded);
         var domObject = domObjectTree[idIndex];
-        var height = domObject.firstElementChild.offsetHeight || domObject.firstChild.offsetHeight;
+        var height = domObject.firstChild.offsetHeight || domObject.firstElementChild.offsetHeight;
         var auxObject = domObject;
         var parent = domObjectTree[getDomObjectTreeIndex(getParentId(auxObject.id))];
         if(scope.config.autoCollapse){
@@ -212,8 +223,8 @@ angular.module('sir-accordion', [])
           if (currentExpanded == '0'){
             toggleClass(domObjectTree[idIndex],'expanded');
             currentExpanded = id;
-            toggleClass(event.currentTarget, 'active-header');
-            activeHeaders.push(event.currentTarget);
+            toggleClass(headerElement, 'active-header');
+            activeHeaders.push(headerElement);
             if (scope.config.debug) console.log('%c Opening First',consoleHighLight);
             if (scope.config.debug) console.log('From 0 to ' + currentExpanded);
             return;
@@ -223,12 +234,12 @@ angular.module('sir-accordion', [])
             if (getLevel(currentExpanded) > 1){
               currentExpanded = getParentId(id);
               activeHeaders.pop();
-              toggleClass(event.currentTarget,'active-header');
+              toggleClass(headerElement,'active-header');
             }
             else{
               currentExpanded = '0';
               activeHeaders = [];
-              toggleClass(event.currentTarget,'active-header');
+              toggleClass(headerElement,'active-header');
             }
             while (getLevel(auxObject.id) >= 2){
               setContentHeight(parent,parent.offsetHeight - height);
@@ -245,15 +256,15 @@ angular.module('sir-accordion', [])
             currentExpandedHeight = currentExpandedHeight.substr(0,currentExpandedHeight.length - 2);
             if(getParentId(id) == currentExpanded) {
               if (scope.config.debug) console.log('%c Opening Child',consoleHighLight);
-              activeHeaders.push(event.currentTarget);
-              toggleClass(event.currentTarget,'active-header');
+              activeHeaders.push(headerElement);
+              toggleClass(headerElement,'active-header');
               currentExpanded = id;
               type = 'child';
             }
             else if(isParent(id,currentExpanded)){
               if (scope.config.debug) console.log('%c Closing Parent',consoleHighLight);
               chainCollapse(currentExpanded,id);
-              toggleClass(event.currentTarget,'active-header');
+              toggleClass(headerElement,'active-header');
               activeHeaders.pop();
               currentExpanded = getParentId(id);
               type = 'closing parent';
@@ -263,8 +274,8 @@ angular.module('sir-accordion', [])
               toggleClass(domObjectTree[currentExpandedIndex],'expanded');
               toggleClass(activeHeaders[activeHeaders.length-1], 'active-header');
               activeHeaders.pop();
-              activeHeaders.push(event.currentTarget);
-              toggleClass(event.currentTarget, 'active-header');
+              activeHeaders.push(headerElement);
+              toggleClass(headerElement, 'active-header');
               currentExpanded = id;
               type = 'sibling';
             }
@@ -285,8 +296,8 @@ angular.module('sir-accordion', [])
                 }
               }
               chainCollapse(currentExpanded,getParentId(id));
-              toggleClass(event.currentTarget,'active-header');
-              activeHeaders.push(event.currentTarget);
+              toggleClass(headerElement,'active-header');
+              activeHeaders.push(headerElement);
               currentExpanded = id;
             }
             toggleClass(domObjectTree[idIndex],'expanded');            
