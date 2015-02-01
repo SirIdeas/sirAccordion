@@ -227,7 +227,7 @@ angular.module('sir-accordion', [])
       };
 
       scope.expandCollapse = function(event,id){
-        var headerElement = (headerElement) ? headerElement : getCurrentTargetIE8(event.srcElement);
+        var headerElement = (event.currentTarget) ? event.currentTarget : getCurrentTargetIE8(event.srcElement);
         var idIndex = getDomObjectTreeIndex(id);
         var currentExpandedIndex = getDomObjectTreeIndex(currentExpanded);
         var domObject = domObjectTree[idIndex];
