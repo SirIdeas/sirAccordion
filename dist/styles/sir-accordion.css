@@ -1,6 +1,8 @@
 .sir-accordion-wrapper {
   overflow: hidden;
   width: 100%;
+  position: relative;
+  display: block;
 }
 
 .sir-accordion-wrapper > .sir-accordion-header {
@@ -78,6 +80,7 @@
 .sir-accordion-content > div{
   transition: all 0.3s;
   transform: translate3d(0,-100%,0);
+  overflow: auto;
 }
 
 .sir-accordion-content.expanded > div{
