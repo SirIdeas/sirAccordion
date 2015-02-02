@@ -27,6 +27,7 @@
 
 .sir-accordion-group{
   overflow: hidden;
+  width: 100%;
 }
 
 .sir-accordion-group > .sir-accordion-header { 
