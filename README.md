@@ -3,6 +3,8 @@
 Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for **AngurlarJS**, that builds up from a **JSON object** and an optional configuration object.
 **You can download the project for a live demo in the example folder (don't forget to bower install dependencies) and for better understanding.**
 
+##[sir Accordion Online Demo](http://sirideas.github.io/sirAccordion/)
+
 ##**Features**
 
 *   **Dynamic content:** if the scope that contains the JSON object is update the accordion updates too.
