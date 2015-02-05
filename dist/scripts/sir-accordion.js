@@ -9,7 +9,7 @@ angular.module('sir-accordion', [])
       config: '=?'
     },
     template: template,
-    controller: function($scope){
+    controller: ('sirNgAccordionCtrl',['$scope',function ($scope){
       $scope.config.headerClass = $scope.config.headerClass || '';
       $scope.config.preHeader = $scope.config.preHeader || '<div class="sir-accordion-vertical-align"><div>';
       $scope.config.postHeader = $scope.config.postHeader || '</div></div>';
@@ -19,7 +19,7 @@ angular.module('sir-accordion', [])
       $scope.config.bottomContentClass = $scope.config.bottomContentclass || '';
       $scope.config.preBottomContent = $scope.config.preBottomContent || '';
       $scope.config.postBottomContent = $scope.config.postBottomContent || '';
-    },
+    }]),
     link: function(scope,element){      
       var header = '';
       var topContent = '';
