@@ -3,7 +3,7 @@ angular.module('sir-accordion', [])
 .directive('sirNgAccordion',['$compile','$timeout', function($compile,$timeout){
   var template='';
   return{
-    restrict: 'A', 
+    restrict: 'A',
     scope: {
       collection: '=',
       config: '=?'
@@ -20,7 +20,7 @@ angular.module('sir-accordion', [])
       $scope.config.preBottomContent = $scope.config.preBottomContent || '';
       $scope.config.postBottomContent = $scope.config.postBottomContent || '';
     }]),
-    link: function(scope,element){      
+    link: function(scope,element){
       var header = '';
       var topContent = '';
       var bottomContent = '';
@@ -114,7 +114,7 @@ angular.module('sir-accordion', [])
           for (var i = domObjectTree.length - 1; i >= 0; i--) {
             if (domObjectTree[i].id == ('sac' + toCollapse)){
               toggleClass(domObjectTree[i],'expanded');
-            }  
+            }
           }
           toCollapse = getParentId(toCollapse);
           toggleClass(activeHeaders[activeHeaders.length-1],'active-header');
@@ -193,12 +193,16 @@ angular.module('sir-accordion', [])
         animating.push(domObject.id);
         $timeout(function(){
           animating = [];
+          domObject.style.transition = 'height 0s';
           if (domObject.style.height != '0px'){
-            domObject.style.height = 'auto';  
+            domObject.style.height = 'auto';
           }
         }, 400);
+
+        domObject.style.transition = 'height 0.3s';
+
         $timeout(function() {
-          domObject.style.height = height + 'px';  
+          domObject.style.height = height + 'px';
         }, 1);
       };
 
@@ -220,8 +224,11 @@ angular.module('sir-accordion', [])
       var cleanAutoHeight = function(){
         for (var i = domObjectTree.length - 1; i >= 0; i--) {
           if (domObjectTree[i].style.height == 'auto'){
+            //domObjectTree[i].style.transition = 'height 0s';
             var height = domObjectTree[i].firstChild.offsetHeight || domObjectTree[i].firstElementChild.offsetHeight;
-            domObjectTree[i].style.height = height + 'px';
+            //$timeout(function() {
+              domObjectTree[i].style.height = height + 'px';
+              //}, 1);
           }
         };
       };

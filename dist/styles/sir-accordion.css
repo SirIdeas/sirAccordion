@@ -72,6 +72,9 @@
   overflow: hidden;
   height: 0px;
   padding-left: 15px;
+  -webkit-transition: height 0.3s;
+  -moz-transition: height 0.3s;
+  -o-transition: height 0.3s;
   transition: height 0.3s;
 }
 
@@ -79,6 +82,9 @@
 }
 
 .sir-accordion-content > div{
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
   transition: all 0.3s;
   transform: translate3d(0,-100%,0);
   overflow: auto;
