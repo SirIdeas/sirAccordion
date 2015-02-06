@@ -5,23 +5,23 @@
   display: block;
 }
 
-.sir-accordion-wrapper > .sir-accordion-header {
+.sir-accordion-wrapper > div > .sir-accordion-header {
   background-color: #323232;
 }
 
-.sir-accordion-wrapper > .sir-accordion-header:hover {
+.sir-accordion-wrapper > div > .sir-accordion-header:hover {
   background-color: #3E3E3E;
 }
 
-.sir-accordion-wrapper > .sir-accordion-header.active-header{
+.sir-accordion-wrapper > div > .sir-accordion-header.active-header{
   background-color: #22354C; 
 }
 
-.sir-accordion-wrapper > .sir-accordion-header.active-header:hover{
+.sir-accordion-wrapper > div > .sir-accordion-header.active-header:hover{
   background-color: #2E4765; 
 }
 
-.sir-accordion-wrapper .sir-accordion-header *{
+.sir-accordion-wrapper div > .sir-accordion-header *{
   color: white;
 }
 
@@ -30,19 +30,19 @@
   width: 100%;
 }
 
-.sir-accordion-group > .sir-accordion-header { 
+.sir-accordion-group > div > .sir-accordion-header { 
   background-color: #f0f0f0;
 }
 
-.sir-accordion-group > .sir-accordion-header:hover {
+.sir-accordion-group > div > .sir-accordion-header:hover {
   background-color: #f6f6f6;
 }
 
-.sir-accordion-group > .sir-accordion-header.active-header{
+.sir-accordion-group > div > .sir-accordion-header.active-header{
   background-color: #3F5F8B;
 }
 
-.sir-accordion-group > .sir-accordion-header.active-header:hover{
+.sir-accordion-group > div > .sir-accordion-header.active-header:hover{
   background-color: #2860A8; 
 }
 

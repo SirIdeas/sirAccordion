@@ -9,7 +9,7 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
     debug: false,
     animation: true,
     expandFirst: false,
-    autoCollapse: true,
+    autoCollapse: false,
     headerClass: '',
     preHeader: '',
     postHeader: '',
