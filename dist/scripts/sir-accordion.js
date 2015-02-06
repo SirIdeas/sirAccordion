@@ -33,6 +33,7 @@ link: function(scope,element){
   var item = '';
   var uniqueIndex = '';
   var accordionHTML = '';
+  var domHeaders = [];
   var domContents = [];
   var animating = [];
   var currentExpanded = '0';
@@ -67,8 +68,10 @@ link: function(scope,element){
   });
 
   var setObjectTree = function(){
+    var element = null;
     for (var i = domContents.length - 1; i >= 0; i--) {
-      domContents[i] = document.getElementById('sac' + domContents[i]);
+      element = document.getElementById('sac' + domContents[i]);
+      domContents[i] = {id: element.id, obj: element.firstElementChild.nextSibling};
     };
     console.log(domContents);
   };
@@ -298,7 +301,7 @@ link: function(scope,element){
     if (scope.config.autoCollapse){
       if (currentExpanded == '0'){
         toggleClass(headerElement, 'active-header');
-        toggleClass(domContents[idIndex],'expanded');
+        toggleClass(domObject,'expanded');
         currentExpanded = id;
         activeHeaders.push(headerElement);
         if (scope.config.debug) console.log('%c Opening First',consoleHighLight);
@@ -306,7 +309,7 @@ link: function(scope,element){
         return;
       }
       if (currentExpanded == id){
-        toggleClass(domContents[idIndex],'expanded');
+        toggleClass(domObject,'expanded');
         toggleClass(headerElement,'active-header');
         currentExpanded = getParentId(id) || '0';
         activeHeaders.pop();
@@ -339,7 +342,7 @@ link: function(scope,element){
         else if(isParent(id,currentExpanded)){
           if (scope.config.debug) console.log('%c Closing Parent',consoleHighLight);
           chainCollapse(currentExpanded,id);
-          toggleClass(domContents[idIndex],'expanded');
+          toggleClass(domObject,'expanded');
           toggleClass(headerElement,'active-header');
           activeHeaders.pop();
           currentExpanded = getParentId(id);
@@ -357,7 +360,7 @@ link: function(scope,element){
           activeHeaders.pop();
           activeHeaders.push(headerElement);
           toggleClass(headerElement, 'active-header');
-          toggleClass(domContents[idIndex],'expanded');
+          toggleClass(domObject,'expanded');
           currentExpanded = id;
           while (getLevel(auxObject.id) >= 2){
             setContentHeight(parent,parent.offsetHeight + height - currentExpandedHeight);
@@ -386,7 +389,7 @@ link: function(scope,element){
           toggleClass(headerElement,'active-header');
           activeHeaders.push(headerElement);
           currentExpanded = id;
-          toggleClass(domContents[idIndex],'expanded');
+          toggleClass(domObject,'expanded');
           return;
         }
         return false;

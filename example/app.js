@@ -6,10 +6,10 @@ var app = angular.module('sirAccordion', [
 app.controller('Principal',['$scope','$compile',function($scope,$compile){
   $scope.activeArray = 1;
   $scope.accordionConfig = {
-    debug: false,
+    debug: true,
     animation: true,
     expandFirst: false,
-    autoCollapse: false,
+    autoCollapse: true,
     headerClass: '',
     preHeader: '',
     postHeader: '',

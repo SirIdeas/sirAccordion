@@ -21,7 +21,7 @@
   background-color: #2E4765; 
 }
 
-.sir-accordion-wrapper div > .sir-accordion-header *{
+.sir-accordion-wrapper > div > .sir-accordion-header *{
   color: white;
 }
 
