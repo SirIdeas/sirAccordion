@@ -91,24 +91,24 @@ angular.module('sir-accordion', [])
         
         if (currentIndex == 0){
           if (level == 0){
-            item = '<div class="sir-accordion-wrapper"> <div id="sac' + uniqueIndex + '" > <div class="sir-accordion-header ' + scope.config.headerClass + '" ng-click= "expandCollapse(\'' + uniqueIndex + '\')" class="' + scope.config.headerClass + '">' + header + '</div>' + '<div class="sir-accordion-content ' + scope.config.topContentClass + '"> <div>' + topContent;
+            item = '<div class="sir-accordion-wrapper"> <div id="sac' + uniqueIndex + '" > <div class="sir-accordion-header ' + scope.config.headerClass + '" ng-click= "expandCollapse(\'' + uniqueIndex + '\')" class="' + scope.config.headerClass + '">' + header + '</div>' + '<div class="sir-accordion-content"> <div><div class="' + scope.config.topContentClass + '">' + topContent + '</div>';
           }
           else{
-            item = '<div class="sir-accordion-group"> <div id="sac' + uniqueIndex + '" > <div class="sir-accordion-header ' + scope.config.headerClass + '" ng-click="expandCollapse(\''+ uniqueIndex + '\')" class="' + scope.config.headerClass + '">' + header + '</div>' + '<div class="sir-accordion-content ' + scope.config.topContentClass + '"> <div>' + topContent;
+            item = '<div class="sir-accordion-group"> <div id="sac' + uniqueIndex + '" > <div class="sir-accordion-header ' + scope.config.headerClass + '" ng-click="expandCollapse(\''+ uniqueIndex + '\')" class="' + scope.config.headerClass + '">' + header + '</div>' + '<div class="sir-accordion-content"> <div><div class="' + scope.config.topContentClass + '">' + topContent + '</div>';
           }
         }
         else{
-          item = '<div id="sac' + uniqueIndex + '" > <div class="sir-accordion-header ' + scope.config.headerClass + '" ng-click="expandCollapse(\'' + uniqueIndex + '\')" class="' + scope.config.headerClass + '">' + header + '</div>' + '<div class="sir-accordion-content ' + scope.config.topContentClass + '"> <div>' + topContent;
+          item = '<div id="sac' + uniqueIndex + '" > <div class="sir-accordion-header ' + scope.config.headerClass + '" ng-click="expandCollapse(\'' + uniqueIndex + '\')" class="' + scope.config.headerClass + '">' + header + '</div>' + '<div class="sir-accordion-content"> <div><div class="' + scope.config.topContentClass + '">' + topContent + '</div>';
         }
         
         if (angular.isArray(collection[currentIndex].subCollection) && collection[currentIndex].subCollection.length){
           item = item + itemRegen(collection[currentIndex].subCollection, uniqueIndex, 0, level + 1);
           bottomContent = setContent(scope.config.preBottomContent, collection[currentIndex].bottomContent, scope.config.postBottomContent);
-          item = item + bottomContent + '</div></div></div></div>';
+          item = item + '</div><div class="' + scope.config.bottomContentClass + '">' + bottomContent + '</div></div></div></div>';
         }
         else{
           bottomContent = setContent(scope.config.preBottomContent, collection[currentIndex].bottomContent, scope.config.postBottomContent);
-          item = item + bottomContent + '</div></div></div>';
+          item = item + '</div><div class="' + scope.config.bottomContentClass + '">' + bottomContent + '</div></div></div>';
         }
         
         return item + itemRegen(collection, parentIndex, currentIndex + 1, level);
@@ -250,7 +250,7 @@ angular.module('sir-accordion', [])
 
       var closeOpenChilds = function(domContents, id){
         for (var i = domContents.length - 1; i >= 0; i--) {
-          if (domContents[i].id.indexOf(id + '-') != -1 && domContents[i].obj.className.indexOf('expanded') > -1){
+          if (isParent(id,domContents[i].id) && domContents[i].obj.className.indexOf('expanded') > -1){
             toggleClass(domContents[i],'expanded');
             toggleClass(domHeaders[i],'active-header');
           }
