@@ -386,8 +386,8 @@ angular.module('sir-accordion', [])
       });
 
       scope.$on('expandAll', function (event,data) {
-        animDur = 0;
         if (!scope.config.autoCollapse){
+          animDur = 0;
           for (var i = domContents.length - 1; i >= 0; i--) {
             if (domContents[i].obj.className.indexOf('expanded') == -1 && getLevel(domContents[i].id) > 1){
               toggleClass(domHeaders[i], 'active-header');
