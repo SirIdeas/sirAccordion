@@ -12,7 +12,7 @@ angular.module('sir-accordion', [])
     controller: ('sirNgAccordionCtrl',['$scope',function ($scope) {
       $scope.config = {
         debug: typeof $scope.config.debug != 'undefined' ? $scope.config.debug : false,
-        animation: typeof $scope.config.animation != 'undefined' ? $scope.config.animation : true,
+        animDur : ($scope.config.animDur >= 200 && document.body.firstElementChild) ? $scope.config.animDur : 0,
         expandFirst: typeof $scope.config.expandFirst != 'undefined' ? $scope.config.expandFirst : false,
         autoCollapse : typeof $scope.config.autoCollapse != 'undefined' ? $scope.config.autoCollapse : true,
         headerClass: $scope.config.headerClass || '',
@@ -27,8 +27,8 @@ angular.module('sir-accordion', [])
       };
     }]),
     link: function(scope,element) {
+      var animDur = scope.config.animDur;
       var header = '';
-      var animDur = '0.3s';
       var topContent = '';
       var bottomContent = '';
       var item = '';
@@ -37,11 +37,10 @@ angular.module('sir-accordion', [])
       var domHeaders = [];
       var domContents = [];
       var animating = [];
-      var currentExpanded = '0';
+      var currentExpanded = '0';      
       var consoleHighLight = 'background: #0044CE; color: #fff';
       
       scope.$watch('collection', function() {
-        
         if (!angular.isArray(scope.collection)){
           element.html('No collection found');
           return;
@@ -76,6 +75,10 @@ angular.module('sir-accordion', [])
           content = header.nextSibling;
           domContents[i] = {id: element.id, obj: content};
           domHeaders[i] = {id: element.id, obj: header};
+          if (element.firstElementChild){
+            domContents[i].obj.firstElementChild.style.transition = 'all ' + (animDur - 100) + 'ms';
+            domHeaders[i].obj.style.transition = 'all ' + (animDur) + 'ms';
+          }
         };
       };
       
@@ -128,7 +131,7 @@ angular.module('sir-accordion', [])
         if (scope.config.debug) console.log('Chain collapsing');
         do {
           for (var i = domContents.length - 1; i >= 0; i--) {
-            if (scope.config.autocollapse && domContents[i].id == ('sac' + toCollapse)){
+            if (scope.config.autoCollapse && domContents[i].id == ('sac' + toCollapse)){
               toggleClass(domContents[i],'expanded');
               toggleClass(domHeaders[i],'active-header');
             }
@@ -200,6 +203,9 @@ angular.module('sir-accordion', [])
       };
       
       var isAnimating = function(id){
+        if (animating.length)
+          return true;
+        return false;
         for (var i = animating.length - 1; i >= 0; i--) {
           if (animating[i] == id){
             return true;
@@ -216,17 +222,16 @@ angular.module('sir-accordion', [])
         animating.push(domContent.id);
         $timeout(function(){
           animating = [];
-          //domContent.obj.style.transition = 'height 0s';
+          domContent.obj.style.transition = 'height 0s';
           if (domContent.obj.style.height != '0px'){
             domContent.obj.style.height = 'auto';
           }
-        }, 400);
-        
-        domContent.obj.style.transition = 'height ' + animDur;
+        }, animDur);
+        domContent.obj.style.transition = 'height ' + animDur + 'ms';
         
         $timeout(function() {
           domContent.obj.style.height = height + 'px';
-        }, 1);
+        }, 40);
       };
       
       var getDomContentsIndex = function(id){
@@ -366,6 +371,42 @@ angular.module('sir-accordion', [])
           return;
         }
       };
+
+      scope.$on('collapseAll', function (event) {
+        cleanAutoHeight();
+        if (!scope.config.autoCollapse){
+          for (var i = domContents.length - 1; i >= 0; i--) {
+            if (domContents[i].obj.className.indexOf('expanded') > -1){
+              toggleClass(domHeaders[i], 'active-header');
+              toggleClass(domContents[i],'expanded');
+            }
+          };
+        }
+        event.defaultPrevented = true;
+      });
+
+      scope.$on('expandAll', function (event,data) {
+        animDur = 0;
+        if (!scope.config.autoCollapse){
+          for (var i = domContents.length - 1; i >= 0; i--) {
+            if (domContents[i].obj.className.indexOf('expanded') == -1 && getLevel(domContents[i].id) > 1){
+              toggleClass(domHeaders[i], 'active-header');
+              toggleClass(domContents[i],'expanded');
+              domContents[i].obj.style.height = 'auto';
+            }
+          };
+          animDur = scope.config.animDur;
+          //$timeout(function() {
+          for (var i = domContents.length - 1; i >= 0; i--) {
+            if(domContents[i].obj.className.indexOf('expanded') == -1 && getLevel(domContents[i].id) == 1){
+              toggleClass(domHeaders[i], 'active-header');
+              toggleClass(domContents[i],'expanded');
+            }
+          }
+          //}, 200);
+        }
+        event.defaultPrevented = true;
+      });
 
     }
   }

@@ -1,8 +1,10 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
   <title>sirAccordion</title>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
   <link rel="stylesheet" href="../dist/styles/sir-accordion.css"/>
   <style type="text/css">
@@ -25,12 +27,15 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-xs-12 col-sm-6">
         <div sir-ng-accordion collection="accordionArray" config="accordionConfig"></div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-xs-12 col-sm-6">
         <blockquote>
-          
+          <p>
+            <button ng-click="expandAll()" class="button">Expand all</button>
+            <button ng-click="collapseAll()" class="button">Collapse all</button>
+          </p>
           <p>
             Directiva de AngularJS que construye un menú en acordéon a partir de un objeto JSON, con un scope de configuración opcional.
           </p>
@@ -41,6 +46,7 @@
       </div>
     </div>
   </div>
+  <script src="../bower_components/fastclick/lib/fastclick.js"></script>
   <script src="../bower_components/angular/angular.min.js"></script>
   <script src="../dist/scripts/sir-accordion.js"></script>
   <script src="app.js"></script>

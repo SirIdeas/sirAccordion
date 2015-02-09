@@ -1,3 +1,9 @@
+body, html{
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
 .sir-accordion-wrapper {
   overflow: hidden;
   width: 100%;
@@ -72,22 +78,18 @@
   overflow: hidden;
   height: 0px;
   padding-left: 15px;
-  -webkit-transition: height 0.3s;
-  -moz-transition: height 0.3s;
-  -o-transition: height 0.3s;
-  transition: height 0.3s;
 }
 
 .sir-accordion-content.expanded{
 }
 
 .sir-accordion-content > div{
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  -o-transition: all 0.3s;
-  transition: all 0.3s;
-  transform: translate3d(0,-100%,0);
-  overflow: auto;
+ -webkit-transition: all 0.3s;
+ -moz-transition: all 0.3s;
+ -o-transition: all 0.3s;
+ transition: all 0.3s;
+ transform: translate3d(0,-100%,0);
+ overflow: auto;
 }
 
 .sir-accordion-content.expanded > div{

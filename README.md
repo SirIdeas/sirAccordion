@@ -22,9 +22,9 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 
         $scope.accordionConfig = {
             debug: false, //For developing
-            animation: true, //Animations flag (currently always true)
+            animDur: true, //Animations flag (min 200)
             expandFirst: false, //Auto expand first item (currently not supported)
-            autoCollapse: true, //Auto collapse item flag (currently always on)
+            autoCollapse: true, //Auto collapse item flag
             headerClass: '', //Adding extra class for the headers
             preHeader: '', //Adding code or text before all the headers inner content
             postHeader: '', //Adding code or text after all the headers inner content
@@ -48,6 +48,14 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 ##**Know issues**
 
 ##**Changelog**
+
+###V0.9.0
+
+*   Updated demo page
+*   Flag for auto collapse now working
+*   Animation now customizable (min value is 200 ms, any lower should disable animations)
+*   Code optimized
+*   Core algoritm changed
 
 ###V0.8.2
 
