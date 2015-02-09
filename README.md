@@ -49,6 +49,9 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 
 ##**Changelog**
 
+###V0.9.1
+*   Fixed issue when the accordion's width changes and autoCollapse is disabled, the height was not setting to auto to all the contents except the last opened.
+
 ###V0.9.0
 
 *   Updated demo page

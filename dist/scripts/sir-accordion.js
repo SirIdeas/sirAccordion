@@ -226,6 +226,9 @@ angular.module('sir-accordion', [])
           if (domContent.obj.style.height != '0px'){
             domContent.obj.style.height = 'auto';
           }
+          if (!scope.config.autoCollapse){
+            setAutoHeight();  
+          }
         }, animDur);
         domContent.obj.style.transition = 'height ' + animDur + 'ms';
         
@@ -248,6 +251,17 @@ angular.module('sir-accordion', [])
             var height = domContents[i].obj.firstChild.offsetHeight || domContents[i].obj.firstElementChild.offsetHeight;
             
             domContents[i].obj.style.height = height + 'px';
+            
+          }
+        };
+      };
+
+      var setAutoHeight = function(){
+        for (var i = domContents.length - 1; i >= 0; i--) {
+          if (domContents[i].obj.style.height != '0px' && domContents[i].obj.style.height){
+            var height = domContents[i].obj.firstChild.offsetHeight || domContents[i].obj.firstElementChild.offsetHeight;
+            
+            domContents[i].obj.style.height = 'auto';
             
           }
         };
