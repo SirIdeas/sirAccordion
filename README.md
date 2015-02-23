@@ -45,8 +45,12 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 ##**Dependencies**
 *   AngularJS
 
+##**Currently working on**
+*   Animations performance.
+
 ##**Known issues**
 *   No option for mantaining current state of the accordion when updating the collection.
+*   In Safari, animations won't work 100%, sometimes when closing a level 1 content it won't animate.
 
 ##**Changelog**
 
