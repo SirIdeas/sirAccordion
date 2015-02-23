@@ -18,6 +18,7 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
     animDur: 300,
     expandFirst: false,
     autoCollapse: true,
+    watchInternalChanges: false,
     headerClass: '',
     preHeader: '',
     postHeader: '',
@@ -39,4 +40,5 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
   $scope.collapseAll = function(){
     $scope.$broadcast('collapseAll');
   };
+
 }]);

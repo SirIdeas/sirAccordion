@@ -25,6 +25,7 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
             animDur: true, //Animations flag (min 200)
             expandFirst: false, //Auto expand first item (currently not supported)
             autoCollapse: true, //Auto collapse item flag
+            watchInternalChanges: true, //checks internal attr of the collection (false if not needed)
             headerClass: '', //Adding extra class for the headers
             preHeader: '', //Adding code or text before all the headers inner content
             postHeader: '', //Adding code or text after all the headers inner content
@@ -42,12 +43,15 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 *   **Bower installable package**. To install from bower use `bower install sir-accordion`.
 
 ##**Dependencies**
-
 *   AngularJS
 
-##**Know issues**
+##**Known issues**
+*   No option for mantaining current state of the accordion when updating the collection.
 
 ##**Changelog**
+
+###V0.9.2
+*   Fixed accordion not updating when changing internal attribute of the collection (now as an option 'watchInternalChanges', should be false if not needed for better performance).
 
 ###V0.9.1
 *   Fixed issue when the accordion's width changes and autoCollapse is disabled, the height was not setting to auto to all the contents except the last opened.

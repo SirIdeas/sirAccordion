@@ -1,9 +1,3 @@
-body, html{
-  position: relative;
-  margin: 0;
-  padding: 0;
-}
-
 .sir-accordion-wrapper {
   overflow: hidden;
   width: 100%;
@@ -110,10 +104,4 @@ body, html{
   display: table-cell;
   vertical-align: middle;
   height: 100%;
-}
-
-@-webkit-keyframes Color {
-  0% { background-color: #ff8b00}
-  50% { background-color: #005a7f}
-  100% { background-color: #ff8b00}
 }

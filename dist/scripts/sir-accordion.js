@@ -15,6 +15,7 @@ angular.module('sir-accordion', [])
         animDur : ($scope.config.animDur >= 200 && document.body.firstElementChild) ? $scope.config.animDur : 0,
         expandFirst: typeof $scope.config.expandFirst != 'undefined' ? $scope.config.expandFirst : false,
         autoCollapse : typeof $scope.config.autoCollapse != 'undefined' ? $scope.config.autoCollapse : true,
+        watchInternalChanges : typeof $scope.config.watchInternalChanges != 'undefined' ? $scope.config.watchInternalChanges : false,
         headerClass: $scope.config.headerClass || '',
         preHeader: $scope.config.preHeader || '<div class="sir-accordion-vertical-align"><div>',
         postHeader: $scope.config.postHeader || '</div></div>',
@@ -63,7 +64,7 @@ angular.module('sir-accordion', [])
           element.append(compiled);
         });
         setObjectTree();
-      });
+      },scope.config.watchInternalChanges);
       
       var setObjectTree = function(){
         var element = null;
