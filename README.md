@@ -22,7 +22,7 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 
         $scope.accordionConfig = {
             debug: false, //For developing
-            animDur: true, //Animations flag (min 200)
+            animDur: 300, //Animations flag (**< 200 for disabling animations**)
             expandFirst: false, //Auto expand first item (currently not supported)
             autoCollapse: true, //Auto collapse item flag
             watchInternalChanges: true, //checks internal attr of the collection (false if not needed)
