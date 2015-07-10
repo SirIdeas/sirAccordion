@@ -40,6 +40,7 @@ angular.module('sir-accordion', [])
       var animating = [];
       var currentExpanded = '0';      
       var consoleHighLight = 'background: #0044CE; color: #fff';
+      var newScope = null;
       
       scope.$watch('collection', function() {
         if (!angular.isArray(scope.collection)){
@@ -58,11 +59,18 @@ angular.module('sir-accordion', [])
         animating = [];
         currentExpanded = '0';
         accordionHTML = itemRegen(scope.collection, 0, 0, 0);
-        
-        $compile(accordionHTML)(scope, function(compiled, scope)   {
-          element.html('');
-          element.append(compiled);
-        });
+
+        element.html('');
+
+        if (newScope) {
+          newScope.$destroy();
+          newScope = null;
+        }
+
+        newScope = scope.$new();
+        var compiled = $compile(accordionHTML)(newScope);
+        element.append(compiled);
+
         setObjectTree();
       },scope.config.watchInternalChanges);
       
