@@ -5,14 +5,19 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 
 ##[sir Accordion Online Demo](http://sirideas.github.io/sirAccordion/)
 
+        bower install sir-accordion
+
 ##**Features**
 
 *   **Dynamic content:** if the scope that contains the JSON object is update the accordion updates too.
 *   **Responsive:** The item height adjust to the content and is responsive; the width of the accodion adjusts to 100% of the wrapper tag.
-*   **Easy use AngularJS Directive:** you just need to add the js and css files, add the *'sir-accordion'* module to the AngularJS app call the directive like this:
+*   **Easy use AngularJS Directive:** you just need to add the js and css files, add the *'sir-accordion'* module to the AngularJS app and call the directive like this:
 
         //Code for the html directive
         <div sir-ng-accordion collection="collection" config="accordionConfig"></div>
+
+        //Code for the Angular module
+        .module('mainModule', ['sir-accordion'])
 * **JSON object**: the content of the accordion will be set by a JSON following the next structure where `subCollection` is an object of the same structure that will have more items to expand/collapse inside, `topContent` will be the content on top of that subCollection and `botomContent` will be after the subCollection items.
 
         //JSON object model
@@ -47,12 +52,20 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 
 ##**Currently working on**
 *   Animations performance.
+*   Saving current state of the accordion
 
 ##**Known issues**
 *   No option for mantaining current state of the accordion when updating the collection.
 *   In Safari, animations won't work 100%, sometimes when closing a level 1 content it won't animate.
 
 ##**Changelog**
+
+###V0.9.4
+*   Fixed bower version number
+*   Readme Updated
+
+###V0.9.3
+*   Fixed issue where updating the collection results in watchers creating over and over again
 
 ###V0.9.2
 *   Fixed accordion not updating when changing internal attribute of the collection (now as an option 'watchInternalChanges', should be false if not needed for better performance).
