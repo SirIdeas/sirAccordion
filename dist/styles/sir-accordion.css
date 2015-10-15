@@ -62,10 +62,6 @@
   padding: 0px 15px;
   position: relative;
   z-index: 1;
-  -webkit-transition: transform cubic-bezier(0.25, 0.15, 0.45, 0.9) 0.4s, color 0.4s, background-color 0.4s;
-  -moz-transition: transform cubic-bezier(0.25, 0.15, 0.45, 0.9) 0.4s, color 0.4s, background-color 0.4s;
-  -o-transition: transform cubic-bezier(0.25, 0.15, 0.45, 0.9) 0.4s, color 0.4s, background-color 0.4s;
-  transition: transform cubic-bezier(0.25, 0.15, 0.45, 0.9) 0.4s, color 0.4s, background-color 0.4s;
 }
 
 .sir-accordion-content{
@@ -78,10 +74,6 @@
 }
 
 .sir-accordion-content > div{
- -webkit-transition: all 0.3s;
- -moz-transition: all 0.3s;
- -o-transition: all 0.3s;
- transition: all 0.3s;
  transform: translate3d(0,-100%,0);
  overflow: auto;
 }

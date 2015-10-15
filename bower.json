@@ -1,7 +1,7 @@
 {  
   "name":"sir-accordion",
   "description":"AngularJs directive that builds a vertical accodion menu from a JSON object, with an optional config scope for personalization. No jQuery dependency",
-  "version":"0.9.4",
+  "version":"0.9.5",
   "keywords":[  
     "angularjs",
     "javascript",
