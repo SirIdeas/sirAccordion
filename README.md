@@ -41,6 +41,7 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
             preBottomContent: '', //Adding code or text before all the topContent if present on item
             postBottomContent: '' //Adding code or text before all the topContent if present on item
         };
+*   **Isolated Scope:** The directive has an isolated scope but you can pass any scope you'll need to handle inside the accordion   with the 'data' attr. 
 *   **MultiLevel:** the recursive algoritm allows to add as many levels to the accordion as you would like to.
 *   **CSS animations:** awesome css animations for collapsing and expanding items (optional).
 *   **ie8 Compatible:** please kill ie8.
@@ -48,7 +49,7 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 *   **Bower installable package**. To install from bower use `bower install sir-accordion`.
 *   **Events**.
     *   When the accordion is donde loading you can catch the event like this `$scope.$on('sacDoneLoading', function ($event) {})`.
-    *   For expanding any content from your AngularJs App `$scope.$broadcast('expandContentById','1-1-3')` where the second parameter is the content coordinates.
+    *   For expanding any content from your AngularJs App `$scope.$broadcast('sacExpandContentById','1-1-3')` where the second parameter is the content coordinates.
     *   When autoCollapse is `false` you can trigger this events too `$scope.$broadcast('sacExpandAll');` and `$scope.$broadcast('sacCollapseAll');`.
 
 ##**Dependencies**
@@ -63,6 +64,9 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 *   In Safari, animations may flicker a bit when animating a level `0` content.
 
 ##**Changelog**
+
+###V0.9.6
+*   Added optional attr 'data' for when you want access to a scope from a parent controller in a custom module inside the accordion directive (since the accordion directive has an isolated scope)
 
 ###V0.9.5
 *   Code cleaning.

@@ -6,7 +6,8 @@ angular.module('sir-accordion', [])
     restrict: 'A',
     scope: {
       collection: '=',
-      config: '=?'
+      config: '=?',
+      data: '=?'
     },
     template: template,
     controller: ('sirAccordionCtrl',['$scope',function ($scope) {
@@ -325,13 +326,14 @@ angular.module('sir-accordion', [])
             domContent.obj.style.height = 'auto';
           }
           if (!scope.config.autoCollapse){
-            setAutoHeight();  
+            //cleanAutoHeight();
           }
         }, animDur);
         domContent.obj.style.transition = 'height ' + animDur + 'ms';
         if (animDur){
           $timeout(function() {
             domContent.obj.style.height = height + 'px';
+            //alert(domContent.id + ' altura' + height);
           }, 80);
         }
         else{
@@ -366,6 +368,7 @@ angular.module('sir-accordion', [])
           if (domContents[i].obj.style.height == 'auto'){
             var height = domContents[i].obj.firstChild.offsetHeight || domContents[i].obj.firstElementChild.offsetHeight;
             domContents[i].obj.style.height = height + 'px';
+            //alert(domContents[i].id + ' altura' + height);
           }
         };
       };
