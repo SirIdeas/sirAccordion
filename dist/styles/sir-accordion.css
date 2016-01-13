@@ -73,11 +73,10 @@
 }
 
 .sir-accordion-content > div{
-  margin-top: -100%;
+  display: none;
 }
 
 .sir-accordion-content.expanded > div{
-  margin-top: 0%;
 }
 
 .sir-accordion-content-margin {

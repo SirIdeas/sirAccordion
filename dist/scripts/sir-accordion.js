@@ -97,7 +97,6 @@ angular.module('sir-accordion', [])
           domContents[i] = {id: element.id, obj: content};
           domHeaders[i] = {id: element.id, obj: header};
           if (element.firstElementChild){
-            domContents[i].obj.firstElementChild.style.transition = 'all ' + (animDur - 100) + 'ms';
             domHeaders[i].obj.style.transition = 'all ' + (animDur) + 'ms';
           }
         };
@@ -242,15 +241,26 @@ angular.module('sir-accordion', [])
         * @param {Object} domContent
         * @return {String} toggleClass
       */
+
       var toggleClass = function (domContent,toggleClass){
+        var domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
+        /*if(toggleClass == 'expanded' && domObjectChild.className.indexOf('velocity-animating') != -1){
+          return false;
+        }*/
         if (domContent.obj.className.indexOf(toggleClass) > -1){
           domContent.obj.className = domContent.obj.className.replace(toggleClass,'');
           if (scope.config.debug) console.log('removing class ' + domContent.id);
-          return false;
+          if (toggleClass == 'expanded'){
+            Velocity(domObjectChild, 'slideUp', {duration: animDur});
+          }
+          return true;
         }
         else{
           domContent.obj.className = trim(domContent.obj.className) + ' ' + toggleClass;
           if (scope.config.debug) console.log('adding class ' + domContent.id);
+          if (toggleClass == 'expanded'){
+            Velocity(domObjectChild, 'slideDown', {duration: animDur});
+          }
           return true;
         }
       };
@@ -290,31 +300,6 @@ angular.module('sir-accordion', [])
       
       /*
         * @ngdoc function
-        * @name getContentStyleHeight
-        * @description Removes the trailing 'px' of an element height
-        * @param {DomObject} domObject 
-        * @return {String} Height
-      */
-      var getContentStyleHeight = function(domObject){
-        return domObject.style.height.substr(0,domObject.style.height.length - 2);
-      };
-      
-      /*
-        * @ngdoc function
-        * @name setContentHeight
-        * @description Handles element height when it collapses or expands. Also handles animations if active
-        * @param {Object} domContent 
-        * @param {String} height
-        * @return
-      */
-      var setContentHeight = function(domContent,height){
-        //animating.push(domContent.id);
-        //$timeout(function(){
-        //}, animDur);
-      };
-      
-      /*
-        * @ngdoc function
         * @name getDomContetsIndex
         * @description Gets an domContent index inside contents array given its id
         * @param {String} id
@@ -326,38 +311,6 @@ angular.module('sir-accordion', [])
           return i;
         }
         return -1;
-      };
-      
-      /*
-        * @ngdoc function
-        * @name cleanAutoHeight
-        * @description Checks domContents and sets height to px when height is == auto
-        * @param
-        * @return
-      */
-      var cleanAutoHeight = function(){
-        for (var i = domContents.length - 1; i >= 0; i--) {
-          if (domContents[i].obj.style.height == 'auto'){
-            var height = domContents[i].obj.firstChild.offsetHeight || domContents[i].obj.firstElementChild.offsetHeight;
-            domContents[i].obj.style.height = height + 'px';
-            //alert(domContents[i].id + ' altura' + height);
-          }
-        };
-      };
-
-      /*
-        * @ngdoc function
-        * @name setAutoHeight
-        * @description Checks domContents and sets height to auto when height is != 0
-      */
-      var setAutoHeight = function(){
-        for (var i = domContents.length - 1; i >= 0; i--) {
-          if (domContents[i].obj.style.height != '0px' && domContents[i].obj.style.height){
-            var domObject = domContents[i].obj;
-            var height = domObject.firstChild.offsetHeight || domObject.firstElementChild.offsetHeight;
-            domObject.style.height = 'auto';
-          }
-        };
       };
 
       /*
@@ -431,17 +384,6 @@ angular.module('sir-accordion', [])
             }
             else {
               if (scope.config.debug) console.log('%c Opening other',consoleHighLight);
-              if (getLevel(id) >= 2){
-                var auxCurrentExpanded = domContents[getDomContentsIndex(getParentId(currentExpanded))];
-                var auxDomContent = domContents[getDomContentsIndex(getParentId(domContent.id))];
-                while (getLevel(auxCurrentExpanded.id) > getLevel(id)){
-                  auxCurrentExpanded = domContents[getDomContentsIndex(getParentId(auxCurrentExpanded.id))];
-                }
-                while (auxDomContent && getLevel(auxDomContent.id) >= 1){
-                  setContentHeight(auxDomContent,auxDomContent.obj.offsetHeight + height - auxCurrentExpanded.obj.offsetHeight);
-                  auxDomContent = domContents[getDomContentsIndex(getParentId(auxDomContent.id))];
-                }
-              }
               chainCollapse(currentExpanded,getLevel(getParentId(id)));
               toggleClass(domHeader,'active-header');
               currentExpanded = id;
@@ -455,17 +397,8 @@ angular.module('sir-accordion', [])
           if(domContent.obj.className.indexOf('expanded') > -1){
             closeOpenChilds(domContents,id);
           }
-          var expanded = toggleClass(domContent,'expanded');
+          toggleClass(domContent,'expanded');
           toggleClass(domHeader, 'active-header');
-          while (getLevel(domContent.id) >= 2){
-            domContent = domContents[getDomContentsIndex(getParentId(domContent.id))];
-            if (expanded){
-              setContentHeight(domContent,domContent.obj.offsetHeight + height);
-            }
-            else{
-              setContentHeight(domContent,domContent.obj.offsetHeight - height);
-            }
-          }
           currentExpanded = id;
           return;
         }
@@ -510,7 +443,6 @@ angular.module('sir-accordion', [])
         * @description collapses all accordion contents
       */
       scope.$on('sacCollapseAll', function (event) {
-        cleanAutoHeight();
         if (!scope.config.autoCollapse){
           for (var i = domContents.length - 1; i >= 0; i--) {
             if (domContents[i].obj.className.indexOf('expanded') > -1){
@@ -529,21 +461,10 @@ angular.module('sir-accordion', [])
       */
       scope.$on('sacExpandAll', function (event,data) {
         if (!scope.config.autoCollapse){
-          animDur = 0;
           for (var i = domContents.length - 1; i >= 0; i--) {
-            if (domContents[i].obj.className.indexOf('expanded') == -1 && getLevel(domContents[i].id) > 1){
-              toggleClass(domHeaders[i], 'active-header');
-              toggleClass(domContents[i],'expanded');
-              domContents[i].obj.style.height = 'auto';
-            }
+            toggleClass(domHeaders[i], 'active-header');
+            toggleClass(domContents[i],'expanded');
           };
-          animDur = scope.config.animDur;
-          for (var i = domContents.length - 1; i >= 0; i--) {
-            if(domContents[i].obj.className.indexOf('expanded') == -1 && getLevel(domContents[i].id) == 1){
-              toggleClass(domHeaders[i], 'active-header');
-              toggleClass(domContents[i],'expanded');
-            }
-          }
         }
         event.defaultPrevented = true;
       });
