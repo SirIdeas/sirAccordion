@@ -123,20 +123,17 @@ angular.module('sir-accordion', [])
         topContent = setContent(scope.config.preTopContent, collection[currentIndex].topContent, scope.config.postTopContent);
         domContents.push(uniqueIndex);
 
-        item = '<div id="sac'
-          + uniqueIndex
-          + '" > <div class="sir-accordion-header '
-          + scope.config.headerClass
-          + '" ng-click="expandCollapse(\''
-          + uniqueIndex
-          + '\')">'
-          + header
+        item = 
+        '<div id="sac' + uniqueIndex + '" >' 
+          + '<div class="sir-accordion-header ' + scope.config.headerClass
+          + '" ng-click="expandCollapse(\''+ uniqueIndex+ '\')">'
+            + header
           + '</div>'
-          + '<div class="sir-accordion-content"> <div><div class="'
-          + scope.config.topContentClass
-          + '">'
-          + topContent
-          + '</div>';
+          + '<div class="sir-accordion-content">'
+            + '<div>'
+              + '<div class="' + scope.config.topContentClass + '">'
+                + topContent
+              + '</div>';
         
         if (currentIndex == 0){
           if (level == 0){
@@ -154,7 +151,7 @@ angular.module('sir-accordion', [])
           item = item + '</div><div class="' + scope.config.bottomContentClass + '">' + bottomContent + '</div></div></div></div>';
         }
         else{
-          item = item + '</div><div class="' + scope.config.bottomContentClass + '">' + bottomContent + '</div></div></div>';
+          item = item + '<div class="' + scope.config.bottomContentClass + '">' + bottomContent + '</div></div></div></div>';
         }
         
         return item + itemRegen(collection, parentIndex, currentIndex + 1, level);
@@ -249,18 +246,11 @@ angular.module('sir-accordion', [])
         if (domContent.obj.className.indexOf(toggleClass) > -1){
           domContent.obj.className = domContent.obj.className.replace(toggleClass,'');
           if (scope.config.debug) console.log('removing class ' + domContent.id);
-          if (toggleClass == "expanded"){
-            setContentHeight(domContent,0);
-          }
           return false;
         }
         else{
           domContent.obj.className = trim(domContent.obj.className) + ' ' + toggleClass;
           if (scope.config.debug) console.log('adding class ' + domContent.id);
-          if (toggleClass == "expanded"){
-            var height = domContent.obj.firstChild.offsetHeight || domContent.obj.firstElementChild.offsetHeight;
-            setContentHeight(domContent,height);
-          }
           return true;
         }
       };
@@ -318,27 +308,9 @@ angular.module('sir-accordion', [])
         * @return
       */
       var setContentHeight = function(domContent,height){
-        animating.push(domContent.id);
-        $timeout(function(){
-          animating = [];
-          domContent.obj.style.transition = 'height 0s';
-          if (domContent.obj.style.height != '0px'){
-            domContent.obj.style.height = 'auto';
-          }
-          if (!scope.config.autoCollapse){
-            //cleanAutoHeight();
-          }
-        }, animDur);
-        domContent.obj.style.transition = 'height ' + animDur + 'ms';
-        if (animDur){
-          $timeout(function() {
-            domContent.obj.style.height = height + 'px';
-            //alert(domContent.id + ' altura' + height);
-          }, 80);
-        }
-        else{
-          domContent.obj.style.height = height + 'px';
-        }
+        //animating.push(domContent.id);
+        //$timeout(function(){
+        //}, animDur);
       };
       
       /*
@@ -415,9 +387,6 @@ angular.module('sir-accordion', [])
         var currentExpandedIndex = getDomContentsIndex(currentExpanded);
         var domContent = domContents[idIndex];
         var domHeader = domHeaders[idIndex];
-        var height = domContent.obj.firstChild.offsetHeight || domContent.obj.firstElementChild.offsetHeight;
-        //if (domContent.id && isAnimating(domContent.id)) return;
-        cleanAutoHeight();
         if (scope.config.autoCollapse){
           if (currentExpanded == '0'){
             toggleClass(domHeader, 'active-header');
@@ -431,10 +400,6 @@ angular.module('sir-accordion', [])
             toggleClass(domContent,'expanded');
             toggleClass(domHeader,'active-header');
             currentExpanded = getParentId(id) || '0';
-            while (getLevel(domContent.id) >= 2){
-              domContent = domContents[getDomContentsIndex(getParentId(domContent.id))];
-              setContentHeight(domContent,domContent.obj.offsetHeight - height);
-            }
             if (scope.config.debug) console.log('%c Closing same',consoleHighLight);
             if (scope.config.debug) console.log('From current element to ' + currentExpanded);
             return;
@@ -445,10 +410,6 @@ angular.module('sir-accordion', [])
               toggleClass(domContent,'expanded');
               toggleClass(domHeader,'active-header');
               currentExpanded = id;
-              while (getLevel(domContent.id) >= 2){
-                domContent = domContents[getDomContentsIndex(getParentId(domContent.id))];
-                setContentHeight(domContent,domContent.obj.offsetHeight + height);
-              }
               return;
             }
             else if(isParent(id,currentExpanded)){
@@ -457,24 +418,15 @@ angular.module('sir-accordion', [])
               toggleClass(domContent,'expanded');
               toggleClass(domHeader,'active-header');
               currentExpanded = getParentId(id);
-              while (getLevel(domContent.id) >= 2){
-                domContent = domContents[getDomContentsIndex(getParentId(domContent.id))];
-                setContentHeight(domContent,domContent.obj.offsetHeight - height);
-              }
               return;
             }
             else if(getParentId(currentExpanded) == getParentId(id)) {
               if (scope.config.debug) console.log('%c Opening sibling',consoleHighLight);
-              var currentExpandedHeight = getContentStyleHeight(domContents[currentExpandedIndex].obj);
               toggleClass(domContents[currentExpandedIndex],'expanded');
               toggleClass(domHeaders[currentExpandedIndex], 'active-header');
               toggleClass(domHeader, 'active-header');
               toggleClass(domContent,'expanded');
               currentExpanded = id;
-              while (getLevel(domContent.id) >= 2){
-                domContent = domContents[getDomContentsIndex(getParentId(domContent.id))];
-                setContentHeight(domContent,domContent.obj.offsetHeight + height - currentExpandedHeight);
-              }
               return;
             }
             else {

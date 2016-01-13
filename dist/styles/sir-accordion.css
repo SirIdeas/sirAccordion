@@ -66,7 +66,6 @@
 
 .sir-accordion-content{
   overflow: hidden;
-  height: 0px;
   padding-left: 15px;
 }
 
@@ -74,12 +73,11 @@
 }
 
 .sir-accordion-content > div{
- transform: translate3d(0,-100%,0);
- overflow: auto;
+  margin-top: -100%;
 }
 
 .sir-accordion-content.expanded > div{
-  transform: translate3d(0,0,0);
+  margin-top: 0%;
 }
 
 .sir-accordion-content-margin {

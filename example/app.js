@@ -14,10 +14,10 @@ app.run([function() {
 app.controller('Principal',['$scope','$compile',function($scope,$compile){
   $scope.activeArray = 1;
   $scope.accordionConfig = {
-    debug: false,
-    animDur: 300,
+    debug: true,
+    animDur: 1000,
     expandFirst: true,
-    autoCollapse: false,
+    autoCollapse: true,
     watchInternalChanges: false,
     headerClass: '',
     preHeader: '',
