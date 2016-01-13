@@ -3,3 +3,15 @@ body, html{
   margin: 0;
   padding: 0;
 }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+.no-padding-left{
+	padding-left: 0px;
+}
+
+.clickable{
+	cursor: pointer;
+}

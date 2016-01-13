@@ -13,6 +13,7 @@ app.run([function() {
 
 app.controller('Principal',['$scope','$compile',function($scope,$compile){
   $scope.activeArray = 1;
+  $scope.coord = '';
   $scope.accordionConfig = {
     debug: true,
     animDur: 300,
@@ -37,6 +38,10 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
     $scope.$broadcast('sacCollapseAll');
     $scope.accordionConfig.autoCollapse = !$scope.accordionConfig.autoCollapse;
   };
+
+  $scope.expandByCoord = function(){
+    $scope.$broadcast('sacExpandContentById', $scope.coord);
+  }
 
   $scope.expandAll = function(){
     $scope.$broadcast('sacExpandAll');

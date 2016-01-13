@@ -29,14 +29,25 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <p>
-          If you set the autoCollapse to false you can use this cool buttons
-        </p>
-        <p>
-          <button ng-click="expandAll()" class="btn btn-primary">Expand all</button>
-          <button ng-click="collapseAll()" class="btn btn-primary">Collapse all</button>
-          <button ng-click="toggleAutoCollapse()" class="btn btn-primary">toggle autoCollapse</button>
-        </p>
+        <p>To expand a content given a coord e.g: 1-1, put the coord in the input and click the expand buttom</p>
+        <div class="row">
+          <div class="form-group col-xs-5 col-sm-3">
+            <div class="input-group">
+              <input type="text" class="form-control" ng-model="coord" placeholder="Coordinate">
+              <div class="input-group-addon clickable" ng-click="expandByCoord()">
+                <span class="glyphicon glyphicon-collapse-down"></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-7 col-sm-4 no-padding-left">
+            <button ng-click="expandAll()" class="btn btn-primary" ng-class="{'disabled': accordionConfig.autoCollapse}">Expand all</button>
+            <button ng-click="collapseAll()" class="btn btn-primary" ng-class="{'disabled': accordionConfig.autoCollapse}">Collapse all</button>
+          </div>
+          <div class="col-xs-12 col-sm-5">
+            <button ng-click="toggleAutoCollapse()" class="btn btn-primary" ng-cloak>toggle autoCollapse: {{accordionConfig.autoCollapse}}</button>
+          </div>
+        </div>
+        <br>
       </div>
     </div>
     <div class="row">

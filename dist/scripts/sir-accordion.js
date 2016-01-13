@@ -13,7 +13,7 @@ angular.module('sir-accordion', [])
     controller: ('sirAccordionCtrl',['$scope',function ($scope) {
       $scope.config = {
         debug: typeof $scope.config.debug != 'undefined' ? $scope.config.debug : false,
-        animDur : ($scope.config.animDur >= 200 && document.body.firstElementChild) ? $scope.config.animDur : 0,
+        animDur : ($scope.config.animDur >= 100 && document.body.firstElementChild) ? $scope.config.animDur : 0,
         expandFirst: typeof $scope.config.expandFirst != 'undefined' ? $scope.config.expandFirst : false,
         autoCollapse : typeof $scope.config.autoCollapse != 'undefined' ? $scope.config.autoCollapse : true,
         watchInternalChanges : typeof $scope.config.watchInternalChanges != 'undefined' ? $scope.config.watchInternalChanges : false,
@@ -39,7 +39,7 @@ angular.module('sir-accordion', [])
       var domHeaders = [];
       var domContents = [];
       var animating = false;
-      var currentExpanded = '0';      
+      var currentExpanded = '0';
       var consoleHighLight = 'background: #0044CE; color: #fff';
       var newScope = null;
 
@@ -337,12 +337,14 @@ angular.module('sir-accordion', [])
         * @param {String} id
       */
       var expandCollapse = function(id){
-        if (animating) return false;
-        if (!animating){
-          animating = true;
-          $timeout(function() {
-            animating = false;
-          }, animDur);
+        if (animDur){
+          if (animating && id == currentExpanded) return false;
+          if (!animating){
+            animating = true;
+            $timeout(function() {
+              animating = false;
+            }, animDur);
+          }
         }
         var idIndex = getDomContentsIndex(id);
         var currentExpandedIndex = getDomContentsIndex(currentExpanded);
@@ -431,14 +433,17 @@ angular.module('sir-accordion', [])
               thisId = ids[j];
             }
           };
-          if(domContents[getDomContentsIndex(thisId)].obj.className.indexOf('expanded') == -1){
-            expandCollapse(thisId);
+          if (domContents[getDomContentsIndex(thisId)]){
+            if(domContents[getDomContentsIndex(thisId)].obj.className.indexOf('expanded') == -1){
+              expandCollapse(thisId);
+            }  
+          }
+          else{
+            if (scope.config.debug) console.log('%c Coordinate does not match an element',consoleHighLight);
           }
           thisId = '';
         };
-        $timeout(function() {
-          animDur = scope.config.animDur;  
-        }, scope.config.animDur);
+        animDur = scope.config.animDur;
       };
 
       scope.expandCollapse = function(id){
@@ -446,12 +451,25 @@ angular.module('sir-accordion', [])
       };
 
       /*
-        * @ngdoc event
-        * @name sacCollapseAll
-        * @description collapses all accordion contents
+        * @ngdoc function
+        * @name expandByLevel
+        * @description sets a timeout that expands an element by its level
       */
-      scope.$on('sacCollapseAll', function (event) {
+      function expandByLevel(domContent, domHeader){
+        $timeout(function(){
+          toggleClass(domContent,'expanded');
+          toggleClass(domHeader, 'active-header');  
+        }, animDur*(getLevel(domContent.id) - 1));
+      }
+
+      /*
+        * @ngdoc function
+        * @name collapseAll
+        * @description closes the accordion
+      */
+      var collapseAll = function(){
         if (!scope.config.autoCollapse){
+          currentExpanded = '0';
           for (var i = domContents.length - 1; i >= 0; i--) {
             if (domContents[i].obj.className.indexOf('expanded') > -1){
               toggleClass(domContents[i],'expanded');
@@ -459,6 +477,15 @@ angular.module('sir-accordion', [])
             }
           };
         }
+      }
+
+      /*
+        * @ngdoc event
+        * @name sacCollapseAll
+        * @description collapses all accordion contents
+      */
+      scope.$on('sacCollapseAll', function (event) {
+        collapseAll();
         event.defaultPrevented = true;
       });
 
@@ -469,9 +496,10 @@ angular.module('sir-accordion', [])
       */
       scope.$on('sacExpandAll', function (event,data) {
         if (!scope.config.autoCollapse){
-          for (var i = domContents.length - 1; i >= 0; i--) {
-            toggleClass(domContents[i],'expanded');
-            toggleClass(domHeaders[i], 'active-header');
+          for (var i = 0; i <= domContents.length - 1; i++) {
+            if(domContents[i].obj.className.indexOf('expanded') == -1){
+              expandByLevel(domContents[i], domHeaders[i]);
+            }
           };
         }
         event.defaultPrevented = true;
