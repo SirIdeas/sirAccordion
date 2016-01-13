@@ -38,7 +38,7 @@ angular.module('sir-accordion', [])
       var accordionHTML = '';
       var domHeaders = [];
       var domContents = [];
-      var animating = [];
+      var animating = false;
       var currentExpanded = '0';      
       var consoleHighLight = 'background: #0044CE; color: #fff';
       var newScope = null;
@@ -61,7 +61,7 @@ angular.module('sir-accordion', [])
         accordionHTML = '';
         domHeaders = [];
         domContents = [];
-        animating = [];
+        animating = false;
         currentExpanded = '0';
         accordionHTML = itemRegen(scope.collection, 0, 0, 0);
 
@@ -239,18 +239,16 @@ angular.module('sir-accordion', [])
         * @name toggleClass
         * @description add or removes a class given a domObject and a class
         * @param {Object} domContent
-        * @return {String} toggleClass
+        * @return {bool}
       */
-
       var toggleClass = function (domContent,toggleClass){
-        var domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
-        /*if(toggleClass == 'expanded' && domObjectChild.className.indexOf('velocity-animating') != -1){
-          return false;
-        }*/
+        var domObjectChild = null;
         if (domContent.obj.className.indexOf(toggleClass) > -1){
           domContent.obj.className = domContent.obj.className.replace(toggleClass,'');
           if (scope.config.debug) console.log('removing class ' + domContent.id);
           if (toggleClass == 'expanded'){
+            domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
+            Velocity(domObjectChild, 'finish');
             Velocity(domObjectChild, 'slideUp', {duration: animDur});
           }
           return true;
@@ -259,10 +257,13 @@ angular.module('sir-accordion', [])
           domContent.obj.className = trim(domContent.obj.className) + ' ' + toggleClass;
           if (scope.config.debug) console.log('adding class ' + domContent.id);
           if (toggleClass == 'expanded'){
+            domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
+            Velocity(domObjectChild, 'finish');
             Velocity(domObjectChild, 'slideDown', {duration: animDur});
           }
           return true;
         }
+        return false;
       };
       
       /*
@@ -336,14 +337,21 @@ angular.module('sir-accordion', [])
         * @param {String} id
       */
       var expandCollapse = function(id){
+        if (animating) return false;
+        if (!animating){
+          animating = true;
+          $timeout(function() {
+            animating = false;
+          }, animDur);
+        }
         var idIndex = getDomContentsIndex(id);
         var currentExpandedIndex = getDomContentsIndex(currentExpanded);
         var domContent = domContents[idIndex];
         var domHeader = domHeaders[idIndex];
         if (scope.config.autoCollapse){
           if (currentExpanded == '0'){
-            toggleClass(domHeader, 'active-header');
             toggleClass(domContent,'expanded');
+            toggleClass(domHeader, 'active-header');
             currentExpanded = id;
             if (scope.config.debug) console.log('%c Opening First',consoleHighLight);
             if (scope.config.debug) console.log('From 0 to ' + currentExpanded);
@@ -377,17 +385,17 @@ angular.module('sir-accordion', [])
               if (scope.config.debug) console.log('%c Opening sibling',consoleHighLight);
               toggleClass(domContents[currentExpandedIndex],'expanded');
               toggleClass(domHeaders[currentExpandedIndex], 'active-header');
-              toggleClass(domHeader, 'active-header');
               toggleClass(domContent,'expanded');
+              toggleClass(domHeader, 'active-header');
               currentExpanded = id;
               return;
             }
             else {
               if (scope.config.debug) console.log('%c Opening other',consoleHighLight);
               chainCollapse(currentExpanded,getLevel(getParentId(id)));
-              toggleClass(domHeader,'active-header');
               currentExpanded = id;
               toggleClass(domContent,'expanded');
+              toggleClass(domHeader,'active-header');
               return;
             }
             return false;
@@ -446,8 +454,8 @@ angular.module('sir-accordion', [])
         if (!scope.config.autoCollapse){
           for (var i = domContents.length - 1; i >= 0; i--) {
             if (domContents[i].obj.className.indexOf('expanded') > -1){
-              toggleClass(domHeaders[i], 'active-header');
               toggleClass(domContents[i],'expanded');
+              toggleClass(domHeaders[i], 'active-header');
             }
           };
         }
@@ -462,8 +470,8 @@ angular.module('sir-accordion', [])
       scope.$on('sacExpandAll', function (event,data) {
         if (!scope.config.autoCollapse){
           for (var i = domContents.length - 1; i >= 0; i--) {
-            toggleClass(domHeaders[i], 'active-header');
             toggleClass(domContents[i],'expanded');
+            toggleClass(domHeaders[i], 'active-header');
           };
         }
         event.defaultPrevented = true;

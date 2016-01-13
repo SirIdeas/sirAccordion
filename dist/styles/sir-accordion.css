@@ -76,6 +76,10 @@
   display: none;
 }
 
+.sir-accordion-content > div > div{
+  overflow: auto;
+}
+
 .sir-accordion-content.expanded > div{
 }
 
