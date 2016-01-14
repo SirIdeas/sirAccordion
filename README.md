@@ -1,5 +1,7 @@
 #**sirAccordion** for AngularJS
 
+**VERSION 1 RELEASED!**
+
 Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for **AngurlarJS**, that builds up from a **JSON object** and an optional configuration object.
 **You can download the project for a live demo in the example folder (don't forget to bower install dependencies) and for better understanding.**
 
@@ -27,43 +29,57 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 
         $scope.accordionConfig = {
             debug: false, //For developing
-            animDur: 300, //Animations flag (**< 200 for disabling animations**)
-            expandFirst: false, //Auto expand first item (currently not supported)
+            animDur: 300, //Animations duration minvalue is 0
+            expandFirst: false, //Auto expand first item
             autoCollapse: true, //Auto collapse item flag
-            watchInternalChanges: true, //checks internal attr of the collection (false if not needed)
+            watchInternalChanges: false, //watch internal attrs of the collection (false if not needed)
             headerClass: '', //Adding extra class for the headers
-            preHeader: '', //Adding code or text before all the headers inner content
-            postHeader: '', //Adding code or text after all the headers inner content
+            beforeHeader: '', //Adding code or text before all the headers inner content
+            afterHeader: '', //Adding code or text after all the headers inner content
             topContentClass: '', //Adding extra class for topContent
-            preTopContent: '', //Adding code or text before all the topContent if present on item
-            postTopContent: '', //Adding code or text after all the topContent if present on item
+            beforeTopContent: '', //Adding code or text before all the topContent if present on item
+            afterTopContent: '', //Adding code or text after all the topContent if present on item
             bottomContentClass: '', //Adding extra class for topContent
-            preBottomContent: '', //Adding code or text before all the topContent if present on item
-            postBottomContent: '' //Adding code or text before all the topContent if present on item
+            beforeBottomContent: '', //Adding code or text before all the topContent if present on item
+            afterBottomContent: '' //Adding code or text before all the topContent if present on item
         };
 *   **Isolated Scope:** The directive has an isolated scope but you can pass any scope you'll need to handle inside the accordion   with the 'data' attr. 
 *   **MultiLevel:** the recursive algoritm allows to add as many levels to the accordion as you would like to.
-*   **CSS animations:** awesome css animations for collapsing and expanding items (optional).
+*   **VelocityJS:** sirAccordion uses [VelocityJS](https://github.com/julianshapiro/velocity) for the slide up and down animations.
 *   **ie8 Compatible:** please kill ie8.
 *   **No jQuery** dependency.
 *   **Bower installable package**. To install from bower use `bower install sir-accordion`.
 *   **Events**.
     *   When the accordion is donde loading you can catch the event like this `$scope.$on('sacDoneLoading', function ($event) {})`.
     *   For expanding any content from your AngularJs App `$scope.$broadcast('sacExpandContentById','1-1-3')` where the second parameter is the content coordinates.
-    *   When autoCollapse is `false` you can trigger this events too `$scope.$broadcast('sacExpandAll');` and `$scope.$broadcast('sacCollapseAll');`.
+    *   For collapsing any content from your AngularJs App `$scope.$broadcast('sacCollapseContentById','1-1-3')` where the second parameter is the content coordinates.
+    *   For collapsing all contents `$scope.$broadcast('sacCollapseAll');`
+    *   When autoCollapse is `false` you can trigger this event too `$scope.$broadcast('sacExpandAll');`.
 
 ##**Dependencies**
 *   AngularJS
+*   VelocityJS
 
 ##**Currently working on**
-*   Animations performance.
+*   I'll try to set the directive scope to false, to get rid of the isolated scope, getting the collection and the config object as attrs, and all event would then be methods.
 *   Saving current state of the accordion
 
 ##**Known issues**
 *   No option for mantaining current state of the accordion when updating the collection.
-*   In Safari, animations may flicker a bit when animating a level `0` content.
 
 ##**Changelog**
+
+###V1.0.0
+*   Now with VelocityJS with faster and no buggy animations even on safari.
+*   New event `collapseById`.
+*   Code simplified (A LOT).
+*   Bug fixes.
+*   Autocollapse can be toggled on runtimes.
+*   Improved expand and collapse single content and all contents algoritm.
+*   AnimDur can be set as low as 0.
+*   Suport for expandFirst.
+*   **Breaking changes**
+    *   Changed some accordion config object attrs (see above).
 
 ###V0.9.6
 *   Added optional attr 'data' for when you want access to a scope from a parent controller in a custom module inside the accordion directive (since the accordion directive has an isolated scope)
