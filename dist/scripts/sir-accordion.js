@@ -185,6 +185,7 @@ angular.module('sir-accordion', [])
       */
       var chainCollapse = function(toCollapse,stopLevel) {
         if (scope.config.debug) console.log('Chain collapsing');
+        if (getLevel(toCollapse) <= stopLevel) return;
         do {
           for (var i = domContents.length - 1; i >= 0; i--) {
             if (scope.config.autoCollapse && domContents[i].id == ('sac' + toCollapse)){
@@ -301,7 +302,7 @@ angular.module('sir-accordion', [])
       
       /*
         * @ngdoc function
-        * @name getDomContetsIndex
+        * @name getDomContentsIndex
         * @description Gets an domContent index inside contents array given its id
         * @param {String} id
         * @return {Integer} i
@@ -421,10 +422,52 @@ angular.module('sir-accordion', [])
         * @param {String} id
       */
       var expandCollapseWithParents = function(id){
-        collapseAll();
+        if (id == '0'){
+          collapseAll();
+          currentExpanded = '0';
+          return;
+        }
+        if (id == currentExpanded){
+          return;
+        }
+        if (isParent(id, currentExpanded)){
+          chainCollapse(currentExpanded,getLevel(id));
+          currentExpanded = id;
+          return;
+        }
         var ids = id.split('-');
+        var currentIds = currentExpanded.split('-');
         var thisId = '';
         var levelFix = 0;
+        var levelsEqual = 0;
+        var levelsDif = 0;
+
+        if (scope.config.autoCollapse){
+          if(currentExpanded != '0'){
+            for (var i = 0; (i < ids.length) || (i < currentIds.length) ; i++) {
+              if(ids[i] == currentIds[i] && !levelsDif){
+                levelsEqual ++;
+              }
+              else{
+                levelsDif ++;
+              }
+            };
+            if(levelsDif > 1 && levelsEqual < getLevel(id)){
+              var numberOfCollapses = currentIds.length - levelsEqual;
+              var tempContent = currentExpanded;
+              while(numberOfCollapses > 0){
+                toggleClass(domContents[getDomContentsIndex(tempContent)],'expanded');
+                toggleClass(domHeaders[getDomContentsIndex(tempContent)], 'active-header');
+                tempContent = getParentId(tempContent);
+                numberOfCollapses --;
+              }
+            }
+            else{
+              chainCollapse(currentExpanded,getLevel(id) - 1);  
+            }
+          }
+        }
+
         for (var i = 0; i < ids.length; i++) {
           for (var j = 0; j <= i; j++) {
             if (j){
