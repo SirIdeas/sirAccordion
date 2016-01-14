@@ -74,6 +74,9 @@ angular.module('sir-accordion', [])
         setObjectTree();
 
         scope.$emit('sacDoneLoading');
+        if (scope.config.expandFirst){
+          expandProgrammatically('1');
+        }
       },scope.config.watchInternalChanges);
 
 
