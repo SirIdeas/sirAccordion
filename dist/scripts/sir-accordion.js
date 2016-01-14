@@ -18,21 +18,19 @@ angular.module('sir-accordion', [])
         autoCollapse : typeof $scope.config.autoCollapse != 'undefined' ? $scope.config.autoCollapse : true,
         watchInternalChanges : typeof $scope.config.watchInternalChanges != 'undefined' ? $scope.config.watchInternalChanges : false,
         headerClass: $scope.config.headerClass || '',
-        preHeader: $scope.config.preHeader || '<div class="sir-accordion-vertical-align"><div>',
-        postHeader: $scope.config.postHeader || '</div></div>',
+        beforeHeader: $scope.config.beforeHeader || '<div class="sir-accordion-vertical-align"><div>',
+        afterHeader: $scope.config.afterHeader || '</div></div>',
         topContentClass: $scope.config.topContentClass || '',
-        preTopContent: $scope.config.preTopContent || '',
-        postTopContent: $scope.config.postTopContent || '',
+        beforeTopContent: $scope.config.beforeTopContent || '',
+        afterTopContent: $scope.config.afterTopContent || '',
         bottomContentClass: $scope.config.bottomContentClass || '',
-        preBottomContent: $scope.config.preBottomContent || '',
-        postBottomContent: $scope.config.postBottomContent || ''
+        beforeBottomContent: $scope.config.beforeBottomContent || '',
+        afterBottomContent: $scope.config.afterBottomContent || ''
       };
     }]),
     link: function(scope,element) {
       var animDur = scope.config.animDur;
       var header = '';
-      var topContent = '';
-      var bottomContent = '';
       var item = '';
       var uniqueIndex = '';
       var accordionHTML = '';
@@ -54,8 +52,6 @@ angular.module('sir-accordion', [])
         }
         
         header = '';
-        topContent = '';
-        bottomContent = '';
         item = '';
         uniqueIndex = '';
         accordionHTML = '';
@@ -118,20 +114,19 @@ angular.module('sir-accordion', [])
         }
         
         uniqueIndex = level ? String(parentIndex) + '-' + String(currentIndex + 1) : String(currentIndex + 1);
-        header = scope.config.preHeader + collection[currentIndex].title + scope.config.postHeader;
-        topContent = setContent(scope.config.preTopContent, collection[currentIndex].topContent, scope.config.postTopContent);
+        header = scope.config.beforeHeader + collection[currentIndex].title + scope.config.afterHeader;
         domContents.push(uniqueIndex);
 
         item = 
         '<div id="sac' + uniqueIndex + '" >' 
           + '<div class="sir-accordion-header ' + scope.config.headerClass
-          + '" ng-click="expandCollapse(\''+ uniqueIndex+ '\')">'
+          + '" ng-click="expandCollapseProgrammatically(\''+ uniqueIndex+ '\')">'
             + header
           + '</div>'
           + '<div class="sir-accordion-content">'
             + '<div>'
               + '<div class="' + scope.config.topContentClass + '">'
-                + topContent
+                + setContent(scope.config.beforeTopContent, collection[currentIndex].topContent, scope.config.afterTopContent)
               + '</div>';
         
         if (currentIndex == 0){
@@ -143,16 +138,17 @@ angular.module('sir-accordion', [])
           }
         }
 
-        bottomContent = setContent(scope.config.preBottomContent, collection[currentIndex].bottomContent, scope.config.postBottomContent);
-
         if (angular.isArray(collection[currentIndex].subCollection) && collection[currentIndex].subCollection.length){
           item = item + itemRegen(collection[currentIndex].subCollection, uniqueIndex, 0, level + 1);
-          item = item + '</div><div class="' + scope.config.bottomContentClass + '">' + bottomContent + '</div></div></div></div>';
+          item = item + '</div><div class="' + scope.config.bottomContentClass + '">'
+            + setContent(scope.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.config.afterBottomContent)
+          + '</div></div></div></div>';
         }
         else{
-          item = item + '<div class="' + scope.config.bottomContentClass + '">' + bottomContent + '</div></div></div></div>';
+          item = item + '<div class="' + scope.config.bottomContentClass + '">'
+            + setContent(scope.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.config.afterBottomContent)
+          + '</div></div></div></div>';
         }
-        
         return item + itemRegen(collection, parentIndex, currentIndex + 1, level);
       };
 
@@ -418,7 +414,7 @@ angular.module('sir-accordion', [])
       /*
         * @ngdoc function
         * @name expandProgrammatically
-        * @description Expands an element recursively including its parents
+        * @description Expands an element programmatically including its parents
         * @param {String} id
       */
       var expandProgrammatically = function(id){
@@ -495,8 +491,24 @@ angular.module('sir-accordion', [])
 
       /*
         * @ngdoc function
+        * @name expandCollapseProgrammatically
+        * @description Expands or collapses an element programmatically depending of its current state
+        * @param {String} id
+      */
+      scope.expandCollapseProgrammatically = function(id){
+        if(domContents[getDomContentsIndex(id)].obj.className.indexOf('expanded') != -1){
+          collapseProgrammatically(id);
+        }
+        else{
+          expandProgrammatically(id);
+        }
+        
+      }
+
+      /*
+        * @ngdoc function
         * @name collapseProgrammatically
-        * @description collapses an element recursively including its childs
+        * @description collapses an element programmatically including its childs
         * @param {String} id
       */
       var collapseProgrammatically = function(id){
