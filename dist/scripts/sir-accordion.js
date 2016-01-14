@@ -13,7 +13,7 @@ angular.module('sir-accordion', [])
     controller: ('sirAccordionCtrl',['$scope',function ($scope) {
       $scope.config = {
         debug: typeof $scope.config.debug != 'undefined' ? $scope.config.debug : false,
-        animDur : ($scope.config.animDur >= 100 && document.body.firstElementChild) ? $scope.config.animDur : 0,
+        animDur : ($scope.config.animDur >= 0 && document.body.firstElementChild) ? $scope.config.animDur : 0,
         expandFirst: typeof $scope.config.expandFirst != 'undefined' ? $scope.config.expandFirst : false,
         autoCollapse : typeof $scope.config.autoCollapse != 'undefined' ? $scope.config.autoCollapse : true,
         watchInternalChanges : typeof $scope.config.watchInternalChanges != 'undefined' ? $scope.config.watchInternalChanges : false,
