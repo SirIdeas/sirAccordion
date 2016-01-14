@@ -326,90 +326,6 @@ angular.module('sir-accordion', [])
           }
         };
       };
-
-      /*
-        * @ngdoc function
-        * @name expandCollapse
-        * @description Expands an element
-        * @param {String} id
-      */
-      var expandCollapse = function(id){
-        if (animDur){
-          if (animating && id == currentExpanded) return false;
-          if (!animating){
-            animating = true;
-            $timeout(function() {
-              animating = false;
-            }, animDur);
-          }
-        }
-        var idIndex = getDomContentsIndex(id);
-        var currentExpandedIndex = getDomContentsIndex(currentExpanded);
-        var domContent = domContents[idIndex];
-        var domHeader = domHeaders[idIndex];
-        if (scope.config.autoCollapse){
-          if (currentExpanded == '0'){
-            toggleClass(domContent,'expanded');
-            toggleClass(domHeader, 'active-header');
-            currentExpanded = id;
-            if (scope.config.debug) console.log('%c Opening First',consoleHighLight);
-            if (scope.config.debug) console.log('From 0 to ' + currentExpanded);
-            return;
-          }
-          if (currentExpanded == id){
-            toggleClass(domContent,'expanded');
-            toggleClass(domHeader,'active-header');
-            currentExpanded = getParentId(id) || '0';
-            if (scope.config.debug) console.log('%c Closing same',consoleHighLight);
-            if (scope.config.debug) console.log('From current element to ' + currentExpanded);
-            return;
-          }
-          if (currentExpanded != id){
-            if(getParentId(id) == currentExpanded) {
-              if (scope.config.debug) console.log('%c Opening Child',consoleHighLight);
-              toggleClass(domContent,'expanded');
-              toggleClass(domHeader,'active-header');
-              currentExpanded = id;
-              return;
-            }
-            else if(isParent(id,currentExpanded)){
-              if (scope.config.debug) console.log('%c Closing Parent',consoleHighLight);
-              chainCollapse(currentExpanded,getLevel(id));
-              toggleClass(domContent,'expanded');
-              toggleClass(domHeader,'active-header');
-              currentExpanded = getParentId(id);
-              return;
-            }
-            else if(getParentId(currentExpanded) == getParentId(id)) {
-              if (scope.config.debug) console.log('%c Opening sibling',consoleHighLight);
-              toggleClass(domContents[currentExpandedIndex],'expanded');
-              toggleClass(domHeaders[currentExpandedIndex], 'active-header');
-              toggleClass(domContent,'expanded');
-              toggleClass(domHeader, 'active-header');
-              currentExpanded = id;
-              return;
-            }
-            else {
-              if (scope.config.debug) console.log('%c Opening other',consoleHighLight);
-              chainCollapse(currentExpanded,getLevel(getParentId(id)));
-              currentExpanded = id;
-              toggleClass(domContent,'expanded');
-              toggleClass(domHeader,'active-header');
-              return;
-            }
-            return false;
-          }
-        }
-        else{
-          if(domContent.obj.className.indexOf('expanded') > -1){
-            closeOpenChilds(domContents,id);
-          }
-          toggleClass(domContent,'expanded');
-          toggleClass(domHeader, 'active-header');
-          currentExpanded = id;
-          return;
-        }
-      }
       
       /*
         * @ngdoc function
@@ -501,8 +417,7 @@ angular.module('sir-accordion', [])
         }
         else{
           expandProgrammatically(id);
-        }
-        
+        }     
       }
 
       /*
@@ -588,15 +503,15 @@ angular.module('sir-accordion', [])
         event.defaultPrevented = true;
       });
 
-
+      /*
+        * @ngdoc event
+        * @name sacCollapseContentById
+        * @description collapses a content a all its children given its id
+      */
       scope.$on('sacCollapseContentById', function (event, id){
         collapseProgrammatically(id);
         event.defaultPrevented = true;
       });
-
-      scope.expandCollapse = function(id){
-        expandCollapse(id);
-      };
     }
   }
 }]);
