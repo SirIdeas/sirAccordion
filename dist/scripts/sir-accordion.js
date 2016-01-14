@@ -417,11 +417,11 @@ angular.module('sir-accordion', [])
       
       /*
         * @ngdoc function
-        * @name expandCollapseWithParents
+        * @name expandProgrammatically
         * @description Expands an element recursively including its parents
         * @param {String} id
       */
-      var expandCollapseWithParents = function(id){
+      var expandProgrammatically = function(id){
         if (id == '0'){
           collapseAll();
           currentExpanded = '0';
@@ -495,6 +495,21 @@ angular.module('sir-accordion', [])
 
       /*
         * @ngdoc function
+        * @name collapseProgrammatically
+        * @description collapses an element recursively including its childs
+        * @param {String} id
+      */
+      var collapseProgrammatically = function(id){
+        if(domContents[getDomContentsIndex(id)].obj.className.indexOf('expanded') != -1){
+          closeOpenChilds(domContents, id);
+          toggleClass(domContents[getDomContentsIndex(id)],'expanded');
+          toggleClass(domHeaders[getDomContentsIndex(id)], 'active-header');
+          currentExpanded = getParentId(id);
+        }
+      }
+
+      /*
+        * @ngdoc function
         * @name expandByLevel
         * @description sets a timeout that expands an element by its level
         * @param {Object} domContent
@@ -557,7 +572,13 @@ angular.module('sir-accordion', [])
         * @description expands a content a all its parents given its id
       */
       scope.$on('sacExpandContentById', function (event,id){
-        expandCollapseWithParents(id);
+        expandProgrammatically(id);
+        event.defaultPrevented = true;
+      });
+
+
+      scope.$on('sacCollapseContentById', function (event, id){
+        collapseProgrammatically(id);
         event.defaultPrevented = true;
       });
 

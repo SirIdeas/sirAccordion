@@ -90,6 +90,10 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
     $scope.$broadcast('sacExpandContentById', $scope.coord);
   }
 
+  $scope.collapseByCoord = function(){
+    $scope.$broadcast('sacCollapseContentById', $scope.coord);
+  }
+
   $scope.expandAll = function(){
     $scope.$broadcast('sacExpandAll');
   };
