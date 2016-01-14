@@ -8,17 +8,6 @@
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
   <link rel="stylesheet" href="../dist/styles/sir-accordion.css"/>
   <link rel="stylesheet" href="styles.css"/>
-  <style type="text/css">
-    html{
-      height: 100%;
-    }
-    body{
-      height: 100%;
-    }
-    .container{
-      min-height: 100%;
-    }
-  </style>
 </head>
 <body ng-app="sirAccordion" ng-controller="Principal">
   <div class="container">
@@ -32,12 +21,15 @@
         <p>To expand a content given a coord e.g: 1-1, put the coord in the input and click the expand buttom</p>
         <div class="row">
           <div class="form-group col-xs-5 col-sm-3">
-            <div class="input-group">
-              <input type="text" class="form-control" ng-model="coord" placeholder="Coordinate">
-              <div class="input-group-addon clickable" ng-click="expandByCoord()">
-                <span class="glyphicon glyphicon-collapse-down"></span>
+            <form ng-submit="expandByCoord()">
+              <div class="input-group">
+                <input type="text" class="form-control" ng-model="coord" placeholder="Coordinate">
+                <input type="submit" style="display:none">
+                <div class="input-group-addon clickable" ng-click="expandByCoord()">
+                  <span class="glyphicon glyphicon-collapse-down"></span>
+                </div>
               </div>
-            </div>
+            </form>
           </div>
           <div class="col-xs-7 col-sm-4 no-padding-left">
             <button ng-click="expandAll()" class="btn btn-primary" ng-class="{'disabled': accordionConfig.autoCollapse}">Expand all</button>

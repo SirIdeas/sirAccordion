@@ -270,8 +270,8 @@ angular.module('sir-accordion', [])
         * @ngdoc function
         * @name isParent
         * @description Checks if a content is parent of another given 2 ids
-        * @param {parentId}
-        * @param {childId}
+        * @param {String} parentId
+        * @param {String} childId
         * @return {Boolean}
       */
       var isParent = function (parentId,childId){
@@ -421,9 +421,10 @@ angular.module('sir-accordion', [])
         * @param {String} id
       */
       var expandCollapseWithParents = function(id){
-        animDur = 0;
+        collapseAll();
         var ids = id.split('-');
         var thisId = '';
+        var levelFix = 0;
         for (var i = 0; i < ids.length; i++) {
           for (var j = 0; j <= i; j++) {
             if (j){
@@ -435,31 +436,33 @@ angular.module('sir-accordion', [])
           };
           if (domContents[getDomContentsIndex(thisId)]){
             if(domContents[getDomContentsIndex(thisId)].obj.className.indexOf('expanded') == -1){
-              expandCollapse(thisId);
-            }  
+              expandByLevel(domContents[getDomContentsIndex(thisId)], domHeaders[getDomContentsIndex(thisId)], levelFix);
+              currentExpanded = thisId;
+            }
+            else{
+              levelFix--;
+            }
           }
           else{
             if (scope.config.debug) console.log('%c Coordinate does not match an element',consoleHighLight);
           }
           thisId = '';
         };
-        animDur = scope.config.animDur;
-      };
-
-      scope.expandCollapse = function(id){
-        expandCollapse(id);
       };
 
       /*
         * @ngdoc function
         * @name expandByLevel
         * @description sets a timeout that expands an element by its level
+        * @param {Object} domContent
+        * @param {Object} domHeader
+        * @param {Integer} levelFix
       */
-      function expandByLevel(domContent, domHeader){
+      var expandByLevel = function(domContent, domHeader, levelFix){
         $timeout(function(){
           toggleClass(domContent,'expanded');
-          toggleClass(domHeader, 'active-header');  
-        }, animDur*(getLevel(domContent.id) - 1));
+          toggleClass(domHeader, 'active-header');
+        }, animDur*(getLevel(domContent.id) - 1 + levelFix));
       }
 
       /*
@@ -468,7 +471,7 @@ angular.module('sir-accordion', [])
         * @description closes the accordion
       */
       var collapseAll = function(){
-        if (!scope.config.autoCollapse){
+        //if (!scope.config.autoCollapse){
           currentExpanded = '0';
           for (var i = domContents.length - 1; i >= 0; i--) {
             if (domContents[i].obj.className.indexOf('expanded') > -1){
@@ -476,7 +479,7 @@ angular.module('sir-accordion', [])
               toggleClass(domHeaders[i], 'active-header');
             }
           };
-        }
+        //}
       }
 
       /*
@@ -498,7 +501,7 @@ angular.module('sir-accordion', [])
         if (!scope.config.autoCollapse){
           for (var i = 0; i <= domContents.length - 1; i++) {
             if(domContents[i].obj.className.indexOf('expanded') == -1){
-              expandByLevel(domContents[i], domHeaders[i]);
+              expandByLevel(domContents[i], domHeaders[i], 0);
             }
           };
         }
@@ -515,6 +518,9 @@ angular.module('sir-accordion', [])
         event.defaultPrevented = true;
       });
 
+      scope.expandCollapse = function(id){
+        expandCollapse(id);
+      };
     }
   }
 }]);
