@@ -248,8 +248,9 @@ angular.module('sir-accordion', [])
           if (scope.config.debug) console.log('removing class ' + domContent.id);
           if (toggleClass == 'expanded'){
             domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
-            Velocity(domObjectChild, 'finish');
-            Velocity(domObjectChild, 'slideUp', {duration: animDur});
+            velocity(domObjectChild, 'finish');
+            velocity(domObjectChild, 'slideUp', {display: null, duration: animDur
+              ,complete: function(){domObjectChild.style.height = '0px'}});
           }
           return true;
         }
@@ -258,12 +259,43 @@ angular.module('sir-accordion', [])
           if (scope.config.debug) console.log('adding class ' + domContent.id);
           if (toggleClass == 'expanded'){
             domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
-            Velocity(domObjectChild, 'finish');
-            Velocity(domObjectChild, 'slideDown', {duration: animDur});
+            velocity(domObjectChild, 'finish');
+            velocity(domObjectChild, 'slideDown', {duration: animDur
+              , begin: function(){domObjectChild.style.height = 'auto'}});
           }
           return true;
         }
         return false;
+      };
+
+      /*
+        * @ngdoc function
+        * @name velocity
+        * @description checks whether the app is using jquery or not, to excecute the 
+        * velocity commands corresponding to each case
+        * @param {Object} element
+        * @param {String} command
+        * @param {Object} options
+      */
+      var velocity = function (element, command, options){
+        if (typeof Velocity == 'undefined'){
+          if(options){
+            $(element).velocity(command, options);  
+          }
+          else{
+            $(element).velocity(command);
+          }
+          return;
+        }
+        else{
+          if(options){
+            Velocity(element, command, options);  
+          }
+          else{
+            Velocity(element, command);
+          }
+          return;
+        }
       };
       
       /*
