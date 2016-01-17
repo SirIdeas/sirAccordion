@@ -260,8 +260,9 @@ angular.module('sir-accordion', [])
           if (toggleClass == 'expanded'){
             domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
             velocity(domObjectChild, 'finish');
-            velocity(domObjectChild, 'slideDown', {duration: animDur
-              , begin: function(){domObjectChild.style.height = 'auto'}});
+            velocity(domObjectChild, 'slideDown', {delay: 0, duration: animDur
+              , progress: function(){domContent.obj.style.height = 'auto'}
+              , begin: function(){domContent.obj.style.height = '0px';domObjectChild.style.height = 'auto';}});
           }
           return true;
         }
@@ -447,12 +448,14 @@ angular.module('sir-accordion', [])
         * @param {String} id
       */
       scope.expandCollapseProgrammatically = function(id){
-        if(domContents[getDomContentsIndex(id)].obj.className.indexOf('expanded') != -1){
-          collapseProgrammatically(id);
-        }
-        else{
-          expandProgrammatically(id);
-        }     
+        if (!animating){
+          if(domContents[getDomContentsIndex(id)].obj.className.indexOf('expanded') != -1){
+            collapseProgrammatically(id);
+          }
+          else{
+            expandProgrammatically(id);
+          } 
+        }    
       }
 
       /*
