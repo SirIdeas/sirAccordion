@@ -69,6 +69,9 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 
 ##**Changelog**
 
+###V1.1.1
+*   Fixed issue where animations jumped a little in Microsoft Edge
+
 ###V1.1.0
 *   Updated sir-accordion.min.js
 *   Fixed issue when using siraccordion on an app with jquery
