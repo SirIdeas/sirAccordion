@@ -2,10 +2,24 @@ body, html{
   position: relative;
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
+}
+
+.container{
+	height: 100%;
+	position: relative;
+}
+
+.content-wrap{
+	position: absolute;
+	top: 213px;
+	left: 15px;
+	right: 15px;
+	bottom: 10px;
 }
 
 .no-padding-left{
@@ -18,4 +32,13 @@ body, html{
 
 blockquote{
 	text-align: justify;
+}
+
+.full-height{
+	height: 100%;
+}
+
+.scrollable{
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
