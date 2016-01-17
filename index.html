@@ -6,7 +6,7 @@
   <meta name="description" content="">
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://cdn.rawgit.com/SirIdeas/sirAccordion/v1.0.0/dist/styles/sir-accordion.css"/>
+  <link rel="stylesheet" href="https://cdn.rawgit.com/SirIdeas/sirAccordion/v1.1.0/dist/styles/sir-accordion.css"/>
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body ng-app="sirAccordion" ng-controller="Principal">
@@ -42,31 +42,33 @@
         <br>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-12 col-sm-6">
-        <div sir-accordion collection="accordionArray" config="accordionConfig"></div>
-      </div>
-      <div class="col-xs-12 col-sm-6">
-        <blockquote>
-          <p>
-            Awesome dynamic, recursive, customizable and multilevel <strong>Accordion Menu</strong> for <strong>AngurlarJS</strong>, that builds up from a JSON object and an optional configuration object. <strong>You can download the project for a live demo in the example folder (don't forget to bower install dependencies)</strong> and for better understanding.
-          </p>
-          <p>
-            <strong>No jQuery needed</strong>
-          </p>
-          <p>
-            You could set <strong>pre/post</strong> <strong>topContent/bottomContent</strong> in the accordion config object to set a scroll back to top buttom (or whatever you like), given that you only need to set the value once and it will be in all the contents of the accordion.
-          </p>
-          <p>
-            Go to the <a href="https://github.com/SirIdeas/sirAccordion">Project page</a> for a how to use
-          </p>
-        </blockquote>
+    <div class="content-wrap">
+      <div class="row full-height">
+        <div class="col-xs-12 col-sm-6 full-height scrollable">
+            <div sir-accordion collection="accordionArray" config="accordionConfig"></div>
+        </div>
+        <div class="hidden-xs col-sm-6">
+          <blockquote>
+            <p>
+              Awesome dynamic, recursive, customizable and multilevel <strong>Accordion Menu</strong> for <strong>AngurlarJS</strong>, that builds up from a JSON object and an optional configuration object. <strong>You can download the project for a live demo in the example folder (don't forget to bower install dependencies)</strong> and for better understanding.
+            </p>
+            <p>
+              <strong>No jQuery needed</strong>
+            </p>
+            <p>
+              You could set <strong>before/after</strong> <strong>topContent/bottomContent</strong> in the accordion config object to set a scroll back to top buttom (or whatever you like), given that you only need to set the value once and it will be in all the contents of the accordion.
+            </p>
+            <p>
+              Go to the <a href="https://github.com/SirIdeas/sirAccordion">Project page</a> for a how to use
+            </p>
+          </blockquote>
+        </div>
       </div>
     </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular.min.js"></script>
   <script src="//cdn.jsdelivr.net/velocity/1.2.3/velocity.min.js"></script>
-  <script src="https://cdn.rawgit.com/SirIdeas/sirAccordion/v1.0.0/dist/scripts/sir-accordion.js"></script>
+  <script src="https://cdn.rawgit.com/SirIdeas/sirAccordion/v1.1.0/dist/scripts/sir-accordion.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
   <script src="app.js"></script>
 </body>
