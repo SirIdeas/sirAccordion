@@ -86,16 +86,16 @@ angular.module('sir-accordion', [])
         * @description set 2 Object Arrays containing all headers and contents objects and ids
       */
       var setObjectTree = function(){
-        var element = null;
+        var thisElement = null;
         var header = null;
         var content = null;
         for (var i = domContents.length - 1; i >= 0; i--) {
-          element = document.getElementById('sac' + domContents[i]);
-          header = (element.firstElementChild) ? element.firstElementChild : element.firstChild;
+          thisElement = element[0].querySelector('.sac' + domContents[i]);
+          header = (thisElement.firstElementChild) ? thisElement.firstElementChild : thisElement.firstChild;
           content = header.nextSibling;
-          domContents[i] = {id: element.id, obj: content};
-          domHeaders[i] = {id: element.id, obj: header};
-          if (element.firstElementChild){
+          domContents[i] = {id: thisElement.className, obj: content};
+          domHeaders[i] = {id: thisElement.className, obj: header};
+          if (thisElement.firstElementChild){
             domHeaders[i].obj.style.transition = 'all ' + (animDur) + 'ms';
           }
         };
@@ -121,7 +121,7 @@ angular.module('sir-accordion', [])
         domContents.push(uniqueIndex);
 
         item = 
-        '<div id="sac' + uniqueIndex + '" >' 
+        '<div class="sac' + uniqueIndex + '" >' 
           + '<div class="sir-accordion-header ' + scope.config.headerClass
           + '" ng-click="expandCollapseProgrammatically(\''+ uniqueIndex+ '\')">'
             + header
@@ -494,15 +494,13 @@ angular.module('sir-accordion', [])
         * @description closes the accordion
       */
       var collapseAll = function(){
-        //if (!scope.config.autoCollapse){
-          currentExpanded = '0';
-          for (var i = domContents.length - 1; i >= 0; i--) {
-            if (domContents[i].obj.className.indexOf('expanded') > -1){
-              toggleClass(domContents[i],'expanded');
-              toggleClass(domHeaders[i], 'active-header');
-            }
-          };
-        //}
+        currentExpanded = '0';
+        for (var i = domContents.length - 1; i >= 0; i--) {
+          if (domContents[i].obj.className.indexOf('expanded') > -1){
+            toggleClass(domContents[i],'expanded');
+            toggleClass(domHeaders[i], 'active-header');
+          }
+        };
       }
 
       /*

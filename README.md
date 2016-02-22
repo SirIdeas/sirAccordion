@@ -69,6 +69,9 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 
 ##**Changelog**
 
+###V1.2.0
+*   Fixes issue when using multiple instances of sirAccordion
+
 ###V1.1.1
 *   Fixed issue where animations jumped a little in Microsoft Edge
 
