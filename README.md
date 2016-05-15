@@ -69,6 +69,17 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 
 ##**Changelog**
 
+###V1.2.0
+*   Fixes issue when using multiple instances of sirAccordion
+
+###V1.1.1
+*   Fixed issue where animations jumped a little in Microsoft Edge
+
+###V1.1.0
+*   Updated sir-accordion.min.js
+*   Fixed issue when using siraccordion on an app with jquery
+*   Collapsed content no longer has `display: none`
+
 ###V1.0.0
 *   Now with VelocityJS with faster and no buggy animations even on safari.
 *   New event `collapseById`.

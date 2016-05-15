@@ -73,7 +73,7 @@
 }
 
 .sir-accordion-content > div{
-  display: none;
+  height: 0px;
 }
 
 .sir-accordion-content > div > div{

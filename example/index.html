@@ -42,25 +42,27 @@
         <br>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-12 col-sm-6">
-        <div sir-accordion collection="accordionArray" config="accordionConfig"></div>
-      </div>
-      <div class="col-xs-12 col-sm-6">
-        <blockquote>
-          <p>
-            Awesome dynamic, recursive, customizable and multilevel <strong>Accordion Menu</strong> for <strong>AngurlarJS</strong>, that builds up from a JSON object and an optional configuration object. <strong>You can download the project for a live demo in the example folder (don't forget to bower install dependencies)</strong> and for better understanding.
-          </p>
-          <p>
-            <strong>No jQuery needed</strong>
-          </p>
-          <p>
-            You could set <strong>pre/post</strong> <strong>topContent/bottomContent</strong> in the accordion config object to set a scroll back to top buttom (or whatever you like), given that you only need to set the value once and it will be in all the contents of the accordion.
-          </p>
-          <p>
-            Go to the <a href="https://github.com/SirIdeas/sirAccordion">Project page</a> for a how to use
-          </p>
-        </blockquote>
+    <div class="content-wrap">
+      <div class="row full-height">
+        <div id="scroller" class="col-xs-12 col-sm-6 full-height scrollable">
+            <div sir-accordion collection="accordionArray" config="accordionConfig"></div>
+        </div>
+        <div class="hidden-xs col-sm-6">
+          <blockquote>
+            <p>
+              Awesome dynamic, recursive, customizable and multilevel <strong>Accordion Menu</strong> for <strong>AngurlarJS</strong>, that builds up from a JSON object and an optional configuration object. <strong>You can download the project for a live demo in the example folder (don't forget to bower install dependencies)</strong> and for better understanding.
+            </p>
+            <p>
+              <strong>No jQuery needed</strong>
+            </p>
+            <p>
+              You could set <strong>before/after</strong> <strong>topContent/bottomContent</strong> in the accordion config object to set a scroll back to top buttom (or whatever you like), given that you only need to set the value once and it will be in all the contents of the accordion.
+            </p>
+            <p>
+              Go to the <a href="https://github.com/SirIdeas/sirAccordion">Project page</a> for a how to use
+            </p>
+          </blockquote>
+        </div>
       </div>
     </div>
   </div>
