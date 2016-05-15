@@ -1,35 +1,13 @@
 'use strict';
 angular.module('sir-accordion', [])
 .directive('sirAccordion',['$compile','$timeout', function($compile,$timeout){
-  var template='';
   return {
     restrict: 'A',
-    scope: {
-      collection: '=',
-      config: '=?',
-      data: '=?'
-    },
-    template: template,
-    controller: ('sirAccordionCtrl',['$scope',function ($scope) {
-      $scope.config = {
-        debug: typeof $scope.config.debug != 'undefined' ? $scope.config.debug : false,
-        animDur : ($scope.config.animDur >= 0 && document.body.firstElementChild) ? $scope.config.animDur : 0,
-        expandFirst: typeof $scope.config.expandFirst != 'undefined' ? $scope.config.expandFirst : false,
-        autoCollapse : typeof $scope.config.autoCollapse != 'undefined' ? $scope.config.autoCollapse : true,
-        watchInternalChanges : typeof $scope.config.watchInternalChanges != 'undefined' ? $scope.config.watchInternalChanges : false,
-        headerClass: $scope.config.headerClass || '',
-        beforeHeader: $scope.config.beforeHeader || '<div class="sir-accordion-vertical-align"><div>',
-        afterHeader: $scope.config.afterHeader || '</div></div>',
-        topContentClass: $scope.config.topContentClass || '',
-        beforeTopContent: $scope.config.beforeTopContent || '',
-        afterTopContent: $scope.config.afterTopContent || '',
-        bottomContentClass: $scope.config.bottomContentClass || '',
-        beforeBottomContent: $scope.config.beforeBottomContent || '',
-        afterBottomContent: $scope.config.afterBottomContent || ''
-      };
+    scope: true,
+    controller: ('sirAccordionCtrl',['$scope', function ($scope) {
     }]),
-    link: function(scope,element) {
-      var animDur = scope.config.animDur;
+    link: function(scope,element, attrs) {
+      var animDur = scope.sirAccordion.config.animDur;
       var header = '';
       var item = '';
       var uniqueIndex = '';
@@ -45,8 +23,9 @@ angular.module('sir-accordion', [])
         * @ngdoc watch
         * @description watches changes in the Array provided to build the accordion
       */
-      scope.$watch('collection', function() {
-        if (!angular.isArray(scope.collection)){
+      scope.$watch('sirAccordion.collection', function() {
+
+        if (!angular.isArray(scope.sirAccordion.collection)){
           element.html('No collection found');
           return;
         }
@@ -59,7 +38,7 @@ angular.module('sir-accordion', [])
         domContents = [];
         animating = false;
         currentExpanded = '0';
-        accordionHTML = itemRegen(scope.collection, 0, 0, 0);
+        accordionHTML = itemRegen(scope.sirAccordion.collection, 0, 0, 0);
 
         element.html('');
 
@@ -74,17 +53,14 @@ angular.module('sir-accordion', [])
         setObjectTree();
 
         scope.$emit('sacDoneLoading');
-        if (scope.config.expandFirst){
+        if (scope.sirAccordion.config.expandFirst){
           expandProgrammatically('1');
         }
-      },scope.config.watchInternalChanges);
+      },scope.sirAccordion.config.watchInternalChanges);
 
-
-      /*
-        * @ngdoc function
-        * @name setObjectTree
-        * @description set 2 Object Arrays containing all headers and contents objects and ids
-      */
+      /**
+       * set 2 Object Arrays containing all headers and contents objects and ids
+       */
       var setObjectTree = function(){
         var thisElement = null;
         var header = null;
@@ -101,35 +77,33 @@ angular.module('sir-accordion', [])
         };
       };
       
-      /*
-        * @ngdoc function
-        * @name itemRegen
-        * @description Builds up the HTML code for the accordion recursively, given a JSON array
-        * @param {Array} collection
-        * @param {Integer} parentIndex
-        * @param {Integer} currentIndex
-        * @param {Integer} level
-        * @return
-      */
+      /**
+       * Builds up the HTML code for the accordion recursively, given a JSON array
+       * @param  {Array} collection     [description]
+       * @param  {Integer} parentIndex  [description]
+       * @param  {Integer} currentIndex [description]
+       * @param  {Integer} level        [description]
+       * @return {[type]}               [description]
+       */
       var itemRegen = function(collection, parentIndex, currentIndex, level) {
         if (currentIndex == collection.length){
           return '';
         }
         
         uniqueIndex = level ? String(parentIndex) + '-' + String(currentIndex + 1) : String(currentIndex + 1);
-        header = scope.config.beforeHeader + collection[currentIndex].title + scope.config.afterHeader;
+        header = scope.sirAccordion.config.beforeHeader + collection[currentIndex].title + scope.sirAccordion.config.afterHeader;
         domContents.push(uniqueIndex);
 
         item = 
         '<div class="sac' + uniqueIndex + '" >' 
-          + '<div class="sir-accordion-header ' + scope.config.headerClass
-          + '" ng-click="expandCollapseProgrammatically(\''+ uniqueIndex+ '\')">'
+          + '<div class="sir-accordion-header ' + scope.sirAccordion.config.headerClass
+          + '"' + scope.sirAccordion.config.headerAttrs + ' ng-click="expandCollapseProgrammatically(\''+ uniqueIndex+ '\')">'
             + header
           + '</div>'
           + '<div class="sir-accordion-content">'
             + '<div>'
-              + '<div class="' + scope.config.topContentClass + '">'
-                + setContent(scope.config.beforeTopContent, collection[currentIndex].topContent, scope.config.afterTopContent)
+              + '<div class="' + scope.sirAccordion.config.topContentClass + '">'
+                + setContent(scope.sirAccordion.config.beforeTopContent, collection[currentIndex].topContent, scope.sirAccordion.config.afterTopContent)
               + '</div>';
         
         if (currentIndex == 0){
@@ -143,27 +117,24 @@ angular.module('sir-accordion', [])
 
         if (angular.isArray(collection[currentIndex].subCollection) && collection[currentIndex].subCollection.length){
           item = item + itemRegen(collection[currentIndex].subCollection, uniqueIndex, 0, level + 1);
-          item = item + '</div><div class="' + scope.config.bottomContentClass + '">'
-            + setContent(scope.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.config.afterBottomContent)
+          item = item + '</div><div class="' + scope.sirAccordion.config.bottomContentClass + '">'
+            + setContent(scope.sirAccordion.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.sirAccordion.config.afterBottomContent)
           + '</div></div></div></div>';
         }
         else{
-          item = item + '<div class="' + scope.config.bottomContentClass + '">'
-            + setContent(scope.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.config.afterBottomContent)
+          item = item + '<div class="' + scope.sirAccordion.config.bottomContentClass + '">'
+            + setContent(scope.sirAccordion.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.sirAccordion.config.afterBottomContent)
           + '</div></div></div></div>';
         }
         return item + itemRegen(collection, parentIndex, currentIndex + 1, level);
       };
 
-      /*
-        * @ngdoc function
-        * @name setContent
-        * @description adds leading and traling code to a content before injecting it to the code
-        * @param {String} pre
-        * @param {String} content
-        * @param {String} post
-        * @return {String} content
-      */
+      /**
+       * adds leading and traling code to a content before injecting it to the code
+       * @param {String} pre     [description]
+       * @param {String} content [description]
+       * @param {String} post    [description]
+       */
       var setContent = function(pre,content,post) {
         if (!content){
           content = '';
@@ -174,20 +145,18 @@ angular.module('sir-accordion', [])
         return content;
       };
       
-      /*
-        * @ngdoc function
-        * @name chainCollapse
-        * @description Collapses an element given a starting id and its parents until a stopLevel is given
-        * @param {String} toCollapse
-        * @param {String} stopLevel
-        * @return
-      */
+      /**
+       * Collapses an element given a starting id and its parents until a stopLevel is given
+       * @param  {String} toCollapse [description]
+       * @param  {String} stopLevel  [description]
+       * @return {[type]}            [description]
+       */
       var chainCollapse = function(toCollapse,stopLevel) {
-        if (scope.config.debug) console.log('Chain collapsing');
+        if (scope.sirAccordion.config.debug) console.log('Chain collapsing');
         if (getLevel(toCollapse) <= stopLevel) return;
         do {
           for (var i = domContents.length - 1; i >= 0; i--) {
-            if (scope.config.autoCollapse && domContents[i].id == ('sac' + toCollapse)){
+            if (scope.sirAccordion.config.autoCollapse && domContents[i].id == ('sac' + toCollapse)){
               toggleClass(domContents[i],'expanded');
               toggleClass(domHeaders[i],'active-header');
             }
@@ -201,25 +170,21 @@ angular.module('sir-accordion', [])
         while (getLevel(toCollapse) != stopLevel);
       };
       
-      /*
-        * @ngdoc function
-        * @name getLevel
-        * @description gets the level of an element given its id
-        * @param {String} id
-        * @return {String}
-      */
+      /**
+       * gets the level of an element given its id
+       * @param  {String} id [description]
+       * @return {[type]}    [description]
+       */
       var getLevel = function(id) {
         if (id == '0') return 0;
         else return id.split('-').length;
       };
       
-      /*
-        * @ngdoc function
-        * @name getParentId
-        * @description gets the parent id given an id
-        * @param {String} id
-        * @return {String}
-      */
+      /**
+       * gets the parent id given an id
+       * @param  {String} id [description]
+       * @return {String}    [description]
+       */
       var getParentId = function(id) {
         if(id.indexOf('-') == -1){
           return '0';
@@ -234,50 +199,57 @@ angular.module('sir-accordion', [])
         return id;
       };
       
-      /*
-        * @ngdoc function
-        * @name toggleClass
-        * @description add or removes a class given a domObject and a class
-        * @param {Object} domContent
-        * @return {bool}
-      */
+      /**
+       * add or removes a class given a domObject and a class
+       * @param  {Object} domContent  [description]
+       * @param  {String} toggleClass [description]
+       * @return {bool}               [description]
+       */
       var toggleClass = function (domContent,toggleClass){
         var domObjectChild = null;
         if (domContent.obj.className.indexOf(toggleClass) > -1){
           domContent.obj.className = domContent.obj.className.replace(toggleClass,'');
-          if (scope.config.debug) console.log('removing class ' + domContent.id);
+          if (scope.sirAccordion.config.debug) console.log('removing class ' + domContent.id);
           if (toggleClass == 'expanded'){
             domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
             velocity(domObjectChild, 'finish');
             velocity(domObjectChild, 'slideUp', {display: null, duration: animDur
-              ,complete: function(){domObjectChild.style.height = '0px'}});
+              ,complete: function(){
+                domObjectChild.style.height = '0px';
+                domContent.obj.className = domContent.obj.className.replace('completeExpanded','');
+              }
+            });
           }
           return true;
         }
         else{
+          if (scope.sirAccordion.config.debug) console.log('adding class ' + domContent.id);
           domContent.obj.className = trim(domContent.obj.className) + ' ' + toggleClass;
-          if (scope.config.debug) console.log('adding class ' + domContent.id);
           if (toggleClass == 'expanded'){
             domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
             velocity(domObjectChild, 'finish');
             velocity(domObjectChild, 'slideDown', {delay: 0, duration: animDur
-              , progress: function(){domContent.obj.style.height = 'auto'}
-              , begin: function(){domContent.obj.style.height = '0px';domObjectChild.style.height = 'auto';}});
+              ,progress: function(){
+                domContent.obj.style.height = 'auto';
+              }
+              ,begin: function(){domContent.obj.style.height = '0px';domObjectChild.style.height = 'auto';}
+              ,complete: function(){
+                domContent.obj.className = trim(domContent.obj.className) + ' ' + 'completeExpanded';
+              }
+            });
           }
           return true;
         }
         return false;
       };
 
-      /*
-        * @ngdoc function
-        * @name velocity
-        * @description checks whether the app is using jquery or not, to excecute the 
-        * velocity commands corresponding to each case
-        * @param {Object} element
-        * @param {String} command
-        * @param {Object} options
-      */
+      /**
+       * checks whether the app is using jquery or not, to excecute the velocity commands corresponding to each case
+       * @param  {Object} element [description]
+       * @param  {String} command [description]
+       * @param  {Object} options [description]
+       * @return {[type]}         [description]
+       */
       var velocity = function (element, command, options){
         if (typeof Velocity == 'undefined'){
           if(options){
@@ -299,14 +271,12 @@ angular.module('sir-accordion', [])
         }
       };
       
-      /*
-        * @ngdoc function
-        * @name isParent
-        * @description Checks if a content is parent of another given 2 ids
-        * @param {String} parentId
-        * @param {String} childId
-        * @return {Boolean}
-      */
+      /**
+       * Checks if a content is parent of another given 2 ids
+       * @param  {String}  parentId [description]
+       * @param  {String}  childId  [description]
+       * @return {Boolean}          [description]
+       */
       var isParent = function (parentId,childId){
         do{
           if (getParentId(childId) == parentId)
@@ -317,13 +287,11 @@ angular.module('sir-accordion', [])
         return false;
       };
       
-      /*
-        * @ngdoc function
-        * @name trim
-        * @description removes leading and trailing blank spaces out of a String
-        * @param {String} str
-        * @return {String}
-      */
+      /**
+       * removes leading and trailing blank spaces out of a String
+       * @param  {String} str [description]
+       * @return {String}     [description]
+       */
       var trim = function (str) {
         var str = str.replace(/^\s\s*/, ''),
         ws = /\s/,
@@ -332,13 +300,11 @@ angular.module('sir-accordion', [])
         return str.slice(0, i + 1);
       };
       
-      /*
-        * @ngdoc function
-        * @name getDomContentsIndex
-        * @description Gets an domContent index inside contents array given its id
-        * @param {String} id
-        * @return {Integer} i
-      */
+      /**
+       * Gets an domContent index inside contents array given its id
+       * @param  {String} id [description]
+       * @return {Integer}    [description]
+       */
       var getDomContentsIndex = function(id){
         for (var i = domContents.length - 1; i >= 0; i--) {
           if (domContents[i].id == ('sac' + id) || domContents[i].id == (id))
@@ -347,13 +313,12 @@ angular.module('sir-accordion', [])
         return -1;
       };
 
-      /*
-        * @ngdoc function
-        * @name closeOpenChilds
-        * @description Checks domContents and closes the child elements given an id
-        * @param {Object} domContents
-        * @id {String} id
-      */
+      /**
+       * Checks domContents and closes the child elements given an id
+       * @param  {Object} domContents [description]
+       * @param  {String} id          [description]
+       * @return {[type]}             [description]
+       */
       var closeOpenChilds = function(domContents, id){
         for (var i = domContents.length - 1; i >= 0; i--) {
           if (isParent(id,domContents[i].id) && domContents[i].obj.className.indexOf('expanded') > -1){
@@ -363,12 +328,11 @@ angular.module('sir-accordion', [])
         };
       };
       
-      /*
-        * @ngdoc function
-        * @name expandProgrammatically
-        * @description Expands an element programmatically including its parents
-        * @param {String} id
-      */
+      /**
+       * Expands an element programmatically including its parents
+       * @param  {String} id [description]
+       * @return {[type]}    [description]
+       */
       var expandProgrammatically = function(id){
         if (id == '0'){
           collapseAll();
@@ -390,7 +354,7 @@ angular.module('sir-accordion', [])
         var levelsEqual = 0;
         var levelsDif = 0;
 
-        if (scope.config.autoCollapse){
+        if (scope.sirAccordion.config.autoCollapse){
           if(currentExpanded != '0'){
             for (var i = 0; (i < ids.length) || (i < currentIds.length) ; i++) {
               if(ids[i] == currentIds[i] && !levelsDif){
@@ -435,18 +399,16 @@ angular.module('sir-accordion', [])
             }
           }
           else{
-            if (scope.config.debug) console.log('%c Coordinate does not match an element',consoleHighLight);
+            if (scope.sirAccordion.config.debug) console.log('%c Coordinate does not match an element',consoleHighLight);
           }
           thisId = '';
         };
       };
 
-      /*
-        * @ngdoc function
-        * @name expandCollapseProgrammatically
-        * @description Expands or collapses an element programmatically depending of its current state
-        * @param {String} id
-      */
+      /**Expands or collapses an element programmatically depending of its current state
+       * @param  {String} id [description]
+       * @return {[type]}    [description]
+       */
       scope.expandCollapseProgrammatically = function(id){
         if (!animating){
           if(domContents[getDomContentsIndex(id)].obj.className.indexOf('expanded') != -1){
@@ -458,12 +420,11 @@ angular.module('sir-accordion', [])
         }    
       }
 
-      /*
-        * @ngdoc function
-        * @name collapseProgrammatically
-        * @description collapses an element programmatically including its childs
-        * @param {String} id
-      */
+      /**
+       * collapses an element programmatically including its childs
+       * @param  {String} id [description]
+       * @return {[type]}    [description]
+       */
       var collapseProgrammatically = function(id){
         if(domContents[getDomContentsIndex(id)].obj.className.indexOf('expanded') != -1){
           closeOpenChilds(domContents, id);
@@ -473,14 +434,13 @@ angular.module('sir-accordion', [])
         }
       }
 
-      /*
-        * @ngdoc function
-        * @name expandByLevel
-        * @description sets a timeout that expands an element by its level
-        * @param {Object} domContent
-        * @param {Object} domHeader
-        * @param {Integer} levelFix
-      */
+      /**
+       * sets a timeout that expands an element by its level
+       * @param  {Object} domContent  [description]
+       * @param  {Object} domHeader   [description]
+       * @param  {Integer} levelFix   [description]
+       * @return {[type]}             [description]
+       */
       var expandByLevel = function(domContent, domHeader, levelFix){
         $timeout(function(){
           toggleClass(domContent,'expanded');
@@ -488,11 +448,10 @@ angular.module('sir-accordion', [])
         }, animDur*(getLevel(domContent.id) - 1 + levelFix));
       }
 
-      /*
-        * @ngdoc function
-        * @name collapseAll
-        * @description closes the accordion
-      */
+      /**
+       * closes the accordion
+       * @return {[type]} [description]
+       */
       var collapseAll = function(){
         currentExpanded = '0';
         for (var i = domContents.length - 1; i >= 0; i--) {
@@ -503,23 +462,24 @@ angular.module('sir-accordion', [])
         };
       }
 
-      /*
-        * @ngdoc event
-        * @name sacCollapseAll
-        * @description collapses all accordion contents
-      */
+      /**
+       * collapses all accordion contents
+       * @param  {[type]} event [description]
+       * @return {[type]}       [description]
+       */
       scope.$on('sacCollapseAll', function (event) {
         collapseAll();
         event.defaultPrevented = true;
       });
 
-      /*
-        * @ngdoc event
-        * @name sacExpandAll
-        * @description expands all accordion contents
-      */
+      /**
+       * expands all accordion contents
+       * @param  {[type]} event [description]
+       * @param  {[type]} data  [description]
+       * @return {[type]}       [description]
+       */
       scope.$on('sacExpandAll', function (event,data) {
-        if (!scope.config.autoCollapse){
+        if (!scope.sirAccordion.config.autoCollapse){
           for (var i = 0; i <= domContents.length - 1; i++) {
             if(domContents[i].obj.className.indexOf('expanded') == -1){
               expandByLevel(domContents[i], domHeaders[i], 0);
@@ -529,25 +489,28 @@ angular.module('sir-accordion', [])
         event.defaultPrevented = true;
       });
 
-      /*
-        * @ngdoc event
-        * @name sacExpandContentById
-        * @description expands a content a all its parents given its id
-      */
+      /**
+       * expands a content a all its parents given its id
+       * @param  {[type]} event [description]
+       * @param  {[type]} id  [description]
+       * @return {[type]}       [description]
+       */
       scope.$on('sacExpandContentById', function (event,id){
         expandProgrammatically(id);
         event.defaultPrevented = true;
       });
 
-      /*
-        * @ngdoc event
-        * @name sacCollapseContentById
-        * @description collapses a content a all its children given its id
-      */
+      /**
+       * collapses a content a all its children given its id
+       * @param  {[type]} event [description]
+       * @param  {[type]} id  [description]
+       * @return {[type]}       [description]
+       */
       scope.$on('sacCollapseContentById', function (event, id){
         collapseProgrammatically(id);
         event.defaultPrevented = true;
       });
+
     }
-  }
+  };
 }]);

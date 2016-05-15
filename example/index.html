@@ -36,7 +36,7 @@
             <button ng-click="collapseAll()" class="btn btn-primary">Collapse all</button>
           </div>
           <div class="col-xs-12 col-sm-5">
-            <button ng-click="toggleAutoCollapse()" class="btn btn-primary" ng-cloak>toggle autoCollapse: {{accordionConfig.autoCollapse}}</button>
+            <button ng-click="toggleAutoCollapse()" class="btn btn-primary" ng-cloak>toggle autoCollapse: {{sirAccordion.config.autoCollapse}}</button>
           </div>
         </div>
         <br>
@@ -45,7 +45,7 @@
     <div class="content-wrap">
       <div class="row full-height">
         <div id="scroller" class="col-xs-12 col-sm-6 full-height scrollable">
-            <div sir-accordion collection="accordionArray" config="accordionConfig"></div>
+            <div sir-accordion></div>
         </div>
         <div class="hidden-xs col-sm-6">
           <div ng-include="'accordionContent/top/1-1.html'">

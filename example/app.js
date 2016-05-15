@@ -11,27 +11,36 @@ app.run([function() {
   }
 }]);
 
-app.controller('Principal',['$scope','$compile',function($scope,$compile){
+app.controller('Principal',['$scope','$compile', function($scope,$compile){
   $scope.activeArray = 1;
   $scope.coord = '';
-  $scope.accordionConfig = {
+
+  var accordionConfig = {
     debug: false,
     animDur: 300,
     expandFirst: false,
     autoCollapse: true,
-    watchInternalChanges: false,
+    watchInternalChanges: true,
+    headerAttrs: 'accordion-scroller',
     headerClass: '',
-    beforeHeader: '',
-    afterHeader: '',
+    beforeHeader: '<div class="sir-accordion-vertical-align"><div>',
+    afterHeader: '</div></div>',
     topContentClass: '',
     beforeTopContent: '',
-    afterTopContent: '<p><button class="btn btn-secondary"><strong>Back to top</strong></button></p>',
+    afterTopContent: '<p><button class="btn btn-secondary" ng-click="backToTop()"><strong>Back to top</strong></button></p>',
     bottomContentClass: '',
     beforeBottomContent: '',
     afterBottomContent: ''
   };
 
-  $scope.accordionArray = 
+  $scope.backToTop = function(){
+    var container = document.getElementById('scroller');
+    Velocity(container,'scroll', {offset: -container.scrollTop, container: container, duration: 300 });
+    //$scope.sirAccordion.collection[0].title = 'hola';
+    //$scope.sirAccordion.collection.pop();
+  };
+
+  var accordionCollection = 
   [
     {
       "title": "Sir accordion",
@@ -80,13 +89,17 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
     ]}
   ];
 
+  $scope.sirAccordion = {
+    collection: accordionCollection,
+    config: accordionConfig
+  };
+
   $scope.toggleAutoCollapse = function(){
     $scope.$broadcast('sacCollapseAll');
-    $scope.accordionConfig.autoCollapse = !$scope.accordionConfig.autoCollapse;
+    $scope.sirAccordion.config.autoCollapse = !$scope.sirAccordion.config.autoCollapse;
   };
 
   $scope.expandByCoord = function(coord){
-    console.log(coord);
     if(coord){
       $scope.$broadcast('sacExpandContentById', coord);
       return
@@ -106,4 +119,29 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
     $scope.$broadcast('sacCollapseAll');
   };
 
+}])
+.directive('accordionScroller', ['$timeout', function($timeout){
+  return{
+    restrict: 'A',
+    link: function(scope, element, attrs){
+      var container = document.getElementById('scroller');
+      var scrollTimeout = null;
+      element.on('click', function(){
+        if(!element.next().hasClass('completeExpanded')){
+          angular.element(container).on('scroll', function(){
+            $timeout.cancel(scrollTimeout);
+            angular.element(container).off();
+          });
+          scrollTimeout = $timeout(function() {
+            Velocity(element,'scroll', {offset: -container.scrollTop, container: container, duration: 400});
+          }, scope.sirAccordion.config.animDur);
+          
+        }
+      });
+
+      scope.$on('$destroy', function(){
+        element.off();
+      });
+    }
+  };
 }]);

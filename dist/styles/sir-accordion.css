@@ -21,7 +21,7 @@
   background-color: #2E4765; 
 }
 
-.sir-accordion-wrapper > div > .sir-accordion-header *{
+.sir-accordion-wrapper .sir-accordion-header {
   color: white;
 }
 
@@ -30,7 +30,7 @@
   width: 100%;
 }
 
-.sir-accordion-group > div > .sir-accordion-header { 
+.sir-accordion-group .sir-accordion-header { 
   background-color: #f0f0f0;
 }
 
@@ -46,11 +46,11 @@
   background-color: #2860A8; 
 }
 
-.sir-accordion-group .sir-accordion-header *{
+.sir-accordion-group .sir-accordion-header {
   color: black;
 }
 
-.sir-accordion-group .sir-accordion-header.active-header *{
+.sir-accordion-group .sir-accordion-header.active-header {
   color: white;
 }
 
