@@ -61,13 +61,15 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 *   VelocityJS
 
 ##**Currently working on**
-*   I'll try to set the directive scope to false, to get rid of the isolated scope, getting the collection and the config object as attrs, and all event would then be methods.
 *   Saving current state of the accordion
 
 ##**Known issues**
 *   No option for mantaining current state of the accordion when updating the collection.
 
 ##**Changelog**
+
+###V1.2.1
+*   New `sir-accordion-leaf` class to `sir-accordion-content` if is a leaf element
 
 ###V1.2.0
 *   Fixes issue when using multiple instances of sirAccordion

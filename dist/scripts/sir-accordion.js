@@ -120,13 +120,18 @@ angular.module('sir-accordion', [])
         header = scope.config.beforeHeader + collection[currentIndex].title + scope.config.afterHeader;
         domContents.push(uniqueIndex);
 
+        var leafCLass = '';
+        if (!angular.isArray(collection[currentIndex].subCollection) || !collection[currentIndex].subCollection.length){
+          leafCLass = 'sir-accordion-leaf';
+        }
+
         item = 
         '<div class="sac' + uniqueIndex + '" >' 
           + '<div class="sir-accordion-header ' + scope.config.headerClass
           + '" ng-click="expandCollapseProgrammatically(\''+ uniqueIndex+ '\')">'
             + header
           + '</div>'
-          + '<div class="sir-accordion-content">'
+          + '<div class="sir-accordion-content ' + leafCLass + '">' 
             + '<div>'
               + '<div class="' + scope.config.topContentClass + '">'
                 + setContent(scope.config.beforeTopContent, collection[currentIndex].topContent, scope.config.afterTopContent)
