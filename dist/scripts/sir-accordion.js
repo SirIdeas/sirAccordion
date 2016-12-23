@@ -254,8 +254,15 @@ angular.module('sir-accordion', [])
           if (toggleClass == 'expanded'){
             domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
             velocity(domObjectChild, 'finish');
-            velocity(domObjectChild, 'slideUp', {display: null, duration: animDur
-              ,complete: function(){domObjectChild.style.height = '0px'}});
+            velocity(domObjectChild, 'slideUp', {display: null, duration: animDur,
+              complete: function(){
+                domObjectChild.style.height = '0px';
+                var collapsingCoords = domContent.id.replace('sac', '');
+                if (getLevel(currentExpanded) === getLevel(collapsingCoords) - 1){
+                  scope.$emit('sacCollapseEnd', collapsingCoords);
+                }
+              }
+            });
           }
           return true;
         }
@@ -265,9 +272,15 @@ angular.module('sir-accordion', [])
           if (toggleClass == 'expanded'){
             domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
             velocity(domObjectChild, 'finish');
-            velocity(domObjectChild, 'slideDown', {delay: 0, duration: animDur
-              , progress: function(){domContent.obj.style.height = 'auto'}
-              , begin: function(){domContent.obj.style.height = '0px';domObjectChild.style.height = 'auto';}});
+            velocity(domObjectChild, 'slideDown', {delay: 0, duration: animDur,
+              progress: function(){domContent.obj.style.height = 'auto'},
+              begin: function(){domContent.obj.style.height = '0px';domObjectChild.style.height = 'auto';},
+              complete: function(){
+                if (domContent.id.replace('sac', '') === currentExpanded){
+                  scope.$emit('sacExpandEnd', currentExpanded);
+                }
+              }
+            });
           }
           return true;
         }
@@ -432,7 +445,10 @@ angular.module('sir-accordion', [])
           };
           if (domContents[getDomContentsIndex(thisId)]){
             if(domContents[getDomContentsIndex(thisId)].obj.className.indexOf('expanded') == -1){
-              expandByLevel(domContents[getDomContentsIndex(thisId)], domHeaders[getDomContentsIndex(thisId)], levelFix);
+              expandByLevel(domContents[getDomContentsIndex(thisId)], domHeaders[getDomContentsIndex(thisId)], levelFix)
+              if (i === ids.length - 1){
+                scope.$emit('sacExpandStart', thisId);
+              }
               currentExpanded = thisId;
             }
             else{
@@ -474,6 +490,8 @@ angular.module('sir-accordion', [])
           closeOpenChilds(domContents, id);
           toggleClass(domContents[getDomContentsIndex(id)],'expanded');
           toggleClass(domHeaders[getDomContentsIndex(id)], 'active-header');
+          console.log('sacCollapseStart ' + currentExpanded);
+          scope.$emit('sacCollapseStart', currentExpanded);
           currentExpanded = getParentId(id);
         }
       }

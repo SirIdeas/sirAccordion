@@ -51,6 +51,8 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 *   **Bower installable package**. To install from bower use `bower install sir-accordion`.
 *   **Events**.
     *   When the accordion is donde loading you can catch the event like this `$scope.$on('sacDoneLoading', function ($event) {})`.
+    *   When an element is expanded `sacExpandStart` and `sacExpandEnd` are emitted with the coordinates of the element.
+    *   When an element is collapsed `sacCollapseStart` and `sacCollapseEnd` are emitted with the coordinates of the element.
     *   For expanding any content from your AngularJs App `$scope.$broadcast('sacExpandContentById','1-1-3')` where the second parameter is the content coordinates.
     *   For collapsing any content from your AngularJs App `$scope.$broadcast('sacCollapseContentById','1-1-3')` where the second parameter is the content coordinates.
     *   For collapsing all contents `$scope.$broadcast('sacCollapseAll');`
@@ -67,6 +69,10 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 *   No option for mantaining current state of the accordion when updating the collection.
 
 ##**Changelog**
+
+###V1.2.2
+*   New events `sacExpandStart` and `sacExpandEnd`, emitting every time a content expands.
+*   New events `sacCollapseStart` and `sacCollapseEnd`, emitting every time a content collapses.
 
 ###V1.2.1
 *   New `sir-accordion-leaf` class to `sir-accordion-content` if is a leaf element
