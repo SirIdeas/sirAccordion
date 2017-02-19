@@ -70,6 +70,13 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 
 ##**Changelog**
 
+###V1.2.4
+*   Major Styles Improvement.
+*   Unique classes for top and bottom contents added automatically
+
+###V1.2.3
+*   Style improvement.
+
 ###V1.2.2
 *   New events `sacExpandStart` and `sacExpandEnd`, emitting every time a content expands.
 *   New events `sacCollapseStart` and `sacCollapseEnd`, emitting every time a content collapses.

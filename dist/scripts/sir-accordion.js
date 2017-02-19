@@ -18,8 +18,8 @@ angular.module('sir-accordion', [])
         autoCollapse : typeof $scope.config.autoCollapse != 'undefined' ? $scope.config.autoCollapse : true,
         watchInternalChanges : typeof $scope.config.watchInternalChanges != 'undefined' ? $scope.config.watchInternalChanges : false,
         headerClass: $scope.config.headerClass || '',
-        beforeHeader: $scope.config.beforeHeader || '<div class="sir-accordion-vertical-align"><div>',
-        afterHeader: $scope.config.afterHeader || '</div></div>',
+        beforeHeader: $scope.config.beforeHeader || '',
+        afterHeader: $scope.config.afterHeader || '',
         topContentClass: $scope.config.topContentClass || '',
         beforeTopContent: $scope.config.beforeTopContent || '',
         afterTopContent: $scope.config.afterTopContent || '',
@@ -129,12 +129,14 @@ angular.module('sir-accordion', [])
         '<div class="sac' + uniqueIndex + '" >' 
           + '<div class="sir-accordion-header ' + scope.config.headerClass
           + '" ng-click="expandCollapseProgrammatically(\''+ uniqueIndex+ '\')">'
-            + header
+            + '<div class="sir-accordion-vertical-align">'
+              + header
+            + '</div>'
           + '</div>'
           + '<div class="sir-accordion-content ' + leafCLass + '">' 
             + '<div>'
               + '<div class="' + scope.config.topContentClass + '">'
-                + setContent(scope.config.beforeTopContent, collection[currentIndex].topContent, scope.config.afterTopContent)
+                + setContent(scope.config.beforeTopContent, collection[currentIndex].topContent, scope.config.afterTopContent, 'sac-top-' + uniqueIndex)
               + '</div>';
         
         if (currentIndex == 0){
@@ -149,12 +151,12 @@ angular.module('sir-accordion', [])
         if (angular.isArray(collection[currentIndex].subCollection) && collection[currentIndex].subCollection.length){
           item = item + itemRegen(collection[currentIndex].subCollection, uniqueIndex, 0, level + 1);
           item = item + '</div><div class="' + scope.config.bottomContentClass + '">'
-            + setContent(scope.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.config.afterBottomContent)
+            + setContent(scope.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.config.afterBottomContent, 'sac-bottom-' + uniqueIndex)
           + '</div></div></div></div>';
         }
         else{
           item = item + '<div class="' + scope.config.bottomContentClass + '">'
-            + setContent(scope.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.config.afterBottomContent)
+            + setContent(scope.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.config.afterBottomContent, 'sac-bottom-' + uniqueIndex)
           + '</div></div></div></div>';
         }
         return item + itemRegen(collection, parentIndex, currentIndex + 1, level);
@@ -169,14 +171,14 @@ angular.module('sir-accordion', [])
         * @param {String} post
         * @return {String} content
       */
-      var setContent = function(pre,content,post) {
+      var setContent = function(pre,content,post, uniqueIndex) {
+        if (!uniqueIndex){
+          uniqueIndex = '';
+        }
         if (!content){
           content = '';
         }
-        else{
-          content = pre + content + post;
-        }
-        return content;
+        return pre + '<div class="'+ uniqueIndex + '">' +  content + '</div>' + post;
       };
       
       /*
