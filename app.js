@@ -22,10 +22,10 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
     watchInternalChanges: false,
     headerClass: '',
     beforeHeader: '',
-    afterHeader: '',
+    afterHeader: '<div class="drop-icon-wrapper sir-accordion-vertical-align"><i class="glyphicon glyphicon-chevron-down"></i></div>',
     topContentClass: '',
     beforeTopContent: '',
-    afterTopContent: '<div><strong>this is the afterTopContent attr</strong></div>',
+    afterTopContent: '<div><p><small>I repeat through all accordion</small></p></div>',
     bottomContentClass: '',
     beforeBottomContent: '',
     afterBottomContent: ''
@@ -36,7 +36,7 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
     {"title":"Level 1","topContent":"This is the top content attr","bottomContent":null,"subCollection":[
       {"title":"This is a Level 2 Header!","topContent":"This is some nice text right here","bottomContent":null},
       {"title":"Level 2","topContent":"<pre>And you can ad Html code directly to the content too</pre>","bottomContent":null},
-      {"title":"This Level 2 Header has another subCollection","topContent":null,"bottomContent":"This is the bottom content attr :)","subCollection":[
+      {"title":"This Level 2 Header has another subCollection","topContent":null,"bottomContent":"<p>You can choose to put text after the subcollection if you prefer (or both before and after)</p>","subCollection":[
         {"title":"And You got to the Level 3","topContent":"<span>Awesome text or HTML Content Here</span>"},
         {"title":"Level 3","topContent":"You can also add AngularJS expressions","subCollection":[
           {"title":"And another Level, Level 4","topContent":"<p>Awesome text or HTML Content Here</p>"},
