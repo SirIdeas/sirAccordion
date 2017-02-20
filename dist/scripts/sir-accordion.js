@@ -28,7 +28,11 @@ angular.module('sir-accordion', [])
         afterBottomContent: $scope.config.afterBottomContent || ''
       };
     }]),
-    link: function(scope,element) {
+    link: function(scope,element, attrs) {
+      var accordionId = '';
+      if (attrs.id){
+        accordionId = attrs.id;
+      }
       var animDur = scope.config.animDur;
       var header = '';
       var item = '';
@@ -178,7 +182,7 @@ angular.module('sir-accordion', [])
         if (!content){
           content = '';
         }
-        return pre + '<div class="'+ uniqueIndex + '">' +  content + '</div>' + post;
+        return pre + '<div id="'+ accordionId + uniqueIndex + '">' +  content + '</div>' + post;
       };
       
       /*

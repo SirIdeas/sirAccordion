@@ -70,6 +70,10 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 
 ##**Changelog**
 
+###V1.2.5
+*   Classes automatically added for top and bottom content now will be ids.
+*   Unique ids for top and bottom content will have the accordion element id if present.
+
 ###V1.2.4
 *   Major Styles Improvement.
 *   Unique classes for top and bottom contents added automatically
@@ -120,58 +124,4 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
     *   **Directive new name**: sirAccordion (old was sirNgAccordion).
     *   **Event new name**: sacCollapseAll (old was collapseAll).
     *   **Event new name**: sacExpandAll (old was ExpandAll).
-
-
-###V0.9.4
-*   Fixed bower version number.
-*   Readme Updated.
-
-###V0.9.3
-*   Fixed issue where updating the collection results in watchers creating over and over again.
-
-###V0.9.2
-*   Fixed accordion not updating when changing internal attribute of the collection (now as an option 'watchInternalChanges', should be false if not needed for better performance).
-
-###V0.9.1
-*   Fixed issue when the accordion's width changes and autoCollapse is disabled, the height was not setting to auto to all the contents except the last opened.
-
-###V0.9.0
-
-*   Updated demo page.
-*   Flag for auto collapse now working.
-*   Animation now customizable (min value is 200 ms, any lower should disable animations).
-*   Code optimized.
-*   Core algoritm changed.
-
-###V0.8.2
-
-*   Readme updated.
-*   Fixed issue when sir-accordion-group objects would not get 100% width.
-
-###V0.8.1
-
-*   Fixed bug where couldn't get event.currentTarget when header was clicked.
-
-###V0.8.0
-
-*   Dinamic height of the contents for responsive behavor.
-*   Clicking a currently animating header has no effect, no longer results on height misscalculation
-*   Code organized.
-*   Fixed bug when the accordion gets a grong height from the content (overflow:auto added).
-
-###V0.6.1
-
-*   Work on animations.
-*   Updated demo page.
-
-###V0.5.1
-
-*   SubCollection array empty validation.
-*   Fix bug when jQuery is not present.
-*   Dependencies Fix.
-*   Now with demo app.
-
-###V0.5.0
-
-*   Current work added to github.
 
