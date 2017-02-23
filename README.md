@@ -70,6 +70,9 @@ Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for *
 
 ##**Changelog**
 
+###V1.2.6
+*   Fix automatically added ids not applying the way they should.
+
 ###V1.2.5
 *   Classes automatically added for top and bottom content now will be ids.
 *   Unique ids for top and bottom content will have the accordion element id if present.
