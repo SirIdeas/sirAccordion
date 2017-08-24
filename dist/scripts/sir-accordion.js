@@ -1,39 +1,16 @@
 'use strict';
 angular.module('sir-accordion', [])
 .directive('sirAccordion',['$compile','$timeout', function($compile,$timeout){
-  var template='';
   return {
     restrict: 'A',
-    scope: {
-      collection: '=',
-      config: '=?',
-      data: '=?'
-    },
-    template: template,
-    controller: ('sirAccordionCtrl',['$scope',function ($scope) {
-      $scope.config = {
-        debug: typeof $scope.config.debug != 'undefined' ? $scope.config.debug : false,
-        animDur : ($scope.config.animDur >= 0 && document.body.firstElementChild) ? $scope.config.animDur : 0,
-        expandFirst: typeof $scope.config.expandFirst != 'undefined' ? $scope.config.expandFirst : false,
-        autoCollapse : typeof $scope.config.autoCollapse != 'undefined' ? $scope.config.autoCollapse : true,
-        watchInternalChanges : typeof $scope.config.watchInternalChanges != 'undefined' ? $scope.config.watchInternalChanges : false,
-        headerClass: $scope.config.headerClass || '',
-        beforeHeader: $scope.config.beforeHeader || '',
-        afterHeader: $scope.config.afterHeader || '',
-        topContentClass: $scope.config.topContentClass || '',
-        beforeTopContent: $scope.config.beforeTopContent || '',
-        afterTopContent: $scope.config.afterTopContent || '',
-        bottomContentClass: $scope.config.bottomContentClass || '',
-        beforeBottomContent: $scope.config.beforeBottomContent || '',
-        afterBottomContent: $scope.config.afterBottomContent || ''
-      };
-    }]),
+    scope: true,
+    controller: ('sirAccordionCtrl',['$scope',function ($scope) {}]),
     link: function(scope,element, attrs) {
       var accordionId = '';
       if (attrs.id){
         accordionId = attrs.id;
       }
-      var animDur = scope.config.animDur;
+      var animDur = scope.sirAccordion.config.animDur;
       var header = '';
       var item = '';
       var uniqueIndex = '';
@@ -50,7 +27,7 @@ angular.module('sir-accordion', [])
         * @description watches changes in the Array provided to build the accordion
       */
       scope.$watch('collection', function() {
-        if (!angular.isArray(scope.collection)){
+        if (!angular.isArray(scope.sirAccordion.collection)){
           element.html('No collection found');
           return;
         }
@@ -63,7 +40,7 @@ angular.module('sir-accordion', [])
         domContents = [];
         animating = false;
         currentExpanded = '0';
-        accordionHTML = itemRegen(scope.collection, 0, 0, 0);
+        accordionHTML = itemRegen(scope.sirAccordion.collection, 0, 0, 0);
 
         element.html('');
 
@@ -78,10 +55,10 @@ angular.module('sir-accordion', [])
         setObjectTree();
 
         scope.$emit('sacDoneLoading');
-        if (scope.config.expandFirst){
+        if (scope.sirAccordion.config.expandFirst){
           expandProgrammatically('1');
         }
-      },scope.config.watchInternalChanges);
+      },scope.sirAccordion.config.watchInternalChanges);
 
 
       /*
@@ -122,7 +99,7 @@ angular.module('sir-accordion', [])
         
         uniqueIndex = level ? String(parentIndex) + '-' + String(currentIndex + 1) : String(currentIndex + 1);
         var thisUniqueIndex = uniqueIndex;
-        header = scope.config.beforeHeader + collection[currentIndex].title + scope.config.afterHeader;
+        header = scope.sirAccordion.config.beforeHeader + collection[currentIndex].title + scope.sirAccordion.config.afterHeader;
         domContents.push(uniqueIndex);
 
         var leafCLass = '';
@@ -132,7 +109,7 @@ angular.module('sir-accordion', [])
 
         item = 
         '<div class="sac' + uniqueIndex + '" >' 
-          + '<div class="sir-accordion-header ' + scope.config.headerClass
+          + '<div class="sir-accordion-header ' + scope.sirAccordion.config.headerClass
           + '" ng-click="expandCollapseProgrammatically(\''+ uniqueIndex+ '\')">'
             + '<div class="sir-accordion-vertical-align">'
               + header
@@ -140,8 +117,8 @@ angular.module('sir-accordion', [])
           + '</div>'
           + '<div class="sir-accordion-content ' + leafCLass + '">' 
             + '<div>'
-              + '<div class="' + scope.config.topContentClass + '">'
-                + setContent(scope.config.beforeTopContent, collection[currentIndex].topContent, scope.config.afterTopContent, 'sac-top-' + thisUniqueIndex)
+              + '<div class="' + scope.sirAccordion.config.topContentClass + '">'
+                + setContent(scope.sirAccordion.config.beforeTopContent, collection[currentIndex].topContent, scope.sirAccordion.config.afterTopContent, 'sac-top-' + thisUniqueIndex)
               + '</div>';
         
         if (currentIndex == 0){
@@ -155,13 +132,13 @@ angular.module('sir-accordion', [])
 
         if (angular.isArray(collection[currentIndex].subCollection) && collection[currentIndex].subCollection.length){
           item = item + itemRegen(collection[currentIndex].subCollection, uniqueIndex, 0, level + 1);
-          item = item + '</div><div class="' + scope.config.bottomContentClass + '">'
-            + setContent(scope.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.config.afterBottomContent, 'sac-bottom-' + thisUniqueIndex)
+          item = item + '</div><div class="' + scope.sirAccordion.config.bottomContentClass + '">'
+            + setContent(scope.sirAccordion.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.sirAccordion.config.afterBottomContent, 'sac-bottom-' + thisUniqueIndex)
           + '</div></div></div></div>';
         }
         else{
-          item = item + '<div class="' + scope.config.bottomContentClass + '">'
-            + setContent(scope.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.config.afterBottomContent, 'sac-bottom-' + thisUniqueIndex)
+          item = item + '<div class="' + scope.sirAccordion.config.bottomContentClass + '">'
+            + setContent(scope.sirAccordion.config.beforeBottomContent, collection[currentIndex].bottomContent, scope.sirAccordion.config.afterBottomContent, 'sac-bottom-' + thisUniqueIndex)
           + '</div></div></div></div>';
         }
         return item + itemRegen(collection, parentIndex, currentIndex + 1, level);
@@ -195,11 +172,11 @@ angular.module('sir-accordion', [])
         * @return
       */
       var chainCollapse = function(toCollapse,stopLevel) {
-        if (scope.config.debug) console.log('Chain collapsing');
+        if (scope.sirAccordion.config.debug) console.log('Chain collapsing');
         if (getLevel(toCollapse) <= stopLevel) return;
         do {
           for (var i = domContents.length - 1; i >= 0; i--) {
-            if (scope.config.autoCollapse && domContents[i].id == ('sac' + toCollapse)){
+            if (scope.sirAccordion.config.autoCollapse && domContents[i].id == ('sac' + toCollapse)){
               toggleClass(domContents[i],'expanded');
               toggleClass(domHeaders[i],'active-header');
             }
@@ -257,7 +234,7 @@ angular.module('sir-accordion', [])
         var domObjectChild = null;
         if (domContent.obj.className.indexOf(toggleClass) > -1){
           domContent.obj.className = domContent.obj.className.replace(toggleClass,'');
-          if (scope.config.debug) console.log('removing class ' + domContent.id);
+          if (scope.sirAccordion.config.debug) console.log('removing class ' + domContent.id);
           if (toggleClass == 'expanded'){
             domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
             velocity(domObjectChild, 'finish');
@@ -275,7 +252,7 @@ angular.module('sir-accordion', [])
         }
         else{
           domContent.obj.className = trim(domContent.obj.className) + ' ' + toggleClass;
-          if (scope.config.debug) console.log('adding class ' + domContent.id);
+          if (scope.sirAccordion.config.debug) console.log('adding class ' + domContent.id);
           if (toggleClass == 'expanded'){
             domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
             velocity(domObjectChild, 'finish');
@@ -415,7 +392,7 @@ angular.module('sir-accordion', [])
         var levelsEqual = 0;
         var levelsDif = 0;
 
-        if (scope.config.autoCollapse){
+        if (scope.sirAccordion.config.autoCollapse){
           if(currentExpanded != '0'){
             for (var i = 0; (i < ids.length) || (i < currentIds.length) ; i++) {
               if(ids[i] == currentIds[i] && !levelsDif){
@@ -463,7 +440,7 @@ angular.module('sir-accordion', [])
             }
           }
           else{
-            if (scope.config.debug) console.log('%c Coordinate does not match an element',consoleHighLight);
+            if (scope.sirAccordion.config.debug) console.log('%c Coordinate does not match an element',consoleHighLight);
           }
           thisId = '';
         };
@@ -549,7 +526,7 @@ angular.module('sir-accordion', [])
         * @description expands all accordion contents
       */
       scope.$on('sacExpandAll', function (event,data) {
-        if (!scope.config.autoCollapse){
+        if (!scope.sirAccordion.config.autoCollapse){
           for (var i = 0; i <= domContents.length - 1; i++) {
             if(domContents[i].obj.className.indexOf('expanded') == -1){
               expandByLevel(domContents[i], domHeaders[i], 0);

@@ -14,7 +14,8 @@ app.run([function() {
 app.controller('Principal',['$scope','$compile',function($scope,$compile){
   $scope.activeArray = 1;
   $scope.coord = '';
-  $scope.accordionConfig = {
+
+  var accordionConfig = {
     debug: false,
     animDur: 300,
     expandFirst: false,
@@ -31,7 +32,7 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
     afterBottomContent: ''
   };
 
-  $scope.accordionArray = 
+  var accordionCollection = 
   [
     {"title":"Level 1","topContent":"This is the top content attr","bottomContent":null,"subCollection":[
       {"title":"This is a Level 2 Header!","topContent":"This is some nice text right here","bottomContent":null},
@@ -81,9 +82,14 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
     ]}
   ];
 
+  $scope.sirAccordion = {
+    collection: accordionCollection,
+    config: accordionConfig
+  };
+
   $scope.toggleAutoCollapse = function(){
     $scope.$broadcast('sacCollapseAll');
-    $scope.accordionConfig.autoCollapse = !$scope.accordionConfig.autoCollapse;
+    $scope.sirAccordion.config.autoCollapse = !$scope.sirAccordion.config.autoCollapse;
   };
 
   $scope.expandByCoord = function(){

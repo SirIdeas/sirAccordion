@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="description" content="">
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+  
   <link rel="stylesheet" href="../dist/styles/sir-accordion.css"/>
   <link rel="stylesheet" href="styles.css"/>
 </head>
@@ -32,11 +32,11 @@
             </form>
           </div>
           <div class="col-xs-7 col-sm-4 no-padding-left">
-            <button ng-click="expandAll()" class="btn btn-primary" ng-class="{'disabled': accordionConfig.autoCollapse}">Expand all</button>
+            <button ng-click="expandAll()" class="btn btn-primary" ng-class="{'disabled': sirAccordion.config.autoCollapse}">Expand all</button>
             <button ng-click="collapseAll()" class="btn btn-primary">Collapse all</button>
           </div>
           <div class="col-xs-12 col-sm-5">
-            <button ng-click="toggleAutoCollapse()" class="btn btn-primary" ng-cloak>toggle autoCollapse: {{accordionConfig.autoCollapse}}</button>
+            <button ng-click="toggleAutoCollapse()" class="btn btn-primary" ng-cloak>toggle autoCollapse: {{sirAccordion.config.autoCollapse}}</button>
           </div>
         </div>
         <br>
@@ -45,7 +45,7 @@
     <div class="content-wrap">
       <div class="row full-height">
         <div id="scroller" class="col-xs-12 col-sm-6 full-height scrollable">
-            <div id="SAC1" sir-accordion collection="accordionArray" config="accordionConfig"></div>
+            <div id="SAC1" sir-accordion collection="accordionArray" config="sirAccordion.config"></div>
         </div>
         <div class="hidden-xs col-sm-6">
           <blockquote>
@@ -66,6 +66,7 @@
       </div>
     </div>
   </div>
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
   <script src="../bower_components/fastclick/lib/fastclick.js"></script>
   <script src="../bower_components/angular/angular.js"></script>
   <script src="../bower_components/velocity/velocity.min.js"></script>
