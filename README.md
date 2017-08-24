@@ -1,8 +1,6 @@
 #**sirAccordion** for AngularJS
 
-**VERSION 1 RELEASED!**
-
-Awesome dynamic, recursive, customizable and multilevel **Accordion Menu** for **AngurlarJS**, that builds up from a **JSON object** and an optional configuration object.
+Dynamic, customizable and multilevel **Accordion Menu** for **AngurlarJS**. Builds up from a **JSON object** and an optional configuration object.
 **You can download the project for a live demo in the example folder (don't forget to bower install dependencies) and for better understanding.**
 
 ##[sir Accordion Online Demo](http://sirideas.github.io/sirAccordion/)
