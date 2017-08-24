@@ -474,7 +474,7 @@ angular.module('sir-accordion', [])
           closeOpenChilds(domContents, id);
           toggleClass(domContents[getDomContentsIndex(id)],'expanded');
           toggleClass(domHeaders[getDomContentsIndex(id)], 'active-header');
-          console.log('sacCollapseStart ' + currentExpanded);
+          //console.log('sacCollapseStart ' + currentExpanded);
           scope.$emit('sacCollapseStart', currentExpanded);
           currentExpanded = getParentId(id);
         }

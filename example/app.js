@@ -35,7 +35,7 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
   var accordionCollection = 
   [
     {"title":"Level 1","topContent":"This is the top content attr","bottomContent":null,"subCollection":[
-      {"title":"This is a Level 2 Header!","topContent":"This is some nice text right here","bottomContent":null},
+        { "title": "This is a Level 2 Header!", "topContent":"This is some nice text right here and a button with 'ng-click' <button class=\"btn btn-primary\" ng-click=\"clickMe()\">Click me!</button>","bottomContent":null},
       {"title":"Level 2","topContent":"<pre>And you can ad Html code directly to the content too</pre>","bottomContent":null},
       {"title":"This Level 2 Header has another subCollection","topContent":null,"bottomContent":"<p>You can choose to put text after the subcollection if you prefer (or both before and after)</p>","subCollection":[
         {"title":"And You got to the Level 3","topContent":"<span>Awesome text or HTML Content Here</span>"},
@@ -81,6 +81,11 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
       {"title":"Level 2","topContent":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmodtempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit essecillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat nonproident, sunt in culpa qui officia deserunt mollit anim id est laborum.","bottomContent":null}
     ]}
   ];
+
+  $scope.clickMe = function(){
+    console.log('Hi I\'m Jeff');
+    alert('Hi!');
+  };
 
   $scope.sirAccordion = {
     collection: accordionCollection,
