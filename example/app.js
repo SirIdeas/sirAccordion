@@ -113,4 +113,12 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
     $scope.$broadcast('sacCollapseAll');
   };
 
+  $scope.$on('sacExpandStart', function(data){
+    console.log('sacExpandStart');
+  })
+
+  $scope.$on('sacExpandEnd', function (data) {
+    console.log('sacExpandEnd');
+  })
+
 }]);
