@@ -44,11 +44,8 @@ blockquote{
 }
 
 .drop-icon-wrapper {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
   font-size: 18px;
+  margin-left: auto;
 }
 
 .drop-icon-wrapper i{
@@ -58,4 +55,9 @@ blockquote{
 
 .active-header .drop-icon-wrapper i{
   transform: rotate(180deg); 
+}
+
+.sir-accordion-header {
+  display: flex;
+  align-items: center;
 }
