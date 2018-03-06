@@ -67,7 +67,8 @@ Dynamic, customizable and multilevel **Accordion Menu** for **AngurlarJS**. Buil
 
 ##**Changelog**
 
-###V1.2.7
+###V1.3.0
+*   Now the scope is not isolated, making it easier to use and allowing to use `ng-click` and other interactions directly in the template
 *   Removed the vertical aligment in .sir-accordion-header
 
 ###V1.2.6
