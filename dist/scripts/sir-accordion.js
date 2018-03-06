@@ -111,9 +111,7 @@ angular.module('sir-accordion', [])
         '<div class="sac' + uniqueIndex + '" >' 
           + '<div class="sir-accordion-header ' + scope.sirAccordion.config.headerClass
           + '" ng-click="expandCollapseProgrammatically(\''+ uniqueIndex+ '\')">'
-            + '<div class="sir-accordion-vertical-align">'
-              + header
-            + '</div>'
+            + header
           + '</div>'
           + '<div class="sir-accordion-content ' + leafCLass + '">' 
             + '<div>'

@@ -46,20 +46,3 @@
 .sir-accordion-content > div > div{
   overflow: auto;
 }
-
-.sir-accordion-vertical-align{
-  height: 100%;
-}
-
-.sir-accordion-vertical-align:before{
-  content: '';
-  height: 100%;
-  vertical-align: middle;
-  display: inline-block;
-}
-
-.sir-accordion-vertical-align > * {
-  margin: 0;        
-  vertical-align: middle;
-  display: inline-block;
-}

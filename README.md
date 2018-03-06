@@ -41,7 +41,6 @@ Dynamic, customizable and multilevel **Accordion Menu** for **AngurlarJS**. Buil
             beforeBottomContent: '', //Adding code or text before all the topContent if present on item
             afterBottomContent: '' //Adding code or text before all the topContent if present on item
         };
-*   **Isolated Scope:** The directive has an isolated scope but you can pass any scope you'll need to handle inside the accordion   with the 'data' attr. 
 *   **MultiLevel:** the recursive algoritm allows to add as many levels to the accordion as you would like to.
 *   **VelocityJS:** sirAccordion uses [VelocityJS](https://github.com/julianshapiro/velocity) for the slide up and down animations.
 *   **ie8 Compatible:** please kill ie8.
@@ -67,6 +66,9 @@ Dynamic, customizable and multilevel **Accordion Menu** for **AngurlarJS**. Buil
 *   No option for mantaining current state of the accordion when updating the collection.
 
 ##**Changelog**
+
+###V1.2.7
+*   Removed the vertical aligment in .sir-accordion-header
 
 ###V1.2.6
 *   Fix automatically added ids not applying the way they should.
