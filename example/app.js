@@ -82,14 +82,14 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
     ]}
   ];
 
-  $scope.clickMe = function(){
-    console.log('Hi I\'m Jeff');
-    alert('Hi!');
-  };
-
   $scope.sirAccordion = {
     collection: accordionCollection,
     config: accordionConfig
+  };
+
+  $scope.clickMe = function(){
+    console.log('Hi I\'m Jeff');
+    alert('Hi!');
   };
 
   $scope.toggleAutoCollapse = function(){
@@ -99,7 +99,7 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
 
   $scope.expandByCoord = function(){
     $scope.$broadcast('sacExpandContentById', $scope.coord);
-  }
+  };
 
   $scope.collapseByCoord = function(){
     $scope.$broadcast('sacCollapseContentById', $scope.coord);
