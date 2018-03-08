@@ -14,7 +14,7 @@ Dynamic, customizable and multilevel **Accordion Menu** for **AngurlarJS**. Buil
 *   **Easy use AngularJS Directive:** you just need to add the js and css files, add the *'sir-accordion'* module to the AngularJS app and call the directive like this:
 
         //Code for the html directive
-        <div sir-accordion collection="collection" config="accordionConfig"></div>
+        <div sir-accordion collection="{{sirAccordion.collection}}" config="sirAccordion.config"></div>
 
         //Code for the Angular module
         .module('mainModule', ['sir-accordion'])
@@ -60,7 +60,9 @@ Dynamic, customizable and multilevel **Accordion Menu** for **AngurlarJS**. Buil
 *   VelocityJS
 
 ##**Currently working on**
-*   Saving current state of the accordion
+*   Revision of the necessary config attrs
+*   Config attrs validation
+*   Maintining current state of the accordion when updating values of the data collection.
 
 ##**Known issues**
 *   No option for mantaining current state of the accordion when updating the collection.
@@ -68,8 +70,10 @@ Dynamic, customizable and multilevel **Accordion Menu** for **AngurlarJS**. Buil
 ##**Changelog**
 
 ###V1.3.0
-*   Now the scope is not isolated, making it easier to use and allowing to use `ng-click` and other interactions directly in the template
-*   Removed the vertical aligment in .sir-accordion-header
+*   **Breaking changes**
+    *   In order to remove the necessity of an isolated scope, this is the new way of declaring the directive `<div sir-accordion collection="{{sirAccordion.collection}}" config="sirAccordion.config"></div>`.
+*   Now the scope is not isolated, making it easier to use and allowing to use `ng-click` and other interactions directly in the template.
+*   Removed the default vertical aligment in .sir-accordion-header.
 
 ###V1.2.6
 *   Fix automatically added ids not applying the way they should.

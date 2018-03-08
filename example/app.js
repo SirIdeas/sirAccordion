@@ -11,7 +11,7 @@ app.run([function() {
   }
 }]);
 
-app.controller('Principal',['$scope','$compile',function($scope,$compile){
+app.controller('Principal',['$scope','$compile','$timeout',function($scope,$compile,$timeout){
   $scope.activeArray = 1;
   $scope.coord = '';
 
@@ -87,6 +87,11 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
     config: accordionConfig
   };
 
+  $timeout(function() {
+    //$scope.sirAccordion.collection[0].title = 'hola';
+    $scope.sirAccordion.collection[0].subCollection[0].title = 'hola';
+  }, 2000);
+
   $scope.clickMe = function(){
     console.log('Hi I\'m Jeff');
     alert('Hi!');
@@ -95,6 +100,14 @@ app.controller('Principal',['$scope','$compile',function($scope,$compile){
   $scope.toggleAutoCollapse = function(){
     $scope.$broadcast('sacCollapseAll');
     $scope.sirAccordion.config.autoCollapse = !$scope.sirAccordion.config.autoCollapse;
+  };
+
+  $scope.toggleAnimation = function() {
+    if ($scope.sirAccordion.config.animDur){
+      $scope.sirAccordion.config.animDur = 0;
+      return;
+    }
+    $scope.sirAccordion.config.animDur = 300;
   };
 
   $scope.expandByCoord = function(){

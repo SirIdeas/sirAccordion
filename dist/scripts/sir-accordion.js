@@ -7,7 +7,6 @@ angular.module('sir-accordion', [])
       controller: ('sirAccordionCtrl', ['$scope', function ($scope) { }]),
       link: function (scope, element, attrs) {
         var accordionId = '';
-        var animDur = 0;
         var header = '';
         var item = '';
         var uniqueIndex = '';
@@ -24,7 +23,7 @@ angular.module('sir-accordion', [])
         scope.accordionConfig.beforeBottomContent = scope.accordionConfig.beforeBottomContent || '';
         scope.accordionConfig.afterBottomContent = scope.accordionConfig.afterBottomContent || '';
         accordionId = scope.accordionConfig.id || '';
-        animDur = scope.accordionConfig.animDur;
+        scope.accordionConfig.animDur = scope.accordionConfig.animDur || 0;
 
         /*
           * @ngdoc watch
@@ -83,7 +82,7 @@ angular.module('sir-accordion', [])
             domContents[i] = { id: thisElement.className, obj: content };
             domHeaders[i] = { id: thisElement.className, obj: header };
             if (thisElement.firstElementChild) {
-              domHeaders[i].obj.style.transition = 'all ' + (animDur) + 'ms';
+              domHeaders[i].obj.style.transition = 'all ' + (scope.accordionConfig.animDur) + 'ms';
             }
           };
         };
@@ -243,7 +242,7 @@ angular.module('sir-accordion', [])
               domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
               velocity(domObjectChild, 'finish');
               velocity(domObjectChild, 'slideUp', {
-                display: null, duration: animDur,
+                display: null, duration: scope.accordionConfig.animDur,
                 complete: function () {
                   domObjectChild.style.height = '0px';
                   var collapsingCoords = domContent.id.replace('sac', '');
@@ -262,7 +261,7 @@ angular.module('sir-accordion', [])
               domObjectChild = (domContent.obj.firstElementChild) ? domContent.obj.firstElementChild : domContent.obj.firstChild;
               velocity(domObjectChild, 'finish');
               velocity(domObjectChild, 'slideDown', {
-                delay: 0, duration: animDur,
+                delay: 0, duration: scope.accordionConfig.animDur,
                 progress: function () { domContent.obj.style.height = 'auto' },
                 begin: function () { domContent.obj.style.height = '0px'; domObjectChild.style.height = 'auto'; },
                 complete: function () {
@@ -498,7 +497,7 @@ angular.module('sir-accordion', [])
           $timeout(function () {
             toggleClass(domContent, 'expanded');
             toggleClass(domHeader, 'active-header');
-          }, animDur * (getLevel(domContent.id) - 1 + levelFix));
+          }, scope.accordionConfig.animDur * (getLevel(domContent.id) - 1 + levelFix));
         }
 
         /*

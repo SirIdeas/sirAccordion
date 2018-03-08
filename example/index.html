@@ -48,9 +48,13 @@
             <div sir-accordion collection="{{sirAccordion.collection}}" config="sirAccordion.config"></div>
         </div>
         <div class="hidden-xs col-sm-6">
+          <div>
+            <button class="btn btn-primary" ng-click="toggleAnimation()" ng-cloak>Toggle animation: {{sirAccordion.config.animDur ? 'on' : 'off'}}</button>
+          </div>
+          <hr>
           <blockquote>
             <p>
-              Dynamic, customizable and multilevel **Accordion Menu** for **AngurlarJS**. Builds up from a **JSON object** and an optional configuration object.
+              Dynamic, customizable and multilevel <strong>Accordion Menu for AngurlarJS</strong>. Builds up from a <strong>JSON object</strong> and an optional configuration object.
             </p>
             <p>
               <strong>No jQuery needed</strong>
