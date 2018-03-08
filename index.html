@@ -32,11 +32,11 @@
             </form>
           </div>
           <div class="col-xs-7 col-sm-4 no-padding-left">
-            <button ng-click="expandAll()" class="btn btn-primary" ng-class="{'disabled': accordionConfig.autoCollapse}">Expand all</button>
+            <button ng-click="expandAll()" class="btn btn-primary" ng-class="{'disabled': sirAccordion.config.autoCollapse}">Expand all</button>
             <button ng-click="collapseAll()" class="btn btn-primary">Collapse all</button>
           </div>
           <div class="col-xs-12 col-sm-5">
-            <button ng-click="toggleAutoCollapse()" class="btn btn-primary" ng-cloak>toggle autoCollapse: {{accordionConfig.autoCollapse}}</button>
+            <button ng-click="toggleAutoCollapse()" class="btn btn-primary" ng-cloak>Toggle autoCollapse: {{sirAccordion.config.autoCollapse}}</button>
           </div>
         </div>
         <br>
@@ -48,6 +48,8 @@
             <div sir-accordion collection="{{sirAccordion.collection}}" config="sirAccordion.config"></div>
         </div>
         <div class="hidden-xs col-sm-6">
+          <button ng-click="toggleAnimation()" class="btn btn-primary" ng-cloak>Toggle animation: {{sirAccordion.config.animDur? 'on' : 'off'}}</button>
+          <hr>
           <blockquote>
             <p>
               Awesome dynamic, recursive, customizable and multilevel <strong>Accordion Menu</strong> for <strong>AngurlarJS</strong>, that builds up from a JSON object and an optional configuration object. <strong>You can download the project for a live demo in the example folder (don't forget to bower install dependencies)</strong> and for better understanding.
