@@ -10,35 +10,54 @@ body, html{
 }
 
 .container{
-	height: 100%;
-	position: relative;
+  height: 100%;
+  position: relative;
 }
 
 .content-wrap{
-	position: absolute;
-	top: 213px;
-	left: 15px;
-	right: 15px;
-	bottom: 10px;
+  position: absolute;
+  top: 213px;
+  left: 15px;
+  right: 15px;
+  bottom: 10px;
 }
 
 .no-padding-left{
-	padding-left: 0px;
+  padding-left: 0px;
 }
 
 .clickable{
-	cursor: pointer;
+  cursor: pointer;
 }
 
 blockquote{
-	text-align: justify;
+  text-align: justify;
 }
 
 .full-height{
-	height: 100%;
+  height: 100%;
 }
 
 .scrollable{
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+.drop-icon-wrapper {
+  font-size: 18px;
+  margin-left: auto;
+}
+
+.drop-icon-wrapper i{
+  transition: 0.3s transform;
+  transform: rotate(0deg);
+}
+
+.active-header .drop-icon-wrapper i{
+  transform: rotate(180deg); 
+}
+
+.sir-accordion-header {
+  display: flex;
+  align-items: center;
 }
