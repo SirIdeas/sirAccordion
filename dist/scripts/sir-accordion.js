@@ -15,8 +15,13 @@
 
           scope.accordionCollection = null;
           scope.accordionConfig = $parse(attrs.config)(scope);
+
+          if (!scope.accordionConfig) {
+            scope.accordionConfig = {};
+          }
+          
           scope.accordionConfig.id = element.attr('id') || scope.accordionConfig.id || '';
-          scope.accordionConfig.animDur = scope.accordionConfig.animDur || 0;
+          scope.accordionConfig.animDur = scope.accordionConfig.animDur || 300;
           scope.accordionConfig.headerClass = scope.accordionConfig.headerClass || '';
           scope.accordionConfig.beforeHeader = scope.accordionConfig.beforeHeader || '';
           scope.accordionConfig.afterHeader = scope.accordionConfig.afterHeader || '';
