@@ -16,11 +16,11 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
   $scope.coord = '';
 
   var accordionConfig = {
-    debug: false,
+    id: '',
+    debug: true,
     animDur: 300,
     expandFirst: false,
     autoCollapse: true,
-    watchInternalChanges: false,
     headerClass: '',
     beforeHeader: '',
     afterHeader: '<div class="drop-icon-wrapper sir-accordion-vertical-align"><i class="glyphicon glyphicon-chevron-down"></i></div>',
@@ -88,9 +88,14 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
   };
 
   $timeout(function() {
-    //$scope.sirAccordion.collection[0].title = 'hola';
-    $scope.sirAccordion.collection[0].subCollection[0].title = 'hola';
-  }, 2000);
+    //$scope.sirAccordion.collection[0].subCollection[0].title = 'hola';
+    /* $scope.sirAccordion.collection[0] = {
+      title: 'hola', topContent: 'hola'
+    }; */
+    /* $scope.sirAccordion.collection = [{
+      title: 'hola', topContent: 'hola'
+    }] */;
+  }, 4000);
 
   $scope.clickMe = function(){
     console.log('Hi I\'m Jeff');
@@ -116,7 +121,7 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
 
   $scope.collapseByCoord = function(){
     $scope.$broadcast('sacCollapseContentById', $scope.coord);
-  }
+  };
 
   $scope.expandAll = function(){
     $scope.$broadcast('sacExpandAll');
@@ -128,10 +133,10 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
 
   $scope.$on('sacExpandStart', function(data){
     console.log('sacExpandStart');
-  })
+  });
 
   $scope.$on('sacExpandEnd', function (data) {
     console.log('sacExpandEnd');
-  })
+  });
 
 }]);

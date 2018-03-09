@@ -6,44 +6,50 @@ angular.module('sir-accordion', [])
       scope: true,
       controller: ('sirAccordionCtrl', ['$scope', function ($scope) { }]),
       link: function (scope, element, attrs) {
-        var accordionId = '';
-        var header = '';
-        var item = '';
-        var uniqueIndex = '';
-        var accordionHTML = '';
         var domHeaders = [];
         var domContents = [];
-        var animating = false;
         var currentExpanded = '0';
         var consoleHighLight = 'background: #0044CE; color: #fff';
-        var newScope = null;
 
         scope.accordionCollection = null;
         scope.accordionConfig = $parse(attrs.config)(scope);
+        scope.accordionConfig.id = element.attr('id') || scope.accordionConfig.id || '';
+        scope.accordionConfig.animDur = scope.accordionConfig.animDur || 0;
+        scope.accordionConfig.headerClass = scope.accordionConfig.headerClass || '';
+        scope.accordionConfig.beforeHeader = scope.accordionConfig.beforeHeader || '';
+        scope.accordionConfig.afterHeader = scope.accordionConfig.afterHeader || '';
+        scope.accordionConfig.topContentClass = scope.accordionConfig.topContentClass || '';
+        scope.accordionConfig.beforeTopContent = scope.accordionConfig.beforeTopContent || '';
+        scope.accordionConfig.afterTopContent = scope.accordionConfig.afterTopContent || '';
+        scope.accordionConfig.bottomContentClass = scope.accordionConfig.bottomContentClass || '';
         scope.accordionConfig.beforeBottomContent = scope.accordionConfig.beforeBottomContent || '';
         scope.accordionConfig.afterBottomContent = scope.accordionConfig.afterBottomContent || '';
-        accordionId = scope.accordionConfig.id || '';
-        scope.accordionConfig.animDur = scope.accordionConfig.animDur || 0;
 
         /*
           * @ngdoc watch
           * @description watches changes in the Array provided to build the accordion
         */
-        attrs.$observe('collection', function () {
-          scope.accordionCollection = $parse(attrs.collection)(scope);
+        attrs.$observe('collection', function (newVal) {
+          //console.log(newVal);
+          scope.accordionCollection = $parse(newVal)(scope);
 
           if (!angular.isArray(scope.accordionCollection)) {
             element.html('No collection found');
             return;
           }
 
-          header = '';
-          item = '';
-          uniqueIndex = '';
-          accordionHTML = '';
+          if (scope.accordionConfig.id) {
+            if (document.getElementById(scope.accordionConfig.id) == null) {
+              element.attr('id', scope.accordionConfig.id);
+            }
+            else {
+              if (scope.accordionConfig.debug) console.log('Id already exists');
+            }
+          }
+
+          var accordionHTML = '';
           domHeaders = [];
           domContents = [];
-          animating = false;
           currentExpanded = '0';
           accordionHTML = itemRegen(scope.accordionCollection, 0, 0, 0);
 
@@ -54,7 +60,7 @@ angular.module('sir-accordion', [])
             newScope = null;
           }
 
-          newScope = scope.$new();
+          var newScope = scope.$new();
           var compiled = $compile(accordionHTML)(newScope);
           element.append(compiled);
           setObjectTree();
@@ -63,8 +69,7 @@ angular.module('sir-accordion', [])
           if (scope.accordionConfig.expandFirst) {
             expandProgrammatically('1');
           }
-        }, scope.accordionConfig.watchInternalChanges);
-
+        });
 
         /*
           * @ngdoc function
@@ -84,7 +89,7 @@ angular.module('sir-accordion', [])
             if (thisElement.firstElementChild) {
               domHeaders[i].obj.style.transition = 'all ' + (scope.accordionConfig.animDur) + 'ms';
             }
-          };
+          }
         };
 
         /*
@@ -98,6 +103,9 @@ angular.module('sir-accordion', [])
           * @return
         */
         var itemRegen = function (collection, parentIndex, currentIndex, level) {
+          var header = null;
+          var item = null;
+          var uniqueIndex = '';
           if (currentIndex == collection.length) {
             return '';
           }
@@ -114,7 +122,7 @@ angular.module('sir-accordion', [])
 
           item =
             '<div class="sac' + uniqueIndex + '" >'
-            + '<div class="sir-accordion-header ' + scope.accordionConfig.headerClass
+            + '<div class="' + ('sir-accordion-header ' + scope.accordionConfig.headerClass).trim()
             + '" ng-click="expandCollapseProgrammatically(\'' + uniqueIndex + '\')">'
             + header
             + '</div>'
@@ -163,7 +171,7 @@ angular.module('sir-accordion', [])
           if (!uniqueIndex) {
             return pre + '<div>' + content + '</div>' + post;
           }
-          return pre + '<div id="' + accordionId + uniqueIndex + '">' + content + '</div>' + post;
+          return pre + '<div id="' + scope.accordionConfig.id + uniqueIndex + '">' + content + '</div>' + post;
         };
 
         /*
@@ -431,7 +439,7 @@ angular.module('sir-accordion', [])
               else {
                 thisId = ids[j];
               }
-            };
+            }
             if (domContents[getDomContentsIndex(thisId)]) {
               if (domContents[getDomContentsIndex(thisId)].obj.className.indexOf('expanded') == -1) {
                 expandByLevel(domContents[getDomContentsIndex(thisId)], domHeaders[getDomContentsIndex(thisId)], levelFix)
@@ -448,7 +456,7 @@ angular.module('sir-accordion', [])
               if (scope.accordionConfig.debug) console.log('%c Coordinate does not match an element', consoleHighLight);
             }
             thisId = '';
-          };
+          }
         };
 
         /*
@@ -458,15 +466,13 @@ angular.module('sir-accordion', [])
           * @param {String} id
         */
         scope.expandCollapseProgrammatically = function (id) {
-          if (!animating) {
-            if (domContents[getDomContentsIndex(id)].obj.className.indexOf('expanded') != -1) {
-              collapseProgrammatically(id);
-            }
-            else {
-              expandProgrammatically(id);
-            }
+          if (domContents[getDomContentsIndex(id)].obj.className.indexOf('expanded') != -1) {
+            collapseProgrammatically(id);
           }
-        }
+          else {
+            expandProgrammatically(id);
+          }
+        };
 
         /*
           * @ngdoc function
@@ -512,8 +518,8 @@ angular.module('sir-accordion', [])
               toggleClass(domContents[i], 'expanded');
               toggleClass(domHeaders[i], 'active-header');
             }
-          };
-        }
+          }
+        };
 
         /*
           * @ngdoc event
@@ -536,7 +542,7 @@ angular.module('sir-accordion', [])
               if (domContents[i].obj.className.indexOf('expanded') == -1) {
                 expandByLevel(domContents[i], domHeaders[i], 0);
               }
-            };
+            }
           }
           event.defaultPrevented = true;
         });
