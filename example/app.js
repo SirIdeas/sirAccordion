@@ -18,7 +18,7 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
   var accordionConfig = {
     id: '',
     debug: false,
-    animDur: 0,
+    animDur: 300,
     expandFirst: false,
     autoCollapse: true,
     headerClass: '',
