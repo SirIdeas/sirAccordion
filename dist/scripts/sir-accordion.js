@@ -494,7 +494,7 @@
               scope.$emit('sacCollapseStart', currentExpanded);
               currentExpanded = getParentId(id);
             }
-          }
+          };
 
           /*
             * @ngdoc function
@@ -509,7 +509,7 @@
               toggleClass(domContent, 'expanded');
               toggleClass(domHeader, 'active-header');
             }, scope.accordionConfig.animDur * (getLevel(domContent.id) - 1 + levelFix));
-          }
+          };
 
           /*
             * @ngdoc function

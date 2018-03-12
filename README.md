@@ -14,7 +14,7 @@ Dynamic, customizable and multilevel **Accordion Menu** for **AngurlarJS**. Buil
 *   **Easy use AngularJS Directive:** you just need to add the js and css files, add the *'sir-accordion'* module to the AngularJS app and call the directive like this:
 
         //Code for the html directive
-        <div sir-accordion collection="{{sirAccordion.collection}}" config="sirAccordion.config"></div>
+        <div sir-accordion collection="sirAccordion.collection" config="sirAccordion.config"></div>
 
         //Code for the Angular module
         .module('mainModule', ['sir-accordion'])

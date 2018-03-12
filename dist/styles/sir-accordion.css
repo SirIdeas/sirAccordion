@@ -40,11 +40,12 @@
 }
 
 .sir-accordion-content > div{
-  height: 0px;
+  height: 0px;  
 }
 
 .sir-accordion-content > div > div{
   overflow: auto;
+  padding-bottom: 5px;  
 }
 
 .sir-accordion-header {

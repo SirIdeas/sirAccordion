@@ -87,7 +87,7 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
     config: accordionConfig
   };
 
-  $timeout(function() {
+  /* $timeout(function() {
     $scope.sirAccordion.collection[0].subCollection[0].title = 'hola';
   }, 2000);
 
@@ -107,7 +107,7 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
     $scope.sirAccordion.collection = [{
       title: 'chao', topContent: 'chao'
     }];
-  }, 8000);
+  }, 8000); */
 
   $scope.clickMe = function(){
     console.log('Hi I\'m Jeff');
