@@ -18,7 +18,7 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
   var accordionConfig = {
     id: '',
     debug: false,
-    animDur: 300,
+    animDur: 0,
     expandFirst: false,
     autoCollapse: true,
     headerClass: '',
@@ -29,7 +29,8 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
     afterTopContent: '<div><p><small>I repeat through all accordion</small></p></div>',
     bottomContentClass: '',
     beforeBottomContent: '',
-    afterBottomContent: ''
+    afterBottomContent: '',
+    watchInternalChanges: true
   };
 
   var accordionCollection = [
@@ -87,14 +88,26 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
   };
 
   $timeout(function() {
-    //$scope.sirAccordion.collection[0].subCollection[0].title = 'hola';
-    /* $scope.sirAccordion.collection[0] = {
+    $scope.sirAccordion.collection[0].subCollection[0].title = 'hola';
+  }, 2000);
+
+  $timeout(function () {
+    $scope.sirAccordion.collection[0] = {
       title: 'hola', topContent: 'hola'
-    }; */
-    /* $scope.sirAccordion.collection = [{
-      title: 'hola', topContent: 'hola'
-    }] */;
+    };
   }, 4000);
+
+  $timeout(function () {
+    $scope.sirAccordion.collection = [{
+      title: 'hola', topContent: 'hola'
+    }];
+  }, 6000);
+
+  $timeout(function () {
+    $scope.sirAccordion.collection = [{
+      title: 'chao', topContent: 'chao'
+    }];
+  }, 8000);
 
   $scope.clickMe = function(){
     console.log('Hi I\'m Jeff');

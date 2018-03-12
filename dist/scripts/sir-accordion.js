@@ -13,9 +13,7 @@
           var currentExpanded = '0';
           var consoleHighLight = 'background: #0044CE; color: #fff';
 
-          scope.accordionCollection = null;
           scope.accordionConfig = $parse(attrs.config)(scope);
-
           if (!scope.accordionConfig) {
             scope.accordionConfig = {};
           }
@@ -31,16 +29,16 @@
           scope.accordionConfig.bottomContentClass = scope.accordionConfig.bottomContentClass || '';
           scope.accordionConfig.beforeBottomContent = scope.accordionConfig.beforeBottomContent || '';
           scope.accordionConfig.afterBottomContent = scope.accordionConfig.afterBottomContent || '';
+          scope.accordionConfig.watchInternalChanges = scope.accordionConfig.watchInternalChanges || true;
 
           /*
             * @ngdoc watch
             * @description watches changes in the Array provided to build the accordion
           */
-          attrs.$observe('collection', function (newVal) {
-            //console.log(newVal);
-            scope.accordionCollection = $parse(newVal)(scope);
+          scope.$watch(attrs.collection, function (newVal) {
+            var accordionCollection = $parse(attrs.collection)(scope);
 
-            if (!angular.isArray(scope.accordionCollection)) {
+            if (!accordionCollection || !angular.isArray(accordionCollection)) {
               element.html('No collection found');
               return;
             }
@@ -58,7 +56,7 @@
             domHeaders = [];
             domContents = [];
             currentExpanded = '0';
-            accordionHTML = itemRegen(scope.accordionCollection, 0, 0, 0);
+            accordionHTML = itemRegen(accordionCollection, 0, 0, 0);
 
             element.html('');
 
@@ -76,7 +74,7 @@
             if (scope.accordionConfig.expandFirst) {
               expandProgrammatically('1');
             }
-          });
+          }, scope.accordionConfig.watchInternalChanges);
 
           /*
             * @ngdoc function
