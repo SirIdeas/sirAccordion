@@ -69,6 +69,9 @@ Dynamic, customizable and multilevel **Accordion Menu** for **AngurlarJS**. Buil
 
 ##**Changelog**
 
+###V1.4.2
+*   Minor fixes.
+
 ###V1.4.0
 *   Velocity updated to 1.5.1.
 *   Removed 1.3.0 breaking changes and I'll be removing the 1.3.0 tag entirely because it was not a good way of solving the issue I was trying to solve, this version solves the issue in a better way.
