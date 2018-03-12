@@ -5,6 +5,11 @@ body, html{
   height: 100%;
 }
 
+body{
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
@@ -43,21 +48,16 @@ blockquote{
   -webkit-overflow-scrolling: touch;
 }
 
-.drop-icon-wrapper {
+.sac-drop-icon-wrapper {
   font-size: 18px;
   margin-left: auto;
 }
 
-.drop-icon-wrapper i{
+.sac-drop-icon-wrapper i{
   transition: 0.3s transform;
   transform: rotate(0deg);
 }
 
-.active-header .drop-icon-wrapper i{
+.active-header .sac-drop-icon-wrapper i{
   transform: rotate(180deg); 
-}
-
-.sir-accordion-header {
-  display: flex;
-  align-items: center;
 }

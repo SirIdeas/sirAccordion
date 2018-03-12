@@ -1,7 +1,7 @@
 'use strict';
 var app = angular.module('sirAccordion', [
   'sir-accordion'
-  ])
+  ]);
 
 app.run([function() {
   if ('addEventListener' in document) {
@@ -23,7 +23,7 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
     autoCollapse: true,
     headerClass: '',
     beforeHeader: '',
-    afterHeader: '<div class="drop-icon-wrapper sir-accordion-vertical-align"><i class="glyphicon glyphicon-chevron-down"></i></div>',
+    afterHeader: '<div class="sac-drop-icon-wrapper sir-accordion-vertical-align"><i class="glyphicon glyphicon-chevron-down"></i></div>',
     topContentClass: '',
     beforeTopContent: '',
     afterTopContent: '<div><p><small>I repeat through all accordion</small></p></div>',
@@ -32,8 +32,7 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
     afterBottomContent: ''
   };
 
-  var accordionCollection = 
-  [
+  var accordionCollection = [
     {"title":"Level 1","topContent":"This is the top content attr","bottomContent":null,"subCollection":[
         { "title": "This is a Level 2 Header!", "topContent":"This is some nice text right here and a button with 'ng-click' <button class=\"btn btn-primary\" ng-click=\"clickMe()\">Click me!</button>","bottomContent":null},
       {"title":"Level 2","topContent":"<pre>And you can ad Html code directly to the content too</pre>","bottomContent":null},

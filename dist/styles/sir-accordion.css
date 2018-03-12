@@ -46,3 +46,8 @@
 .sir-accordion-content > div > div{
   overflow: auto;
 }
+
+.sir-accordion-header {
+  display: flex;
+  align-items: center;
+}
