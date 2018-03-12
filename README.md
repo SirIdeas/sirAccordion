@@ -69,9 +69,14 @@ Dynamic, customizable and multilevel **Accordion Menu** for **AngurlarJS**. Buil
 
 ##**Changelog**
 
+###V1.4.0
+*   Velocity updated to 1.5.1.
+*   Removed 1.3.0 breaking changes and I'll be removing the 1.3.0 tag entirely because it was not a good way of solving the issue I was trying to solve, this version solves the issue in a better way.
+*   Minor fixes.
+
 ###V1.3.0
-*   **Breaking changes**
-    *   In order to remove the necessity of an isolated scope, this is the new way of declaring the directive `<div sir-accordion collection="{{sirAccordion.collection}}" config="sirAccordion.config"></div>`.
+~~*   **Breaking changes**
+    *   In order to remove the necessity of an isolated scope, this is the new way of declaring the directive `<div sir-accordion collection="{{sirAccordion.collection}}" config="sirAccordion.config"></div>`.~~
 *   Now the scope is not isolated, making it easier to use and allowing to use `ng-click` and other interactions directly in the template.
 *   Removed the default vertical aligment in .sir-accordion-header.
 
