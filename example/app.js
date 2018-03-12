@@ -23,7 +23,7 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
     watchInternalChanges: false,
     headerClass: '',
     beforeHeader: '',
-    afterHeader: '<div class="drop-icon-wrapper sir-accordion-vertical-align"><i class="glyphicon glyphicon-chevron-down"></i></div>',
+    afterHeader: '<div class="sac-drop-icon-wrapper sir-accordion-vertical-align"><i class="glyphicon glyphicon-chevron-down"></i></div>',
     topContentClass: '',
     beforeTopContent: '',
     afterTopContent: '<div><p><small>I repeat through all accordion</small></p></div>',
@@ -87,11 +87,11 @@ app.controller('Principal',['$scope','$compile','$timeout',function($scope,$comp
     config: accordionConfig
   };
 
-  $timeout(function() {
+  /* $timeout(function() {
     //$scope.sirAccordion.collection[0].title = 'hola';
     $scope.sirAccordion.collection[0].subCollection[0].title = 'hola';
   }, 2000);
-
+ */
   $scope.clickMe = function(){
     console.log('Hi I\'m Jeff');
     alert('Hi!');
