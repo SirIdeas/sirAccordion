@@ -38,7 +38,7 @@
                     */
                     scope.$watch(attrs.collection, function (newVal) {
 
-                        if (newVal === undefned) {
+                        if (newVal === undefined) {
                             return;
                         }
                         var accordionCollection = $parse(attrs.collection)(scope);
